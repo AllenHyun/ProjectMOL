@@ -1,0 +1,7 @@
+{
+  "name": "ProjectMOL",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
