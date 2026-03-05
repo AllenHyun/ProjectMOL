@@ -1,25 +1,33 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar style="--background: #2C1E16CC; color: white;">
 
     <ion-buttons slot="start">
-      <span class="text-white ml-4" style="font-family: 'Playfair Display', serif; font-size: 1.5rem;">PROJECT M.O.L</span>
+      <span class="ml-4 text-xl md:text-2xl font-serif tracking-tight cursor-default">
+        PROJECT M.O.L
+      </span>
     </ion-buttons>
 
-    <ion-searchbar class="menu-escritorio" placeholder="Descubre..." style="--placeholder-color: #555555 ;--background: white; --icon-color:black; width: 300px;"></ion-searchbar>
+    <ion-searchbar
+      class="menu-escritorio w-[250px] hidden md:block"
+      placeholder="Descubre..."
+      style="--placeholder-color: #555555; --background: white; --icon-color: black;">
+    </ion-searchbar>
 
-    <ion-buttons slot="end" class="menu-escritorio" style="gap: 1rem">
-      <ion-button class="font-lato text-white text-sm" style="text-transform: none;">Inicio</ion-button>
-      <ion-button class="font-lato text-white text-sm" style="text-transform: none;">Resúmenes</ion-button>
-      <ion-button class="font-lato text-white text-sm" style="text-transform: none;">Reseñas</ion-button>
+    <ion-buttons slot="end" class="hidden md:flex gap-6">
+      <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">Inicio</ion-button>
+      <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">Resúmenes</ion-button>
+      <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">Reseñas</ion-button>
     </ion-buttons>
 
-    <ion-buttons slot="end" class="menu-escritorio" style="padding-left: 2rem">
-      <ion-button class="font-lato text-sm" style="text-transform: none; --color:#C5A059">Registrar/Inicio de sesión</ion-button>
+    <ion-buttons slot="end" class="hidden md:flex pl-6">
+      <ion-button class="font-lato text-sm normal-case text-[#C5A059] font-medium hover:brightness-110">
+        Registrar/Inicio de sesión
+      </ion-button>
     </ion-buttons>
 
-    <ion-buttons slot="end" class="menu-movil">
+    <ion-buttons slot="end" class="md:hidden">
       <ion-button>
-        <ion-icon name="menu" style="color: white; font-size: 2.5rem;"></ion-icon>
+        <ion-icon name="menu" class="text-white text-3xl"></ion-icon>
       </ion-button>
     </ion-buttons>
 
