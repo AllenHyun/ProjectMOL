@@ -1,0 +1,17 @@
+@media (max-width: 767px) {
+  .menu-escritorio {
+    display: none !important;
+  }
+  .menu-movil {
+    display: flex !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .menu-escritorio {
+    display: flex !important;
+  }
+  .menu-movil {
+    display: none !important;
+  }
+}

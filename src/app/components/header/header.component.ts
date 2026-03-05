@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
+import {menu} from "ionicons/icons";
+import {addIcons} from "ionicons";
 
 @Component({
   selector: 'app-header',
@@ -11,7 +13,9 @@ import {IonicModule} from "@ionic/angular";
 })
 export class HeaderComponent  implements OnInit {
 
-  constructor() { }
+  constructor() {
+    addIcons({menu})
+  }
 
   ngOnInit() {}
 

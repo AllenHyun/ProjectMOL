@@ -13,6 +13,11 @@
 @theme {
   --font-playfair: "Playfair Display", serif;
   --font-lato: "Lato", sans-serif;
+  --color-primary:    #F4F1EA;
+  --color-brown:  #2C1E16;
+  --color-tree:     #2E473B;
+  --color-dark:       #1A1614;
+  --color-gold:       #C5A059;
 }
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
