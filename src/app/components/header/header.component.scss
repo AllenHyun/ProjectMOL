@@ -1,47 +1,17 @@
-.main-toolbar {
-  --background: #2C1E16CC;
-  color: white;
+@media (max-width: 780px) {
+  .menu-escritorio {
+    display: none !important;
+  }
+  .menu-movil {
+    display: flex !important;
+  }
 }
 
-.logo-text {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
-  margin-left: 1rem;
-}
-
-.header-searchbar {
-  --placeholder-color: #555555;
-  --background: white;
-  --icon-color: black;
-  width: 300px;
-}
-
-.nav-button {
-  font-family: 'Lato', sans-serif;
-  font-size: 0.875rem;
-  text-transform: none;
-}
-
-.login-container {
-  padding-left: 2rem;
-}
-
-.login-button {
-  @extend .nav-button;
-  --color: #C5A059;
-}
-
-.mobile-icon {
-  color: white;
-  font-size: 2.5rem;
-}
-
-@media (max-width: 767px) {
-  .menu-escritorio { display: none !important; }
-  .menu-movil { display: flex !important; }
-}
-
-@media (min-width: 768px) {
-  .menu-escritorio { display: flex !important; }
-  .menu-movil { display: none !important; }
+@media (min-width: 780px) {
+  .menu-escritorio {
+    display: flex !important;
+  }
+  .menu-movil {
+    display: none !important;
+  }
 }

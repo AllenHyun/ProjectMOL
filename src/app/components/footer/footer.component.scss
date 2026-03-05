@@ -1,113 +1,20 @@
-.footer-toolbar {
-  --background: #2C1E16CC;
-  color: white;
-}
-
-.footer-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 1.5rem 2.5rem;
-
-  .top-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    width: 100%;
-  }
-}
-
-.social-group {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-
-  .icon-box {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    img {
-      height: 35px;
-      width: auto;
-      object-fit: contain;
-    }
-
-    &.instagram-special {
-      width: 50px;
-      height: 50px;
-      img { height: 50px; }
-    }
-  }
-}
-
-.menu-group {
-  border-bottom: 1px solid #000;
-  padding-bottom: 1rem;
-
-  .footer-links {
-    display: flex;
-    gap: 24px;
-    font-size: 12px;
-    font-family: 'Lato', sans-serif;
-    font-weight: 300;
+@media (max-width: 767px) {
+  .footer-responsive-row {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 2rem !important;
   }
 
-}
+  .footer-responsive-menu {
+    border-bottom: 1px solid #000 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
 
-.footer-copyright {
-  text-align: center;
-  width: 100%;
-  margin-top: 1.75rem;
-  font-size: 10px;
-  font-family: 'Lato', sans-serif;
-  letter-spacing: 0.1em;
-}
-
-@media (max-width: 780px) {
-  .footer-container {
-    padding: 2rem 1rem !important;
-
-    .top-row {
-      flex-direction: column !important;
-      align-items: center !important;
-      gap: 2rem;
-    }
-
-    .social-group {
-      justify-content: center;
-      width: 100%;
-
-      .icon-box {
-        width: 36px !important;
-        height: 36px !important;
-        img { height: 28px !important; }
-
-        // La imagen de instagram tiene un tamaño especial para ajustarse correctamente al resto
-        &.instagram-special {
-          width: 42px !important;
-          height: 42px !important;
-          img { height: 42px !important; }
-        }
-      }
-    }
-
-    .menu-group {
-      width: 100%;
-      padding-bottom: 26px;
-
-      .footer-links {
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 1rem;
-        font-size: 11px;
-      }
-    }
-
-    .footer-copyright {
-      margin-top: 26px;
+    div {
+      gap: 1rem !important;
+      flex-wrap: wrap !important;
+      justify-content: center !important;
     }
   }
 }
