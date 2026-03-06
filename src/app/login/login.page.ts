@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {Auth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider} from "@angular/fire/auth";
+import {inject} from "@angular/core";
+import  {addIcons} from "ionicons";
+import {logoGoogle, logoFacebook} from "ionicons/icons";
 import {
   IonButton,
   IonCard,
@@ -9,7 +13,7 @@ import {
   IonContent,
   IonHeader, IonInput,
   IonTitle,
-  IonToolbar
+  IonToolbar, IonIcon
 } from '@ionic/angular/standalone';
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
@@ -19,28 +23,60 @@ import {FooterComponent} from "../components/footer/footer.component";
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, IonCard, IonCardTitle, IonCardContent, IonButton, IonInput]
+  imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, IonCard, IonCardTitle, IonCardContent, IonInput, IonButton, IonIcon]
 })
 export class LoginPage implements OnInit {
+  private auth = inject(Auth);
   email: string = '';
   password: string = '';
 
-  constructor() { }
+  constructor() {
+    addIcons({
+      logoGoogle, logoFacebook
+    });
+  }
 
   ngOnInit() {
   }
 
-  onLogin() {
-    if (this.email && this.password){
-      console.log('Datos almacenados: ',{
-        correo: this.email,
-        clave: this.password
-      });
+  // Si el usuario inicia sesión con Google/Facebook/Apple, directamente le creará la cuenta si no existe
+  // SI el usuario añade directamente el correo y la contraseña, el sistema mirará si tiene cuenta o no
 
-      alert("Login realizado correctamente");
+  async onLogin() {
+    try{
+      const userCredential = await signInWithEmailAndPassword(this.auth, this.email, this.password);
+      console.log("Bienvenid@ de nuevo! ", userCredential.user);
+    } catch (error:any) {
+      if (error.code === "auth/user-not-found"){
+        alert(error.message);
+      } else if (error.code === "auth/wrong-password"){
+        alert(error.message);
+      }
+      else{
+        alert(error.message);
+      }
     }
-    else {
-      alert("Rellene todos los campos");
+  }
+
+  async logingWithGoogle(){
+    try{
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(this.auth, provider);
+      console.log("Bienvenid@ de nuevo! ", result.user.displayName);
+    }
+    catch(error:any){
+      alert(error.message);
+    }
+  }
+
+  async logingWithFacebook(){
+    try{
+      const provider = new FacebookAuthProvider();
+      const result = await signInWithPopup(this.auth, provider);
+      console.log("Bienvenid@ de nuevo! ", result.user.displayName);
+    }
+    catch(error:any){
+      alert(error.message);
     }
   }
 
