@@ -84,4 +84,8 @@ export class RegisterPage implements OnInit {
         }
       }, 3000);
   }
+
+  async countCreated(){
+    this.router.navigate(['/login']);
+  }
 }
