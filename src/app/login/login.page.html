@@ -2,13 +2,66 @@
 
 <ion-content>
   <app-header></app-header>
-  <div class="relative h-[500px]">
+  <div class="relative h-[600px]">
     <img class="absolute w-full h-full object-cover" src="assets/icon/login_back.png">
     <!-- filtro verde para la imagen de fondo -->
     <div class="absolute inset-0 bg-[#2E473B66]"></div>
     <div class="relative flex flex-col md:flex-row z-10 h-full items-center justify-center">
-      <div class="w-full md:w-1/2 justify-center"> Izquierda </div>
-      <div class="w-full md:w-1/2"> Derecha </div>
+      <div class="w-full md:w-1/2 justify-center">
+        <h1 class="text-white text-8xl font-['Cormorant_Garamond'] leading-tight p-[70px]">
+          ¡Bienvenid@ a Project M.O.L!
+        </h1>
+      </div>
+      <div class="w-full md:w-1/2 p-[70px]">
+        <ion-card class="bg-white rounded-2xl p-8 shadow-2xl">
+          <ion-card-title class="text-black text-3xl font-[Lato] font-bold">
+            < Inicia sesión en tu cuenta
+          </ion-card-title>
+          <ion-card-content>
+            <button class="w-full flex items-center justify-center border bg-gray-100 border-gray-500 py-3 rounded-lg text-black  transition-all gap-5">
+              Iniciar sesión con Google
+            </button>
+
+            <button class="w-full flex items-center justify-center border bg-gray-100 border-gray-500 py-3 rounded-lg text-black  transition-all gap-3">
+              Iniciar sesión con Facebook
+            </button>
+
+            <button class="w-full flex items-center justify-center border bg-gray-100 border-gray-500 py-3 rounded-lg text-black  transition-all gap-3">
+              Iniciar sesión con Apple
+            </button>
+
+            <div class="flex items-center p-4">
+              <div class="flex-1 border-t border-gray-400"></div>
+              <span class="px-3 border-t border-gray-200">o</span>
+              <div class="flex-1 border-t border-gray-400"></div>
+            </div>
+
+            <div class="text-left">
+              <label class="text-sm font-semibold text-gray-700 ml-1">Correo electrónico</label>
+              <ion-input
+                type="email"
+                placeholder="ejemplo@correo.com"
+                [(ngModel)]="email"
+                class="mt-1 border border-gray-300 rounded-xl p-3 w-full"
+                style="--padding-start: 10px;">
+              </ion-input>
+
+              <label class="text-sm font-semibold text-gray-700 ml-1 mt-4">Contraseña</label>
+              <ion-input
+                type="email"
+                placeholder="**********"
+                [(ngModel)]="password"
+                class="mt-1 border border-gray-300 rounded-xl p-3 w-full"
+                style="--padding-start: 10px;">
+              </ion-input>
+            </div>
+
+            <button (click)="onLogin()" class="w-full bg-[#2E473B] text-white font-bold py-4 rounded-xl mt-8">
+              Iniciar sesión
+            </button>
+          </ion-card-content>
+        </ion-card>
+      </div>
     </div>
 
   </div>
