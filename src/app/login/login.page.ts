@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {Auth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider} from "@angular/fire/auth";
+import {Auth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail} from "@angular/fire/auth";
 import {inject} from "@angular/core";
 import  {addIcons} from "ionicons";
 import {logoGoogle} from "ionicons/icons";
@@ -13,7 +13,7 @@ import {
   IonContent,
   IonHeader, IonInput,
   IonTitle,
-  IonToolbar, IonIcon
+  IonToolbar, IonIcon, AlertController
 } from '@ionic/angular/standalone';
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
@@ -29,6 +29,7 @@ import {Router} from "@angular/router";
 export class LoginPage implements OnInit {
   private auth = inject(Auth);
   private router = inject(Router);
+  private alertCtrl = inject(AlertController);
   email: string = '';
   password: string = '';
 
@@ -69,6 +70,49 @@ export class LoginPage implements OnInit {
       this.router.navigate(['/home']);
     }
     catch(error:any){
+      alert(error.message);
+    }
+  }
+
+  async forgotPassword(){
+    const alert = await this.alertCtrl.create({
+      header: 'Restablecer contraseña',
+      message: 'Introduce tu correo electrónico para poder restablecer la contraseña',
+      inputs: [
+        {
+          name: 'resetEmail',
+          type: 'email',
+          placeholder: 'ejemplo@correo.com',
+          value: this.email,
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Enviar enlace',
+          handler: (data) => {
+            this.sendResetLink(data.resetEmail);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async sendResetLink(email: string){
+    if (!email){
+      alert("Introduce un correo válido");
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+      alert("Correo enviado. Revisa tu bandeja de correo, puede estar en Spam.");
+    }
+    catch(error: any){
       alert(error.message);
     }
   }
