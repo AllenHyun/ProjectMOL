@@ -12,6 +12,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body{
+  background-color: #F4F1EA !important;
+}
+
 @theme {
   --font-playfair: "Playfair Display", serif;
   --font-lato: "Lato", sans-serif;
