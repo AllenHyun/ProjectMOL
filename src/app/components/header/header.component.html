@@ -6,12 +6,13 @@
         PROJECT M.O.L
       </span>
     </ion-buttons>
-
+    @if (!isAuthPage){
     <ion-searchbar
       class="menu-escritorio w-[250px] hidden md:block"
       placeholder="Descubre..."
       style="--placeholder-color: #555555; --background: white; --icon-color: black;">
     </ion-searchbar>
+
 
     <ion-buttons slot="end" class="hidden md:flex gap-6">
       <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">Inicio</ion-button>
@@ -19,12 +20,13 @@
       <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">Reseñas</ion-button>
     </ion-buttons>
 
+
     <ion-buttons slot="end" class="hidden md:flex pl-6">
       <ion-button class="font-lato text-sm normal-case text-[#C5A059] font-medium hover:brightness-110">
-        Registrar/Inicio de sesión
+        Registrarse
       </ion-button>
     </ion-buttons>
-
+    }
     <ion-buttons slot="end" class="md:hidden">
       <ion-button>
         <ion-icon name="menu" class="text-white text-3xl"></ion-icon>

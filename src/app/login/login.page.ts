@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {Auth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail} from "@angular/fire/auth";
+import {
+  Auth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  sendPasswordResetEmail,
+  signOut
+} from "@angular/fire/auth";
 import {inject} from "@angular/core";
 import  {addIcons} from "ionicons";
 import {logoGoogle} from "ionicons/icons";
@@ -48,8 +55,15 @@ export class LoginPage implements OnInit {
   async onLogin() {
     try{
       const userCredential = await signInWithEmailAndPassword(this.auth, this.email, this.password);
-      console.log("Bienvenid@ de nuevo! ", userCredential.user);
-      this.router.navigate(['/home']);
+
+      if (userCredential.user.emailVerified) {
+        console.log("Bienvenid@ de nuevo! ", userCredential.user);
+        this.router.navigate(['/home']);
+      } else {
+        await signOut(this.auth);
+        alert("Debes verificar primero tu cuenta.")
+      }
+
     } catch (error:any) {
       if (error.code === "auth/user-not-found"){
         alert(error.message);

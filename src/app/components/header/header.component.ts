@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {menu} from "ionicons/icons";
 import {addIcons} from "ionicons";
@@ -12,7 +12,7 @@ import {addIcons} from "ionicons";
   ]
 })
 export class HeaderComponent  implements OnInit {
-
+  @Input() isAuthPage: boolean = false;
   constructor() {
     addIcons({menu})
   }
