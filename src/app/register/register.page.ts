@@ -13,6 +13,7 @@ import {
 } from '@ionic/angular/standalone';
 import {FooterComponent} from "../components/footer/footer.component";
 import {HeaderComponent} from "../components/header/header.component";
+import { User} from "../models/user";
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -22,6 +23,7 @@ import {
 } from "@angular/fire/auth";
 import {addIcons} from "ionicons";
 import {logoGoogle} from "ionicons/icons";
+import {Firestore, doc, setDoc} from "@angular/fire/firestore";
 
 @Component({
   selector: 'app-register',
@@ -33,6 +35,7 @@ import {logoGoogle} from "ionicons/icons";
 export class RegisterPage implements OnInit {
   private auth = inject(Auth);
   private router = inject(Router);
+  private firestore = inject(Firestore);
   email: string = '';
   password: string = '';
 
@@ -49,9 +52,22 @@ export class RegisterPage implements OnInit {
   async onRegister() {
     try{
       const userCredential = await createUserWithEmailAndPassword(this.auth, this.email, this.password);
+      const user = userCredential.user;
+
+      const userProfile : User = {
+        uid: user.uid,
+        email: this.email,
+        username: this.email.split('@')[0],
+        role:'reader',
+        interests: [],
+        level: 'ESO',
+        photoUrl: '',
+        createdAt: new Date().toISOString(),
+      };
+
+      await setDoc(doc(this.firestore, 'users', user.uid), userProfile);
 
       await sendEmailVerification(userCredential.user);
-
       this.checkVerificationStatus(userCredential.user);
 
       alert("Cuenta creada. Por favor, revise su correo para verificarla antes de iniciar sesión. Puede que se encuentre en Spam");
@@ -65,6 +81,21 @@ export class RegisterPage implements OnInit {
     try{
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(this.auth, provider);
+      const user = result.user;
+
+      const userProfile : User = {
+        uid: user.uid,
+        email: this.email,
+        username: this.email.split('@')[0],
+        role:'reader',
+        interests: [],
+        level: 'ESO',
+        photoUrl: '',
+        createdAt: new Date().toISOString(),
+      };
+
+      await setDoc(doc(this.firestore, 'users', user.uid), userProfile, {merge: true});
+
       console.log("Bienvenid@ de nuevo! ", result.user.displayName);
       this.router.navigate(['/home']);
     }
