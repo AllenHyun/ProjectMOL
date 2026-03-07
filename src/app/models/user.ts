@@ -1,8 +1,10 @@
 export interface User {
   uid: string;
-  role: 'reader' | 'moderator' | 'admin';
+  role: 'visitor' | 'reader' | 'moderator' | 'admin';
   interests: string[];
   username: string;
-  level: string;
+  email: string;
+  level: 'ESO' | 'Uni' | 'Posgrado';
+  photoUrl: string;
   createdAt: string;
 }
