@@ -1,18 +1,25 @@
 import {Component, OnInit, Input, inject} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
-import {menu, chevronDownOutline} from "ionicons/icons";
+import {
+  menu, chevronDownOutline, personOutline,
+  notificationsOutline, bookOutline, languageOutline, helpCircleOutline,
+  settingsOutline, logOutOutline, person
+} from "ionicons/icons";
 import {addIcons} from "ionicons";
 import {Router} from "@angular/router";
-import {Auth, onAuthStateChanged} from "@angular/fire/auth";
+import {Auth, onAuthStateChanged, authState} from "@angular/fire/auth";
 import {User} from "../../models/user";
 import {doc, docData, Firestore} from "@angular/fire/firestore";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  standalone: true,
   imports: [
-    IonicModule
+    IonicModule,
+    CommonModule,
   ]
 })
 export class HeaderComponent  implements OnInit {
@@ -20,23 +27,30 @@ export class HeaderComponent  implements OnInit {
   private router = inject(Router);
   public user: User | null = null;
   private auth = inject(Auth);
+  public menuOpen: boolean = false;
   private firestore = inject(Firestore);
 
   constructor() {
-    addIcons({menu, chevronDownOutline});
+    addIcons({menu, chevronDownOutline, person, personOutline, notificationsOutline,
+    bookOutline, languageOutline, helpCircleOutline, settingsOutline, logOutOutline});
   }
 
   ngOnInit() {
-    onAuthStateChanged(this.auth, (authUser) => {
-      if(authUser) {
+    authState(this.auth).subscribe((authUser) => {
+      if (authUser) {
         const userDocRef = doc(this.firestore, `users/${authUser.uid}`);
         docData(userDocRef).subscribe((data) => {
           this.user = data as User;
         });
-      } else{
+      } else {
         this.user = null;
+        this.menuOpen = false;
       }
     });
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 
   async navigateRegister(){
@@ -44,7 +58,12 @@ export class HeaderComponent  implements OnInit {
   }
 
   async onLogout(){
+    this.menuOpen = false;
     await this.auth.signOut();
     this.router.navigate(['/login']);
+  }
+
+  async backHome(){
+    this.router.navigate(['/home']);
   }
 }
