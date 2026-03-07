@@ -7,11 +7,12 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   sendPasswordResetEmail,
-  signOut
+  signOut,
+  authState
 } from "@angular/fire/auth";
-import {inject} from "@angular/core";
-import  {addIcons} from "ionicons";
-import {logoGoogle} from "ionicons/icons";
+import { inject } from "@angular/core";
+import { addIcons } from "ionicons";
+import { logoGoogle } from "ionicons/icons";
 import {
   IonButton,
   IonCard,
@@ -22,9 +23,11 @@ import {
   IonTitle,
   IonToolbar, IonIcon, AlertController
 } from '@ionic/angular/standalone';
-import {HeaderComponent} from "../components/header/header.component";
-import {FooterComponent} from "../components/footer/footer.component";
-import {Router} from "@angular/router";
+import { HeaderComponent } from "../components/header/header.component";
+import { FooterComponent } from "../components/footer/footer.component";
+import { Router } from "@angular/router";
+import { doc, docData, Firestore, getDoc, setDoc } from "@angular/fire/firestore";
+import { User } from "../models/user";
 
 @Component({
   selector: 'app-login',
@@ -37,6 +40,8 @@ export class LoginPage implements OnInit {
   private auth = inject(Auth);
   private router = inject(Router);
   private alertCtrl = inject(AlertController);
+  private firestore = inject(Firestore);
+  public user: User | null = null;
   email: string = '';
   password: string = '';
 
@@ -47,48 +52,104 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
+    authState(this.auth).subscribe((authUser) => {
+      if (authUser) {
+        const emailName = authUser.email ? authUser.email.split('@')[0] : 'User';
+        this.user = { username: emailName, email: authUser.email || '' } as User;
+
+        const userDocRef = doc(this.firestore, `users/${authUser.uid}`);
+        docData(userDocRef).subscribe((data: any) => {
+          if (data) {
+            this.user = {
+              ...data,
+              username: (data.username && data.username.trim() !== "") ? data.username : emailName,
+              email: (data.email && data.email.trim() !== "") ? data.email : (authUser.email || '')
+            } as User;
+          }
+        });
+      }
+      else {
+        this.user = null;
+      }
+    });
   }
 
   // Si el usuario inicia sesión con Google/Facebook/Apple, directamente le creará la cuenta si no existe
   // SI el usuario añade directamente el correo y la contraseña, el sistema mirará si tiene cuenta o no
 
   async onLogin() {
-    try{
+    try {
       const userCredential = await signInWithEmailAndPassword(this.auth, this.email, this.password);
+      const user = userCredential.user;
 
-      if (userCredential.user.emailVerified) {
-        console.log("Bienvenid@ de nuevo! ", userCredential.user);
+      if (user.emailVerified) {
+        const userDocRef = doc(this.firestore, `users/${user.uid}`);
+        const userSnap = await getDoc(userDocRef);
+
+        if (!userSnap.exists() || !userSnap.data()?.['username'] || !userSnap.data()?.['email']) {
+          const newUser: User = {
+            uid: user.uid,
+            email: user.email || '',
+            username: user.email ? user.email.split('@')[0] : 'User',
+            role: 'reader',
+            level: 'ESO',
+            interests: [],
+            photoUrl: '',
+            createdAt: new Date().toISOString()
+          };
+          await setDoc(userDocRef, newUser, { merge: true });
+        }
+
+        console.log("Bienvenid@ de nuevo! ", user.email);
         this.router.navigate(['/home']);
       } else {
         await signOut(this.auth);
         alert("Debes verificar primero tu cuenta.")
       }
 
-    } catch (error:any) {
-      if (error.code === "auth/user-not-found"){
+    } catch (error: any) {
+      if (error.code === "auth/user-not-found") {
         alert(error.message);
-      } else if (error.code === "auth/wrong-password"){
+      } else if (error.code === "auth/wrong-password") {
         alert(error.message);
       }
-      else{
+      else {
         alert(error.message);
       }
     }
   }
 
-  async logingWithGoogle(){
-    try{
+  async logingWithGoogle() {
+    try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(this.auth, provider);
-      console.log("Bienvenid@ de nuevo! ", result.user.displayName);
+      const user = result.user;
+      const userDocRef = doc(this.firestore, `users/${user.uid}`);
+      const userSnap = await getDoc(userDocRef);
+
+      if (!userSnap.exists() || !userSnap.data()?.['username'] || !userSnap.data()?.['email']) {
+        const newUser: User = {
+          uid: user.uid,
+          email: user.email || '',
+          // Guardamos el nombre basado en el correo, no el de Google
+          username: user.email ? user.email.split('@')[0] : 'User',
+          role: 'reader',
+          level: 'ESO',
+          interests: [],
+          photoUrl: user.photoURL || '',
+          createdAt: new Date().toISOString()
+        }
+        await setDoc(userDocRef, newUser, { merge: true });
+      }
+      console.log("Bienvenid@ de nuevo! ", user.email);
       this.router.navigate(['/home']);
     }
-    catch(error:any){
+    catch (error: any) {
       alert(error.message);
     }
   }
 
-  async forgotPassword(){
+  async forgotPassword() {
     const alert = await this.alertCtrl.create({
       header: 'Restablecer contraseña',
       message: 'Introduce tu correo electrónico para poder restablecer la contraseña',
@@ -116,8 +177,8 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
 
-  async sendResetLink(email: string){
-    if (!email){
+  async sendResetLink(email: string) {
+    if (!email) {
       alert("Introduce un correo válido");
       return;
     }
@@ -126,7 +187,7 @@ export class LoginPage implements OnInit {
       await sendPasswordResetEmail(this.auth, email);
       alert("Correo enviado. Revisa tu bandeja de correo, puede estar en Spam.");
     }
-    catch(error: any){
+    catch (error: any) {
       alert(error.message);
     }
   }

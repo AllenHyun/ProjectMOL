@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
-    IonCard,
-    IonCardContent,
-    IonCardTitle,
-    IonContent,
-    IonHeader, IonIcon, IonInput,
-    IonTitle,
-    IonToolbar
+  IonCard,
+  IonCardContent,
+  IonCardTitle,
+  IonContent,
+  IonHeader, IonIcon, IonInput,
+  IonTitle,
+  IonToolbar
 } from '@ionic/angular/standalone';
 import {FooterComponent} from "../components/footer/footer.component";
 import {HeaderComponent} from "../components/header/header.component";
@@ -30,7 +30,7 @@ import {Firestore, doc, setDoc} from "@angular/fire/firestore";
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-    imports: [IonContent, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonCard, IonCardContent, IonCardTitle, IonIcon, IonInput]
+  imports: [IonContent, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonCard, IonCardContent, IonCardTitle, IonIcon, IonInput]
 })
 export class RegisterPage implements OnInit {
   private auth = inject(Auth);
@@ -85,12 +85,12 @@ export class RegisterPage implements OnInit {
 
       const userProfile : User = {
         uid: user.uid,
-        email: this.email,
-        username: this.email.split('@')[0],
+        email: user.email || '',
+        username: user.email ? user.email.split('@')[0] : 'User',
         role:'reader',
         interests: [],
         level: 'ESO',
-        photoUrl: '',
+        photoUrl: user.photoURL || '',
         createdAt: new Date().toISOString(),
       };
 
@@ -105,15 +105,15 @@ export class RegisterPage implements OnInit {
   }
 
   checkVerificationStatus(user: any) {
-      const interval = setInterval(async () => {
-        await reload(user);
+    const interval = setInterval(async () => {
+      await reload(user);
 
-        if (user.emailVerified) {
-          console.log("Usuario verificado");
-          clearInterval(interval);
-          this.router.navigate(['/login']);
-        }
-      }, 3000);
+      if (user.emailVerified) {
+        console.log("Usuario verificado");
+        clearInterval(interval);
+        this.router.navigate(['/login']);
+      }
+    }, 3000);
   }
 
   async countCreated(){
