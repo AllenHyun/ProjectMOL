@@ -58,9 +58,15 @@ export class HeaderComponent  implements OnInit {
   }
 
   async onLogout(){
-    this.menuOpen = false;
-    await this.auth.signOut();
-    this.router.navigate(['/login']);
+    try {
+      this.menuOpen = false;
+      await this.auth.signOut();
+      this.user = null;
+      this.router.navigate(['/login']);
+    } catch (error) {
+      console.log(error);
+    }
+
   }
 
   async backHome(){

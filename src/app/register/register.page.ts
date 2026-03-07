@@ -9,7 +9,9 @@ import {
   IonContent,
   IonHeader, IonIcon, IonInput,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  IonSelect,
+  IonSelectOption
 } from '@ionic/angular/standalone';
 import {FooterComponent} from "../components/footer/footer.component";
 import {HeaderComponent} from "../components/header/header.component";
@@ -30,7 +32,7 @@ import {Firestore, doc, setDoc} from "@angular/fire/firestore";
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonCard, IonCardContent, IonCardTitle, IonIcon, IonInput]
+  imports: [IonContent, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonCard, IonCardContent, IonCardTitle, IonIcon, IonInput, IonSelect, IonSelectOption]
 })
 export class RegisterPage implements OnInit {
   private auth = inject(Auth);
@@ -38,6 +40,7 @@ export class RegisterPage implements OnInit {
   private firestore = inject(Firestore);
   email: string = '';
   password: string = '';
+  selectLevel: 'ESO' | 'Uni' | 'Posgrado' = 'ESO';
 
   constructor() {
     addIcons({
@@ -60,7 +63,7 @@ export class RegisterPage implements OnInit {
         username: this.email.split('@')[0],
         role:'reader',
         interests: [],
-        level: 'ESO',
+        level: this.selectLevel,
         photoUrl: '',
         createdAt: new Date().toISOString(),
       };
@@ -89,7 +92,7 @@ export class RegisterPage implements OnInit {
         username: user.email ? user.email.split('@')[0] : 'User',
         role:'reader',
         interests: [],
-        level: 'ESO',
+        level: this.selectLevel,
         photoUrl: user.photoURL || '',
         createdAt: new Date().toISOString(),
       };

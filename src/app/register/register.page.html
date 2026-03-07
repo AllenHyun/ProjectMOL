@@ -52,6 +52,13 @@
                   class="mt-1 border border-gray-300 rounded-xl p-3 w-full"
                   style="--padding-start: 10px;">
                 </ion-input>
+
+                <label class="text-sm font-semibold text-gray-700 ml-1 mt-4 block">Nivel Escolar</label>
+                <ion-select label="Selecciona tu nivel" label-placement="floating", fill="outline" [(ngModel)]="selectLevel" class="mt-1 custom-select">
+                  <ion-select-option value="ESO">ESO / Bachillerato </ion-select-option>
+                  <ion-select-option value="Uni">Universitario </ion-select-option>
+                  <ion-select-option value="Posgrado">Posgrado / Máster </ion-select-option>
+                </ion-select>
               </div>
 
             </div>
