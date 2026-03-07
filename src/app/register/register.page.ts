@@ -26,6 +26,7 @@ import {
 import {addIcons} from "ionicons";
 import {logoGoogle} from "ionicons/icons";
 import {Firestore, doc, setDoc} from "@angular/fire/firestore";
+import {AuthError} from "../services/auth-error";
 
 @Component({
   selector: 'app-register',
@@ -38,6 +39,7 @@ export class RegisterPage implements OnInit {
   private auth = inject(Auth);
   private router = inject(Router);
   private firestore = inject(Firestore);
+  private errorService = inject(AuthError);
   email: string = '';
   password: string = '';
   selectLevel: 'ESO' | 'Uni' | 'Posgrado' = 'ESO';
@@ -76,7 +78,8 @@ export class RegisterPage implements OnInit {
       alert("Cuenta creada. Por favor, revise su correo para verificarla antes de iniciar sesión. Puede que se encuentre en Spam");
     }
     catch(error: any){
-      alert("Error al registrarse: " + error.message);
+      const msg = this.errorService.getErrorMessage(error.code);
+      alert(msg);
     }
   }
 
@@ -103,7 +106,8 @@ export class RegisterPage implements OnInit {
       this.router.navigate(['/home']);
     }
     catch(error:any){
-      alert(error.message);
+      const msg = this.errorService.getErrorMessage(error.code);
+      alert(msg);
     }
   }
 
@@ -123,3 +127,5 @@ export class RegisterPage implements OnInit {
     this.router.navigate(['/login']);
   }
 }
+
+

@@ -28,6 +28,7 @@ import { FooterComponent } from "../components/footer/footer.component";
 import { Router } from "@angular/router";
 import { doc, docData, Firestore, getDoc, setDoc } from "@angular/fire/firestore";
 import { User } from "../models/user";
+import {AuthError} from "../services/auth-error";
 
 @Component({
   selector: 'app-login',
@@ -41,6 +42,7 @@ export class LoginPage implements OnInit {
   private router = inject(Router);
   private alertCtrl = inject(AlertController);
   private firestore = inject(Firestore);
+  private errorService = inject(AuthError);
   public user: User | null = null;
   email: string = '';
   password: string = '';
@@ -108,14 +110,8 @@ export class LoginPage implements OnInit {
       }
 
     } catch (error: any) {
-      if (error.code === "auth/user-not-found") {
-        alert(error.message);
-      } else if (error.code === "auth/wrong-password") {
-        alert(error.message);
-      }
-      else {
-        alert(error.message);
-      }
+      const msg = this.errorService.getErrorMessage(error.code);
+      alert(msg);
     }
   }
 
@@ -145,7 +141,8 @@ export class LoginPage implements OnInit {
       this.router.navigate(['/home']);
     }
     catch (error: any) {
-      alert(error.message);
+      const msg = this.errorService.getErrorMessage(error.code);
+      alert(msg);
     }
   }
 
@@ -188,7 +185,8 @@ export class LoginPage implements OnInit {
       alert("Correo enviado. Revisa tu bandeja de correo, puede estar en Spam.");
     }
     catch (error: any) {
-      alert(error.message);
+      const msg = this.errorService.getErrorMessage(error.code);
+      alert(msg);
     }
   }
 }

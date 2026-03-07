@@ -64,7 +64,7 @@ export class HeaderComponent  implements OnInit {
       this.user = null;
       this.router.navigate(['/login']);
     } catch (error) {
-      console.log(error);
+      console.log("Ha ocurrido un problema al intentar hacer logout, vuelva a intentarlo");
     }
 
   }
