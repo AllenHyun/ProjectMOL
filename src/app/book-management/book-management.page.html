@@ -1,4 +1,7 @@
 <ion-content>
+
+  <div class="flex flex-col min-h-full">
+
 <app-header></app-header>
 
 <div class="flex flex-grow">
@@ -20,9 +23,6 @@
   </div>
 
   <div class="relative mb-10">
-    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-      <ion-icon name="search-outline" class="text-gray-500 text-xl"></ion-icon>
-    </span>
     <input type="text" placeholder="Buscar libro..." class="w-full max-w-2xl p-2 pl-2 border text-black border-[#C5A059] bg-white focus:outline-none shadow-sm">
   </div>
 
@@ -50,8 +50,6 @@
               <td class="py-4 px-4">{{libro.categories.join(', ')}}</td>
               <td class="py-4 px-4">
                 <div class="flex justify-center gap-3 text-xl">
-                  <ion-icon name="checkmark-outline" class="text-green-700 cursor-pointer"></ion-icon>
-                  <ion-icon name="close-outline" class="text-red-700 cursor-pointer"></ion-icon>
                   <ion-icon (click)="deleteBook(libro.id)" name="trash-outline" class="text-gray-600 cursor-pointer"></ion-icon>
                 </div>
               </td>
@@ -140,5 +138,6 @@
 </div>
 
   <app-footer></app-footer>
+  </div>
 
 </ion-content>
