@@ -1,0 +1,16 @@
+<div class="flex flex-col min-h-full bg-[#2C1E16CC] text-white p-6">
+
+  <h1 class="text-lg font-lato text-center mb-2 tracking-widest"> Panel Admin </h1>
+
+  <div class="border-t border-[#C5A059] mb-8 w-full"></div>
+  <nav class="flex flex-col gap-10">
+    @for (option of optionsAdmin; track option.name){
+      <a [routerLink]="option.path" routerLinkActive="text-[#6FAB72] font-semibold font-lato" class="text-lg hover:text-[#6FAB72] transition-all">
+        {{option.name}}
+      </a>
+    }
+  </nav>
+
+</div>
+
+

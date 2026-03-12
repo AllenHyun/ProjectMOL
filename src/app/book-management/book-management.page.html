@@ -1,0 +1,92 @@
+<ion-content>
+<app-header></app-header>
+
+<div class="flex h-screen">
+
+  <aside class="w-64 h-full flex-shrink-0 border-r border-[#C5A059] mb-2">
+    <app-admin-panel class="min-h-[800px] "></app-admin-panel>
+  </aside>
+
+  <main class="flex-grow p-10">
+
+  <div class="flex justify-between items-start mb-8">
+    <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614]">Catálogo de libros</h2>
+    <div class="flex flex-col gap-2">
+      <button (click)="setOpen(true)" class="px-8 py-2 border border-[#C5A059] font-lato bg-white text-black text-sm hover:bg-gray-50 transition-colors"> Añadir Libro </button>
+      <button class="px-8 py-2 border border-[#C5A059] font-lato bg-white text-black text-sm hover:bg-gray-50 transition-colors"> Importar ISBN </button>
+    </div>
+
+  </div>
+
+  <div class="relative mb-10">
+    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+      <ion-icon name="search-outline" class="text-gray-500 text-xl"></ion-icon>
+    </span>
+    <input type="text" placeholder="Buscar libro..." class="w-full max-w-2xl p-2 pl-2 border text-black border-[#C5A059] bg-white focus:outline-none shadow-sm">
+  </div>
+
+    <div class="w-full overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="border-b border-gray-500 text-sm text-[#1A1614]">
+            <th class="py-2 px-4 font-normal font-lato">Portada</th>
+            <th class="py-2 px-4 font-normal font-lato">Título</th>
+            <th class="py-2 px-4 font-normal font-lato">Autor</th>
+            <th class="py-2 px-4 font-normal font-lato">ISBN</th>
+            <th class="py-2 px-4 font-normal font-lato">Categoría</th>
+            <th class="py-2 px-4 font-normal font-lato">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (libro of book; track libro.id){
+            <tr class="border-b border-gray-100 text-black">
+              <td class="py-4 px-4">
+                <img [src]="libro.coverUrl" class="w-12">
+              </td>
+              <td class="py-4 px-4">{{libro.title}}</td>
+              <td class="py-4 px-4">{{libro.authors.join(', ')}}</td>
+              <td class="py-4 px-4">{{libro.isbn}}</td>
+              <td class="py-4 px-4">{{libro.categories.join(', ')}}</td>
+              <td class="py-4 px-4">
+                <div class="flex justify-center gap-3 text-xl">
+                  <ion-icon name="checkmark-outline" class="text-green-700 cursor-pointer"></ion-icon>
+                  <ion-icon name="close-outline" class="text-red-700 cursor-pointer"></ion-icon>
+                  <ion-icon (click)="deleteBook(libro.id)" name="trash-outline" class="text-gray-600 cursor-pointer"></ion-icon>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="py-20 text-center text-gray-500 italic"> No hay book en el catálogo. Pulse 'Añadir Libro' </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <div class="bg-white p-8 rounded-lg shadow-xl font-lato max-w-lg mx-auto mt-10 border border-[#C5A059]">
+        <h2 class="text-2xl font-['Cormorant_Garamond'] mb-6 text-[#1A1614] border-b border-[#C5A059] pb-2 text-center"> Nuevo Libro </h2>
+
+        <div class="flex flex-col gap-4">
+          <input [(ngModel)]="emptyBook.title" type="text" placeholder="Título del libro" class="p-2 border border-gray-500 rounded focus:border-[#C5A059] outline-none text-black">
+          <input [(ngModel)]="emptyBook.authors" type="text" placeholder="Autores del libro (Separados por comas)" class="p-2 border border-gray-500 rounded focus:border-[#C5A059] outline-none text-black">
+          <input [(ngModel)]="emptyBook.isbn" type="text" placeholder="ISBN" class="p-2 border border-gray-500 rounded focus:border-[#C5A059] outline-none text-black">
+          <input [(ngModel)]="emptyBook.categories" type="text" placeholder="Categorías del libro (Separadas por comas)" class="p-2 border border-gray-500 rounded focus:border-[#C5A059] outline-none text-black">
+          <input [(ngModel)]="emptyBook.coverUrl" type="text" placeholder="Portada del libro" class="p-2 border border-gray-500 rounded focus:border-[#C5A059] outline-none text-black">
+
+          <div class="flex gap-4 mt-4">
+            <button (click)="addBook()" class="flex-1 bg-[#2C1E16CC] text-white py-2 rounded hover:bg-[#1A1614] transition-colors">Guardar</button>
+            <button (click)="setOpen(false)" class="flex-1 border border-gray-300 py-2 rounded text-gray-600 hover:bg-gray-50">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
+
+<app-footer></app-footer>
+
+</ion-content>

@@ -16,6 +16,11 @@ body{
   background-color: #F4F1EA !important;
 }
 
+
+ion-content {
+  --background: #F4F1EA;
+}
+
 @theme {
   --font-playfair: "Playfair Display", serif;
   --font-lato: "Lato", sans-serif;
