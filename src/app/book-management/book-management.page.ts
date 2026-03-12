@@ -6,14 +6,16 @@ import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import {AdminPanelComponent} from "../components/admin-panel/admin-panel.component";
 import {Book} from "../models/book";
-import {addDoc, collection, collectionData, deleteDoc, doc, Firestore} from "@angular/fire/firestore";
+import {addDoc, collection, collectionData, deleteDoc, doc, Firestore, updateDoc} from "@angular/fire/firestore";
 import {addIcons} from "ionicons";
 import {
   searchOutline,
   checkmarkOutline,
   closeOutline,
   trashOutline,
-  arrowBackOutline
+  arrowBackOutline,
+  imageOutline,
+  brushOutline,
 } from "ionicons/icons";
 
 @Component({
@@ -37,7 +39,9 @@ export class BookManagementPage implements OnInit {
       checkmarkOutline,
       closeOutline,
       trashOutline,
-      arrowBackOutline
+      arrowBackOutline,
+      imageOutline,
+      brushOutline
     })
   }
 
@@ -65,6 +69,8 @@ export class BookManagementPage implements OnInit {
   async addBook() {
     if (!this.emptyBook.title) return;
 
+    try{
+
     const finalBook: Book = {
       title: this.emptyBook.title,
       isbn: this.emptyBook.isbn || '',
@@ -81,9 +87,22 @@ export class BookManagementPage implements OnInit {
       sumaryCount: 0
     };
 
-    try{
+    if(this.emptyBook.id){
+      const  bookDocRef = doc(this.firestore, `books/${this.emptyBook.id}`);
+      await updateDoc(bookDocRef, {
+        ...finalBook,
+        updateAt: new Date().toISOString(),
+      });
+    } else{
       const booksCollection = collection(this.firestore, 'books');
-      await addDoc(booksCollection, finalBook);
+      await addDoc(booksCollection, {
+        ...finalBook,
+        createAt: new Date().toISOString(),
+        ratingAvg: 0,
+        ratingCount: 0,
+        sumaryCount: 0
+      });
+    }
       this.cancelForm();
     } catch(error) {
       console.log("Error al guardar en Firebase: ", error);
@@ -96,6 +115,22 @@ export class BookManagementPage implements OnInit {
       await deleteDoc(bookDocRef);
     } catch (error){
       console.log("Error al borrar de Firebase: ", error);
+    }
+  }
+
+  async editBook(libro: Book){
+    try{
+      this.emptyBook = {
+        ...libro,
+        authors: libro.authors.join(', '),
+        categories: libro.categories.join(', '),
+        tags: libro.tags ? libro.tags.join(', ') : '',
+      };
+
+      this.showForm = true;
+      console.log("Editando libro: ", libro.title);
+    } catch(error){
+      console.error("Error al cargar el libro a editar: ", error);
     }
   }
 
