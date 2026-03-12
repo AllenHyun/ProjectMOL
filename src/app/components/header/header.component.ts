@@ -3,7 +3,7 @@ import {IonicModule} from "@ionic/angular";
 import {
   menu, chevronDownOutline, personOutline,
   notificationsOutline, bookOutline, languageOutline, helpCircleOutline,
-  settingsOutline, logOutOutline, person
+  settingsOutline, logOutOutline, person, lockClosedOutline
 } from "ionicons/icons";
 import {addIcons} from "ionicons";
 import {Router} from "@angular/router";
@@ -31,8 +31,18 @@ export class HeaderComponent  implements OnInit {
   private firestore = inject(Firestore);
 
   constructor() {
-    addIcons({menu, chevronDownOutline, person, personOutline, notificationsOutline,
-    bookOutline, languageOutline, helpCircleOutline, settingsOutline, logOutOutline});
+    addIcons({menu,
+      chevronDownOutline,
+      person,
+      personOutline,
+      notificationsOutline,
+    bookOutline,
+      languageOutline,
+      helpCircleOutline,
+      settingsOutline,
+      logOutOutline,
+      lockClosedOutline
+    });
   }
 
   ngOnInit() {
@@ -71,5 +81,9 @@ export class HeaderComponent  implements OnInit {
 
   async backHome(){
     this.router.navigate(['/home']);
+  }
+
+  async panelAdmin(){
+    this.router.navigate(['/book-management']);
   }
 }

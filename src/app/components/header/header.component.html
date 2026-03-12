@@ -8,7 +8,7 @@
     </ion-buttons>
     @if (!isAuthPage){
     <ion-searchbar
-      class="menu-escritorio w-[550px] hidden md:block ml-9"
+      class="menu-escritorio max-w-[400px] hidden md:block ml-9"
       placeholder="Descubre..."
       style="--placeholder-color: #555555; --background: white; --icon-color: black;">
     </ion-searchbar>
@@ -61,35 +61,36 @@
         <span class="text-xs border-b border-[#2E473B] pb-1"> Nivel Escolar: {{user?.level}} </span>
       </div>
       <button class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="notifications-outline"></ion-icon>
-        Notificaciones
+        <ion-icon name="notifications-outline"></ion-icon>Notificaciones
       </button>
 
       <button class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="book-outline"></ion-icon>
-        Mis resúmenes
+        <ion-icon name="book-outline"></ion-icon>Mis resúmenes
       </button>
 
       <hr class="border-[#2E473B44] my-2">
 
       <button class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="language-outline"></ion-icon>
-        Idioma: Español
+        <ion-icon name="language-outline"></ion-icon>Idioma: Español
       </button>
 
       <button class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="help-circle-outline"></ion-icon>
-        Ayuda
+        <ion-icon name="help-circle-outline"></ion-icon>Ayuda
       </button>
 
       <button class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="settings-outline"></ion-icon>
-        Ajustes
+        <ion-icon name="settings-outline"></ion-icon>Ajustes
       </button>
+
+      @if (user.role === "admin"){
+
+      <button (click)="panelAdmin()" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
+        <ion-icon name="lock-closed-outline"></ion-icon>Panel Admin
+      </button>
+      }
 
       <button (click)="onLogout()" class="flex items-center gap-3 p-3 py-2 mt-2 font-bold hover: text-red-600 transition-colors text-sm">
-        <ion-icon name="log-out-outline"></ion-icon>
-        Cerrar sesión
+        <ion-icon name="log-out-outline"></ion-icon>Cerrar sesión
       </button>
     </div>
   }
