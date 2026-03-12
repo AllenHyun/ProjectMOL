@@ -12,18 +12,13 @@ import {Book} from "../models/book";
   templateUrl: './book-management.page.html',
   styleUrls: ['./book-management.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, AdminPanelComponent, IonIcon, IonModal]
+  imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, AdminPanelComponent, IonIcon]
 })
 export class BookManagementPage implements OnInit {
   public book: Book[] = [];
-  public isModalOpen = false;
-  public emptyBook = {
-    title: '',
-    authors:'',
-    isbn:'',
-    categories:'',
-    coverUrl:''
-  };
+  public showForm = false;
+  public emptyBook : any = this.initBook();
+
 
 
   constructor() { }
@@ -31,32 +26,50 @@ export class BookManagementPage implements OnInit {
   ngOnInit() {
   }
 
-  setOpen(isOpen: boolean) {
-    this.isModalOpen = isOpen;
+  initBook() {
+    return {
+      title: '',
+      authors: '',
+      isbn: '',
+      language: 'Español',
+      categories: '',
+      tags: '',
+      year: new Date().getFullYear(),
+      coverUrl: ''
+    };
   }
 
+
   addBook() {
-    const newBook: Book = {
-      id: Date.now().toString(),
+    if (!this.emptyBook.title) return;
+
+    const finalBook: Book = {
       title: this.emptyBook.title,
-      authors: this.emptyBook.authors.split(',').map(e => e.trim()),
-      isbn: this.emptyBook.isbn,
-      language:'Español',
-      categories: this.emptyBook.categories.split(',').map(e => e.trim()),
-      tags: [],
-      coverUrl: this.emptyBook.coverUrl || 'https://via.placeholder.com/200',
-      createdAt: new Date().toISOString()
+      isbn: this.emptyBook.isbn || '',
+      language: this.emptyBook.language,
+      year: Number(this.emptyBook.year),
+      coverUrl: this.emptyBook.coverUrl || 'https://via.placeholder.com/150',
+      authors: this.emptyBook.authors ? this.emptyBook.split(',').map((e:any) => e.trim()) : [],
+      categories: this.emptyBook.categories ? this.emptyBook.categories.split(',').map((e: any) => e.trim()) : [],
+      tags: this.emptyBook.tags ? this.emptyBook.tags.split(',').map((e: any) => e.trim()) : [],
+      id: Date.now().toString(),
+      createdAt: new  Date().toISOString(),
+      ratingAvg: 0,
+      ratingCount: 0,
+      sumaryCount: 0
     };
-    this.book.push(newBook);
-    this.setOpen(false);
-    this.resetForm();
+
+    this.book.push(finalBook);
+    this.cancelForm();
   }
 
   deleteBook(id: string) {
-    this.book.filter((book) => book.id !== id)
+    this.book = this.book.filter(b => b.id !== id);
   }
 
-  resetForm() {
-    this.emptyBook = { title: '', authors: '', isbn: '', categories: '', coverUrl: '' };  }
+  cancelForm() {
+    this.showForm = false;
+    this.emptyBook = this.initBook();
+  }
 
 }
