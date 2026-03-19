@@ -1,0 +1,79 @@
+<ion-content>
+
+  <div class="flex flex-col min-h-screen">
+
+    <app-header></app-header>
+
+    <main class="flex-grow container mx-auto max-w-7xl p-10">
+      @if (book){
+        <h1 class="text-center text-7xl font-['Cormorant_Garamond'] uppercase tracking-tighter mb-16 text-[#1A1614]">{{book.title}}</h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+
+          <div class="lg:col-span-5 flex justify-center items-start">
+
+            <img [src]="book.coverUrl" (error)="book.coverUrl = 'assets/img/default-book.png'" class="w-full max-w-md shadow-[25px_25px_60px_rgba(0,0,0,0.35)] border border-[#C5A059]/10 rounded-sm">
+
+          </div>
+
+          <div class="lg:col-span-7 flex flex-col gap-8">
+
+            <div class="flex flex-wrap gap-4">
+
+              <button class="px-6 py-2 border border-[#C5A059] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#C5A059] hover:text-white transition-all"> Añadir a lista </button>
+              <button class="px-6 py-2 border border-[#C5A059] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#C5A059] hover:text-white transition-all"> Marcar como leído </button>
+
+            </div>
+
+            <div class="space-y-3 font-lato text-sm text-[#1A1614] border-b border-[#C5A059]/20 pb-6">
+
+              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Autor: </span> {{book.authors.join(',')}}</p>
+              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Edición: </span> {{book.year}}</p>
+              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Tags: </span> </p>
+              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Tags: </span> {{ book.language}}</p>
+
+              <div class="flex items-center gap-1 mt-4">
+
+                <span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4">Valoración: </span>
+                <div class="flex text-[#FFD700] text-lg">
+
+                  <ion-icon name="star"></ion-icon>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="bg-white/50 p-8 border border-white shadow-sm">
+
+              <div class="flex justify-between items-center mb-6">
+
+                <h2 class="text-4xl font-['Cormorant_Garamond']">Resúmenes</h2>
+
+                <button class="flex items-center gap-2 text-[#C5A059] text-xs font-bold uppercase tracking-widest">
+
+                  <ion-icon name="play-outline" class="text-xl"></ion-icon> Escuchar
+
+                </button>
+
+              </div>
+
+              <div class="space-y-6">
+
+                <div class="border-l-2 border-[#C5A059]"></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      }
+    </main>
+
+  </div>
+
+
+</ion-content>

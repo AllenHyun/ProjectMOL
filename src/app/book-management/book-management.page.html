@@ -50,7 +50,7 @@
                   </div>
                 }
               </td>
-              <td class="py-4 px-4">{{libro.title}}</td>
+              <td class="py-4 px-4" [routerLink]="['/book-detail', libro.id]" >{{libro.title}}</td>
               <td class="py-4 px-4">{{libro.authors.join(', ')}}</td>
               <td class="py-4 px-4">{{libro.isbn}}</td>
               <td class="py-4 px-4">{{libro.categories.join(', ')}}</td>

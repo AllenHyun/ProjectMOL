@@ -17,13 +17,14 @@ import {
   imageOutline,
   brushOutline,
 } from "ionicons/icons";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-book-management',
   templateUrl: './book-management.page.html',
   styleUrls: ['./book-management.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, AdminPanelComponent, IonIcon]
+  imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, AdminPanelComponent, IonIcon, RouterLink]
 })
 export class BookManagementPage implements OnInit {
   private firestore: Firestore = inject(Firestore);

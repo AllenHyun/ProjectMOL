@@ -22,4 +22,8 @@ export const routes: Routes = [
     path: 'book-management',
     loadComponent: () => import('./book-management/book-management.page').then( m => m.BookManagementPage)
   },
+  {
+    path: 'book-detail/:id',
+    loadComponent: () => import('./book-detail/book-detail.page').then( m => m.BookDetailPage)
+  },
 ];
