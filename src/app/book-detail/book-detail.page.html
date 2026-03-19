@@ -8,6 +8,7 @@
       @if (book){
         <h1 class="text-center text-7xl font-['Cormorant_Garamond'] uppercase tracking-tighter mb-16 text-[#1A1614]">{{book.title}}</h1>
 
+
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
 
           <div class="lg:col-span-5 flex justify-center items-start">
@@ -16,21 +17,23 @@
 
           </div>
 
+
           <div class="lg:col-span-7 flex flex-col gap-8">
+            <div class="bg-white/50 p-8 border border-white shadow-sm">
 
-            <div class="flex flex-wrap gap-4">
+            <div class="flex flex-wrap justify-end gap-4 mb-12">
 
-              <button class="px-6 py-2 border border-[#C5A059] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#C5A059] hover:text-white transition-all"> Añadir a lista </button>
-              <button class="px-6 py-2 border border-[#C5A059] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#C5A059] hover:text-white transition-all"> Marcar como leído </button>
+              <button class="px-6 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#FDFBF7] transition-all"> Añadir a lista </button>
+              <button class="px-6 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#FDFBF7] transition-all"> Marcar como leído </button>
 
             </div>
 
             <div class="space-y-3 font-lato text-sm text-[#1A1614] border-b border-[#C5A059]/20 pb-6">
 
-              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Autor: </span> {{book.authors.join(',')}}</p>
+              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Autor: </span> {{book.authors.join(', ')}}</p>
               <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Edición: </span> {{book.year}}</p>
-              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Tags: </span> </p>
-              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Tags: </span> {{ book.language}}</p>
+              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Tags: </span> {{book.tags.join(', ')}} </p>
+              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Idioma: </span> {{ book.language}}</p>
 
               <div class="flex items-center gap-1 mt-4">
 
@@ -44,27 +47,26 @@
               </div>
 
             </div>
-
-            <div class="bg-white/50 p-8 border border-white shadow-sm">
+              <div class="mt-4"></div>
 
               <div class="flex justify-between items-center mb-6">
 
-                <h2 class="text-4xl font-['Cormorant_Garamond']">Resúmenes</h2>
-
-                <button class="flex items-center gap-2 text-[#C5A059] text-xs font-bold uppercase tracking-widest">
-
-                  <ion-icon name="play-outline" class="text-xl"></ion-icon> Escuchar
-
-                </button>
+                <h2 class="text-[#1A1614] text-4xl font-['Cormorant_Garamond']">Resúmenes</h2>
 
               </div>
 
               <div class="space-y-6">
 
-                <div class="border-l-2 border-[#C5A059] pl-6 py-2">
+                <div class="flex flex-col gap-1">
+                  <span class="font-bold text-[#1A1614] font-lato text-base">Raúl G.</span>
+                  <button class="flex items-center gap-2 text-[#C5A059] text-xs font-bold uppercase tracking-widest">
 
-                  <p class="text-gray-500 italic leading-relaxed">" Haz click en un libro de tu catálogo para cargar su información real aquí "</p>
+                    <ion-icon name="play-outline" class="text-xl"></ion-icon> Escuchar
 
+                  </button>
+                  <p class="text-sm text-[#1A1614] leading-relaxed text-justify font-lato">
+                    El núcleo de la trama arranca con la misteriosa desaparición de Héctor Fuentes. Tras tomar un vuelo hacia Gran Canaria, Fuentes literalmente se esfuma, como si se lo hubiera tragado la tierra. Para dar con su paradero, se recurre a Eladio Monroy...
+                  </p>
                 </div>
 
               </div>
@@ -72,8 +74,8 @@
             </div>
 
           </div>
+          </div>
 
-        </div>
       } @else {
         <div class="flex flex-col items-center justify-center py-40 gap-4">
 
