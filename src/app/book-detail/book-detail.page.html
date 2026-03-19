@@ -47,7 +47,6 @@
               </div>
 
             </div>
-              <div class="mt-4"></div>
 
               <div class="flex justify-between items-center mb-6">
 
@@ -56,6 +55,8 @@
               </div>
 
               <div class="space-y-6">
+
+                @if (book.sumaryCount > 0){
 
                 <div class="flex flex-col gap-1">
                   <span class="font-bold text-[#1A1614] font-lato text-base">Raúl G.</span>
@@ -68,7 +69,14 @@
                     El núcleo de la trama arranca con la misteriosa desaparición de Héctor Fuentes. Tras tomar un vuelo hacia Gran Canaria, Fuentes literalmente se esfuma, como si se lo hubiera tragado la tierra. Para dar con su paradero, se recurre a Eladio Monroy...
                   </p>
                 </div>
+                } @else {
+                  <div class="border-l-2 border-[#C5A059]/30 pl-6 py-4 bg-gray-50/50">
 
+                    <p class="text-gray-500 italic leading-relaxed text-sm font-lato"> Aún no hay resúmenes </p>
+                    <span class="block mt-1 font-bold text-[#C5A059] non-italic"> Sé el primero en añadir </span>
+
+                  </div>
+                }
               </div>
 
             </div>
