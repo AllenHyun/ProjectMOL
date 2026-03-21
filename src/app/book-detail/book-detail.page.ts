@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {Firestore, doc, getDoc, collection, query, where, collectionData, addDoc} from '@angular/fire/firestore';
 import {IonContent, IonIcon, IonModal} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -15,7 +15,7 @@ import {Auth} from "@angular/fire/auth";
   selector: 'app-book-detail',
   templateUrl: './book-detail.page.html',
   standalone: true,
-  imports: [IonContent, CommonModule, HeaderComponent, FooterComponent, IonIcon, HeaderComponent, FooterComponent, IonModal, FormsModule]
+  imports: [IonContent, CommonModule, HeaderComponent, FooterComponent, IonIcon, HeaderComponent, FooterComponent, IonModal, FormsModule, RouterLink]
 })
 export class BookDetailPage implements OnInit {
   private route = inject(ActivatedRoute);

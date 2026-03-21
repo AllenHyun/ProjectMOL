@@ -59,7 +59,7 @@
 
                 @for (res of summaries; track res.id) {
 
-                  <div class="flex flex-col gap-1 border-b border-gray-50 pb-4">
+                  <div class="flex flex-col gap-1 border-b border-gray-50 pb-4" [routerLink]="['/summary-detail', res.id]">
 
                     <div class="flex justify-between items-center">
 
@@ -75,7 +75,7 @@
                     <p class="text-sm text-[#1A1614] leading-relaxed text-justify font-lato" [class.line-clamp-4]="!expandedSummaries[res.id]">{{ res.structure?.tldr }}</p>
 
                     @if (res.structure?.tldr && res.structure.tldr.length > 280){
-                    <button (click)="toggleSummary(res.id)" class="text-[#C5A059] text-[10px] font-bold uppercase tracking-widest mt-1 hover:underline">{{expandedSummaries[res.id] ? 'Ver menos' : 'Ver más...'}}</button>
+                    <button (click)="$event.stopPropagation(); toggleSummary(res.id)" class="text-[#C5A059] text-[10px] font-bold uppercase tracking-widest mt-1 hover:underline">{{expandedSummaries[res.id] ? 'Ver menos' : 'Ver más...'}}</button>
                     }
                   </div>
                 } @empty {
