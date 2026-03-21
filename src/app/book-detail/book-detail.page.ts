@@ -9,6 +9,7 @@ import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import { FormsModule } from '@angular/forms';
 import {Summary} from '../models/summary';
+import {Auth} from "@angular/fire/auth";
 
 @Component({
   selector: 'app-book-detail',
@@ -25,9 +26,9 @@ export class BookDetailPage implements OnInit {
   public summaries: Summary[] = [];
   public showModal = false;
   public expandedSummaries: {[key: string]: boolean} = {};
+  public auth = inject(Auth);
 
   public newSummary = {
-    userName: '',
     content: ''
   };
 
@@ -66,7 +67,11 @@ export class BookDetailPage implements OnInit {
   }
 
   async saveSummaries(){
-    if (!this.newSummary.userName || !this.newSummary.content) {
+    const user = this.auth.currentUser;
+    if(!user){
+      console.error("Debes iniciar sesión para poder publicar un resumen");
+    }
+    if (!this.newSummary.content) {
       return;
     }
 
@@ -74,7 +79,8 @@ export class BookDetailPage implements OnInit {
       const summaryRef = collection(this.firestore, 'summaries');
       await addDoc(summaryRef, {
         bookId: this.book.id,
-        authorId: this.newSummary.userName,
+        authorId: user?.displayName || user?.email || 'Anónimo',
+        userId: user?.uid,
         structure: {
           tldr: this.newSummary.content,
           keyPoints: [],
@@ -83,11 +89,11 @@ export class BookDetailPage implements OnInit {
         status: 'published',
         wordCount: this.newSummary.content.split(' ').length,
         createdAt: new Date().toISOString(),
-        updateAt: new Date().toISOString()
+        updatedAt: new Date().toISOString()
       });
 
       this.showModal = false;
-      this.newSummary = {userName: '', content: ''};
+      this.newSummary.content = '';
 
       console.log("Resumen guardado con éxito");
 
