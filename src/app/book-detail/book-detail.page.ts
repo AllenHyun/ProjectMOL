@@ -57,12 +57,12 @@ export class BookDetailPage implements OnInit {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id')?.trim();
       if (id) {
-        this.cargarDatos(id);
+        this.loadData(id);
       }
     });
   }
 
-  async cargarDatos(id: string) {
+  async loadData(id: string) {
     try {
       const bookDocRef = doc(this.firestore, 'books', id);
       const snap = await getDoc(bookDocRef);
