@@ -1,13 +1,138 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>review-detail</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">review-detail</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="flex flex-col min-h-screen">
+
+    <app-header></app-header>
+
+    <main class="flex-grow container mx-auto max-w-7xl p-10">
+      @if (book){
+        <div class="flex items-baseline justify-center gap-4">
+
+          <h1 class="text-center text-5xl font-['Cormorant_Garamond'] uppercase tracking-tighter mb-16 text-[#1A1614]">Reseñas de: {{book.title}}</h1>
+
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+
+          <div class="lg:col-span-4 flex justify-center items-start">
+
+            <img [src]="book.coverUrl" (error)="book.coverUrl = 'assets/img/default-book.png'" class="w-full max-w-md shadow-[25px_25px_60px_rgba(0,0,0,0.35)] border border-[#C5A059]/10 rounded-sm">
+
+          </div>
+
+          <div class="lg:col-span-8 flex flex-col gap-8">
+            <div class="bg-white/50 p-10 border border-white shadow-sm">
+
+              <div class="space-y-12">
+
+                @for (rev of reviews; track rev.id){
+
+                  <div class="flex flex-col gap-4 border-b border-[#C5A059]/10 pb-8 last:border-0">
+
+                    <div class="flex justify-between items-center">
+
+                      <div class="flex flex-col">
+
+                        <span class="font-bold text-[#1A1614] font-lato text-base uppercase tracking-wider">{{rev.userId}}</span>
+                        <span class="text-[10px] text-gray-500 font-lato">{{rev.createdAt | date: 'longDate'}}</span>
+
+                      </div>
+
+                      <div class="flex items-center gap-2">
+
+                        <div class="flex text-[#FFD700] text-lg">
+
+                          @for (star of [1,2,3,4,5]; track star) {
+                            <ion-icon [name]="star <= rev.rating ? 'star' : 'star-outline'"></ion-icon>
+                          }
+
+                        </div>
+
+                        <span class="font-bold text-sm text-[#1A1614]">{{rev.rating}}/5</span>
+
+                      </div>
+
+                    </div>
+
+                    <p class="text-base text-[#1A1614] leading-relaxed italic font-lato text-justify">"{{rev.text}}"</p>
+
+                    <div class="flex flex-wrap gap-6 mt-2">
+
+                      @if (rev.pros && rev.pros.length > 0) {
+                        <div class="flex flex-col gap-2">
+
+                          <span class="text-[10px] font-bold uppercase text-green-700 tracking-[0.2em]">Lo mejor</span>
+
+                          <div class="flex flex-wrap gap-2">
+
+                            @for (pro of rev.pros; track pro) {
+                              <span class="bg-green-50 text-green-800 text-[10px] px-3 py-1 rounded-sm border border-green-100 font-bold italic">{{pro}}</span>
+                            }
+
+                          </div>
+
+                        </div>
+                      }
+
+                      @if (rev.cons && rev.cons.length > 0) {
+                        <div class="flex flex-col gap-2">
+
+                          <span class="text-[10px] font-bold uppercase text-red-700 tracking-[0.2em]">Lo peor</span>
+
+                          <div class="flex flex-wrap gap-2">
+
+                            @for (con of rev.cons; track con) {
+                              <span class="bg-red-50 text-red-800 text-[10px] px-3 py-1 rounded-sm border border-red-100 font-bold italic">{{con}}</span>
+                            }
+
+                          </div>
+
+                        </div>
+                      }
+
+                    </div>
+
+                  </div>
+
+                } @empty {
+                  <div class="py-2 text-center">
+
+                    <p class="text-gray-500 italic font-lato text-lg">Aún no se han publicado críticas para esta obra</p>
+
+                  </div>
+                }
+
+              </div>
+
+              <div class="mt-12 flex justify-start">
+
+                <button [routerLink]="['/book-detail', book.id]" class="text-[#C5A059] text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 hover:translate-x-[-5px] transition-transform">
+
+                  <ion-icon name="arrow-back-outline"></ion-icon> Volver al libro
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      } @else {
+        <div class="flex flex-col items-center justify-center py-40 gap-4">
+
+          <div class="w-12 h-12 border-4 border-[#C5A059] border-t-transparent rounded-full animate-spin"></div>
+          <p class="font-lato italic text-2xl"> Cargando reseñas de los lectores...</p>
+
+        </div>
+      }
+    </main>
+
+  </div>
+
+  <app-footer></app-footer>
+
+
+
 </ion-content>

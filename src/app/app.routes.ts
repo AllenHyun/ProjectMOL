@@ -31,7 +31,7 @@ export const routes: Routes = [
     loadComponent: () => import('./summary-detail/summary-detail.page').then( m => m.SummaryDetailPage)
   },
   {
-    path: 'review-detail',
+    path: 'review-detail/:id',
     loadComponent: () => import('./review-detail/review-detail.page').then( m => m.ReviewDetailPage)
   },
 ];

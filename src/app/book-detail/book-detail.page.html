@@ -96,7 +96,7 @@
 
                   <div class="space-y-10">
 
-                    @for (rev of reviews; track rev.id) {
+                    @for (rev of visibleReviews; track rev.id) {
 
                       <div class="flex flex-col gap-3">
 
@@ -156,6 +156,16 @@
 
                     } @empty {
                       <p class="text-gray-500 italic text-sm font-lato"> Este libro aún no tiene críticas. Sé el primero en opinar</p>
+                    }
+
+                    @if (reviews.length > 3){
+
+                      <div class="flex justify-center mt-8">
+
+                        <button [routerLink]="['/review-detail', book.id]" class="px-8 py-2 border border-[#C5A059] text-[#C5A059] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#C5A059] hover:text-white transition-all">Ver todas las reseñas ({{ reviews.length }})</button>
+
+                      </div>
+
                     }
 
                   </div>
@@ -226,14 +236,14 @@
 
             <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest"> Puntuación (1-5) </label>
 
-            <input [(ngModel)]="newReview.rating" type="number" min="0" max="5" class="w-full p-3 border border-[#C5A059] outline-none text-black font-lato mt-1">
+            <input [(ngModel)]="newReview.rating" type="number" min="0" max="5" class="w-full p-3 border border-[#C5A059] outline-none text-white font-lato mt-1">
 
           </div>
 
           <div>
 
             <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest"> Tu opinión </label>
-            <textarea [(ngModel)]="newReview.text" rows="4" placeholder="¿Qué te ha ha parecido la obra?" class="w-full p-3 border border-[#C5A059] outline-none text-black font-lato mt-1"></textarea>
+            <textarea [(ngModel)]="newReview.text" rows="4" placeholder="¿Qué te ha ha parecido la obra?" class="w-full p-3 border border-[#C5A059] outline-none text-white font-lato mt-1"></textarea>
 
           </div>
 
@@ -242,14 +252,14 @@
             <div>
 
               <label class="text-[10px] uppercase font-bold text-green-600 tracking-widest"> Pros </label>
-              <input [(ngModel)]="reviewProsInput" type="text" placeholder="Ágil, intrigantes..." class="w-full p-3 border border-green-200 outline-none text-black font-lato mt-1 text-xs">
+              <input [(ngModel)]="reviewProsInput" type="text" placeholder="Ágil, intrigantes..." class="w-full p-3 border border-green-200 outline-none text-white font-lato mt-1 text-xs">
 
             </div>
 
             <div>
 
               <label class="text-[10px] uppercase font-bold text-red-600 tracking-widest"> Contras </label>
-              <input [(ngModel)]="reviewConsInput" type="text" placeholder="Final previsible..." class="w-full p-3 border border-red-200 outline-none text-black font-lato mt-1 text-xs">
+              <input [(ngModel)]="reviewConsInput" type="text" placeholder="Final previsible..." class="w-full p-3 border border-red-200 outline-none text-white font-lato mt-1 text-xs">
 
             </div>
 

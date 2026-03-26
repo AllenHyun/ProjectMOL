@@ -42,30 +42,42 @@ export class BookDetailPage implements OnInit {
     content: ''
   };
 
+  public showAllReviews = false;
+
+  get visibleReviews(): Review[] {
+    const sortedReviews = [...this.reviews].sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return this.showAllReviews ? sortedReviews: sortedReviews.slice(0,3);
+  }
+
   constructor() {
     addIcons({ star, starOutline, playOutline });
   }
 
-  async ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id')?.trim();
-
-    if (id) {
-      try {
-        const bookDocRef = doc(this.firestore, 'books', id);
-        const snap = await getDoc(bookDocRef);
-
-        if (snap.exists()) {
-          this.book = snap.data();
-          this.book.id = id;
-          this.getSummaries(id);
-          this.getReviews(id);
-          console.log("Datos cargados correctamente:", this.book);
-        } else {
-          console.error("No se encontró el documento en Firebase con ID:", id);
-        }
-      } catch (error) {
-        console.error("Error al obtener el libro:", error);
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id')?.trim();
+      if (id) {
+        this.cargarDatos(id);
       }
+    });
+  }
+
+  async cargarDatos(id: string) {
+    try {
+      const bookDocRef = doc(this.firestore, 'books', id);
+      const snap = await getDoc(bookDocRef);
+
+      if (snap.exists()) {
+        this.book = snap.data();
+        this.book.id = id;
+        this.getSummaries(id);
+        this.getReviews(id);
+        console.log("Datos cargados correctamente:", this.book);
+      } else {
+        console.error("No se encontró el documento en Firebase con ID:", id);
+      }
+    } catch (error) {
+      console.error("Error al obtener el libro:", error);
     }
   }
 
