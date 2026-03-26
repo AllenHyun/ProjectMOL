@@ -27,6 +27,7 @@ export class BookDetailPage implements OnInit {
   public summaries: Summary[] = [];
   public showModal = false;
   public expandedSummaries: {[key: string]: boolean} = {};
+  public summaryLimit = 5;
   public auth = inject(Auth);
 
   public reviews: Review[] = [];
@@ -47,6 +48,11 @@ export class BookDetailPage implements OnInit {
   get visibleReviews(): Review[] {
     const sortedReviews = [...this.reviews].sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     return this.showAllReviews ? sortedReviews: sortedReviews.slice(0,3);
+  }
+
+  get visibleSummaries(): Summary[] {
+    const sorted = [...this.summaries].sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return this.summaries.slice(0, this.summaryLimit);
   }
 
   constructor() {
@@ -166,5 +172,9 @@ export class BookDetailPage implements OnInit {
     } catch (error) {
       console.error("Error al guardar la reseña: ", error);
     }
+  }
+
+  loadMoreSummaries(){
+    this.summaryLimit += 5;
   }
 }
