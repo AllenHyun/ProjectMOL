@@ -10,6 +10,7 @@ import {FooterComponent} from "../components/footer/footer.component";
 import { FormsModule } from '@angular/forms';
 import {Summary} from '../models/summary';
 import {Auth} from "@angular/fire/auth";
+import { Review } from '../models/review';
 
 @Component({
   selector: 'app-book-detail',
@@ -27,6 +28,15 @@ export class BookDetailPage implements OnInit {
   public showModal = false;
   public expandedSummaries: {[key: string]: boolean} = {};
   public auth = inject(Auth);
+
+  public reviews: Review[] = [];
+  public showReviewModal = false;
+  public reviewProsInput = '';
+  public reviewConsInput = '';
+  public newReview = {
+    rating: 0,
+    text: ''
+  };
 
   public newSummary = {
     content: ''
@@ -48,6 +58,7 @@ export class BookDetailPage implements OnInit {
           this.book = snap.data();
           this.book.id = id;
           this.getSummaries(id);
+          this.getReviews(id);
           console.log("Datos cargados correctamente:", this.book);
         } else {
           console.error("No se encontró el documento en Firebase con ID:", id);
@@ -56,6 +67,14 @@ export class BookDetailPage implements OnInit {
         console.error("Error al obtener el libro:", error);
       }
     }
+  }
+
+  getReviews(bookId: string) {
+    const revRef = collection(this.firestore, 'reviews');
+    const q = query(revRef, where('bookId', '==', bookId));
+    collectionData(q, {idField: 'id'}).subscribe(data => {
+      this.reviews = data as unknown as Review[];
+    });
   }
 
   getSummaries(bookId: string){
@@ -104,5 +123,36 @@ export class BookDetailPage implements OnInit {
 
   toggleSummary(id: string){
     this.expandedSummaries[id] = !this.expandedSummaries[id];
+  }
+
+  async saveReview(){
+    const user = this.auth.currentUser;
+    if(!user){
+      return;
+    }
+    try{
+      const reviewRef = collection(this.firestore, 'reviews');
+
+      const prosArray = this.reviewProsInput ? this.reviewProsInput.split(',').map(s => s.trim()).filter(t => t !== '') : [];
+      const consArray = this.reviewConsInput ? this.reviewConsInput.split(',').map(s => s.trim()).filter(t => t !== '') : [];
+
+      await addDoc(reviewRef, {
+        bookId: this.book.id,
+        userId: user.displayName || user.email || 'Anónimo',
+        rating: this.newReview.rating,
+        text: this.newReview.text,
+        pros: prosArray,
+        cons: consArray,
+        createdAt: new Date().toISOString()
+      });
+      this.showReviewModal = false;
+      this.newReview = {rating: 0, text: ''};
+      this.reviewProsInput = '';
+      this.reviewConsInput = '';
+
+      console.log("Reseña publicada");
+    } catch (error) {
+      console.error("Error al guardar la reseña: ", error);
+    }
   }
 }
