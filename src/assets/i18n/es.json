@@ -16,6 +16,44 @@
     "MY_REVIEWS": "Mi reseñas",
     "PUBLISHED": "Publicados",
     "LAST_MOD": "Última modificación"
+  },
+
+  "SUMMARIES": {
+    "MY_SUMMARIES": "Mis Resúmenes",
+    "CREATE_BTN": "Crear nuevo resumen",
+    "LAST_MOD": "Última modificación",
+    "WORDS": " palabras",
+    "READ_MORE": "Leer completo",
+    "EMPTY": "No se han encontrado resúmenes en esta sección",
+    "SAVE_DRAFT": "Guardar Borrador",
+    "TABS": {
+      "DRAFT": "Borradores",
+      "PENDING": "Enviados",
+      "PUBLISHED": "Publicados",
+      "REJECTED": "Rechazados"
+    },
+
+    "CREATE": {
+      "TITLE": "Nuevo resumen",
+      "SELECT_LABEL": "Seleccionar el libro",
+      "SELECT_PLACEHOLDER": "Escoge un libro de la biblioteca...",
+      "CONTENT_PLACEHOLDER": "Escribe aquí tu resumen..."
+    },
+
+    "EDIT": {
+      "TITLE": "Editar resumen",
+      "EDITING": "Editando:"
+    },
+
+    "CONFIRM": {
+      "DELETE": "¿Estás seguro de que quieres eliminar este resumen?",
+      "EXIT_DRAFT": "¿Desea guardar este resumen como borrador antes de salir?"
+    }
+  },
+
+  "COMMON": {
+    "CANCEL": "Cancelar",
+    "PUBLISH": "Publicar"
   }
 }
 

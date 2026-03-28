@@ -97,13 +97,13 @@ export class BookDetailPage implements OnInit {
 
   getSummaries(bookId: string){
     const resRef = collection(this.firestore, 'summaries');
-    const q = query(resRef, where('bookId', '==', bookId));
+    const q = query(resRef, where('bookId', '==', bookId), where('status', '==', 'published'));
     collectionData(q, {idField: 'id'}).subscribe(data=> {
       this.summaries = data as unknown as Summary[];
     });
   }
 
-  async saveSummaries(){
+  async saveSummaries(status: 'draft' | 'published'){
     const user = this.auth.currentUser;
     if(!user){
       console.error("Debes iniciar sesión para poder publicar un resumen");
@@ -123,7 +123,7 @@ export class BookDetailPage implements OnInit {
           keyPoints: [],
           sections: []
         },
-        status: 'published',
+        status: status,
         wordCount: this.newSummary.content.split(' ').length,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
@@ -177,5 +177,20 @@ export class BookDetailPage implements OnInit {
 
   loadMoreSummaries(){
     this.summaryLimit += 5;
+  }
+
+  cancelSummary(){
+    const content = this.newSummary.content.trim();
+
+    if (content.length > 0) {
+      if (confirm("¿Desea guardar este resumen como borrador antes de salir?")){
+        this.saveSummaries('draft');
+      } else{
+        this.showModal = false;
+        this.newSummary.content = '';
+      }
+    } else {
+      this.showModal = false;
+    }
   }
 }

@@ -218,15 +218,14 @@
 
         <div class="flex gap-4">
 
-          <button (click)="showModal = false" class="flex-1 py-3 bg-[#2E473B] uppercase text-[10px] font-bold"> Cancelar </button>
-          <button (click)="saveSummaries()" class="flex-1 py-3 bg-[#2E473B] uppercase text-[10px] font-bold"> Publicar </button>
+          <button (click)="cancelSummary()" class="flex-1 py-3 bg-[#2E473B] uppercase text-[10px] font-bold"> Cancelar </button>
+          <button (click)="saveSummaries('published')" class="flex-1 py-3 bg-[#2E473B] uppercase text-[10px] font-bold"> Publicar </button>
 
         </div>
 
       </div>
 
     </ng-template>
-
 
   </ion-modal>
 
