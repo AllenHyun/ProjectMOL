@@ -29,13 +29,14 @@ import { Router } from "@angular/router";
 import { doc, docData, Firestore, getDoc, setDoc } from "@angular/fire/firestore";
 import { User } from "../models/user";
 import {AuthError} from "../services/auth-error";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, IonCard, IonCardTitle, IonCardContent, IonInput, IonIcon]
+  imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, IonCard, IonCardTitle, IonCardContent, IonInput, IonIcon, TranslatePipe]
 })
 export class LoginPage implements OnInit {
   private auth = inject(Auth);

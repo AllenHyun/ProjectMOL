@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {IonApp, IonContent, IonRouterOutlet} from '@ionic/angular/standalone';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,9 @@ import {IonApp, IonContent, IonRouterOutlet} from '@ionic/angular/standalone';
   imports: [IonApp, IonRouterOutlet, IonContent],
 })
 export class AppComponent {
-  constructor() {}
+  private translate = inject(TranslateService);
+  constructor() {
+    this.translate.setDefaultLang('en');
+    this.translate.use('es');
+  }
 }

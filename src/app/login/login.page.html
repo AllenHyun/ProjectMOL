@@ -9,45 +9,45 @@
     <div class="relative flex flex-col md:flex-row z-10 h-full items-center justify-center">
       <div class="hidden md:flex w-full md:w-1/2 justify-center">
         <h1 class="text-white text-8xl font-['Cormorant_Garamond'] leading-tight p-[70px]">
-          ¡Bienvenid@ a Project M.O.L!
+          {{ 'LOGIN.WELCOME' | translate }}
         </h1>
       </div>
       <div class="w-full md:w-1/2 p-[70px]">
         <ion-card class="bg-white rounded-2xl p-8 shadow-2xl">
           <ion-card-title class="text-black text-3xl font-[Lato] font-bold">
-            < Inicia sesión en tu cuenta
+            < {{ 'LOGIN.TITLE' | translate }}
           </ion-card-title>
           <ion-card-content>
 
             <div class="flex flex-col gap-4">
             <button (click)="logingWithGoogle()" class="w-full flex items-center justify-center border bg-gray-100 border-gray-500 py-3 rounded-lg text-black  transition-all gap-5">
               <ion-icon name="logo-google" class="text-xl text-red-600"></ion-icon>
-              Iniciar sesión con Google
+              {{ 'LOGIN.GOOGLE_BTN' | translate }}
             </button>
 
             </div>
 
             <div class="flex items-center p-4">
               <div class="flex-1 border-t border-gray-400"></div>
-              <span class="px-3">o</span>
+              <span class="px-3">{{ 'LOGIN.OR_SEPARATOR' | translate }}</span>
               <div class="flex-1 border-t border-gray-400"></div>
             </div>
 
             <div class="mt-6 text-left">
             <div class="text-left">
-              <label class="text-sm font-semibold text-gray-700 ml-1">Correo electrónico</label>
+              <label class="text-sm font-semibold text-gray-700 ml-1">{{ 'LOGIN.EMAIL_LABEL' | translate }}</label>
               <ion-input
                 type="email"
-                placeholder="ejemplo@correo.com"
+                [placeholder]="'LOGIN.EMAIL_PLACEHOLDER' | translate"
                 [(ngModel)]="email"
                 class="mt-1 border border-gray-300 rounded-xl p-3 w-full"
                 style="--padding-start: 10px;">
               </ion-input>
 
-              <label class="text-sm font-semibold text-gray-700 ml-1 mt-4">Contraseña</label>
+              <label class="text-sm font-semibold text-gray-700 ml-1 mt-4">{{ 'LOGIN.PASSWORD_LABEL' | translate }}</label>
               <ion-input
                 type="password"
-                placeholder="**********"
+                [placeholder]="'LOGIN.PASSWORD_PLACEHOLDER' | translate"
                 [(ngModel)]="password"
                 class="mt-1 border border-gray-300 rounded-xl p-3 w-full"
                 style="--padding-start: 10px;">
@@ -57,11 +57,11 @@
             </div>
 
             <button (click)="onLogin()" class="w-full bg-[#2E473B] text-white font-bold py-4 rounded-xl mt-8">
-              Iniciar sesión
+              {{ 'LOGIN.SUBMIT_BTN' | translate }}
             </button>
 
-            <button (click)="forgotPassword()" class="items-start p-3">
-              ¿Has olvidado tu contraseña?
+            <button (click)="forgotPassword()" class="items-start p-3 text-sm text-gray-600 hover:underline hover:text-[#2E473B] transition-all cursor-pointer">
+              {{ 'LOGIN.FORGOT_PASSWORD' | translate }}
             </button>
           </ion-card-content>
         </ion-card>

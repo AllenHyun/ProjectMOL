@@ -1,0 +1,14 @@
+{
+  "LOGIN": {
+    "WELCOME": "¡Bienvenid@ a Project M.O.L!",
+    "TITLE": "Inicia sesión en tu cuenta",
+    "GOOGLE_BTN": "Iniciar sesión con Google",
+    "OR_SEPARATOR": "o",
+    "EMAIL_LABEL": "Correo electrónico",
+    "EMAIL_PLACEHOLDER": "ejemplo@correo.com",
+    "PASSWORD_LABEL": "Contraseña",
+    "PASSWORD_PLACEHOLDER": "**********",
+    "SUBMIT_BTN": "Iniciar sesión",
+    "FORGOT_PASSWORD": "¿Has olvidado tu contraseña?"
+  }
+}
