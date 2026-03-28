@@ -47,7 +47,8 @@
 
     "CONFIRM": {
       "DELETE": "¿Estás seguro de que quieres eliminar este resumen?",
-      "EXIT_DRAFT": "¿Desea guardar este resumen como borrador antes de salir?"
+      "EXIT_DRAFT": "¿Desea guardar este resumen como borrador antes de salir?",
+      "SAVE_CHANGES": "¿Desea guardar los cambios realizados como borrador?"
     }
   },
 

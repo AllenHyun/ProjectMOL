@@ -22,7 +22,7 @@ import {async} from "rxjs";
 import {Summary} from "../models/summary";
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {RouterLink} from "@angular/router";
 
 @Component({
@@ -52,6 +52,8 @@ export class MySummariesPage implements OnInit {
     bookId: '',
     content: ''
   };
+
+  private translate = inject(TranslateService);
 
   constructor() {
     addIcons({
@@ -98,7 +100,8 @@ export class MySummariesPage implements OnInit {
   }
 
   async deleteSummary(id: string){
-    if (confirm("¿Estás seguro de que quieres eliminar este resumen?")){
+    const msg = this.translate.instant('SUMMARIES.CONFIRM.DELETE');
+    if (confirm(msg)){
       await deleteDoc(doc(this.firestore, 'summaries', id));
       this.allSummaries = this.allSummaries.filter(s => s.id !== id);
     }
@@ -147,7 +150,8 @@ export class MySummariesPage implements OnInit {
 
   cancelEdit(){
     if(this.editContent.trim() !== this.originalContent){
-      if(confirm("¿Deseas guardar los cambios realizados como borrador?")){
+      const msg = this.translate.instant('SUMMARIES.CONFIRM.SAVE_CHANGES');
+      if (confirm(msg)){
         this.updateSummary('draft');
       } else {
         this.showEditModal = false;
@@ -197,7 +201,8 @@ export class MySummariesPage implements OnInit {
   cancelNewSummary(){
     const content = this.newSummary.content.trim();
     if (content.length > 0) {
-      if (confirm("¿Desea guardar este resumen como borrador antes de salir?")){
+      const msg = this.translate.instant('SUMMARIES.CONFIRM.EXIT_DRAFT');
+      if (confirm(msg)){
         this.saveNewSummary('draft');
       } else {
         this.showCreateModal = false;
