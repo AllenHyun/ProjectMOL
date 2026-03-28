@@ -111,11 +111,14 @@ export class BookManagementPage implements OnInit {
   }
 
   async deleteBook(id: string) {
-    try{
-      const bookDocRef = doc(this.firestore, `books/${id}`);
-      await deleteDoc(bookDocRef);
-    } catch (error){
-      console.log("Error al borrar de Firebase: ", error);
+    if (confirm("¿Estás seguro de que quieres eliminar este libro?")){
+      try{
+        const bookDocRef = doc(this.firestore, `books/${id}`);
+        await deleteDoc(bookDocRef);
+        this.book = this.book.filter((book: Book) => book.id !== id);
+      } catch (error){
+        console.log("Error al borrar de Firebase: ", error);
+      }
     }
   }
 

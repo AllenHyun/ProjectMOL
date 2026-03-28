@@ -156,7 +156,8 @@ export class BookDetailPage implements OnInit {
 
       await addDoc(reviewRef, {
         bookId: this.book.id,
-        userId: user.displayName || user.email || 'Anónimo',
+        userId: user.uid,
+        userName: user.displayName || user.email || 'Anónimo',
         rating: this.newReview.rating,
         text: this.newReview.text,
         pros: prosArray,

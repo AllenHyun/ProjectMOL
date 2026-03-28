@@ -10,5 +10,12 @@
     "PASSWORD_PLACEHOLDER": "**********",
     "SUBMIT_BTN": "Iniciar sesión",
     "FORGOT_PASSWORD": "¿Has olvidado tu contraseña?"
+  },
+
+  "REVIEWS": {
+    "MY_REVIEWS": "Mi reseñas",
+    "PUBLISHED": "Publicados",
+    "LAST_MOD": "Última modificación"
   }
 }
+

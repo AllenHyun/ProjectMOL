@@ -3,10 +3,10 @@ import {IonicModule} from "@ionic/angular";
 import {
   menu, chevronDownOutline, personOutline,
   notificationsOutline, bookOutline, languageOutline, helpCircleOutline,
-  settingsOutline, logOutOutline, person, lockClosedOutline
+  settingsOutline, logOutOutline, person, lockClosedOutline, chatboxEllipsesOutline
 } from "ionicons/icons";
 import {addIcons} from "ionicons";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {Auth, onAuthStateChanged, authState} from "@angular/fire/auth";
 import {User} from "../../models/user";
 import {doc, docData, Firestore} from "@angular/fire/firestore";
@@ -20,6 +20,7 @@ import {CommonModule} from "@angular/common";
   imports: [
     IonicModule,
     CommonModule,
+    RouterLink,
   ]
 })
 export class HeaderComponent  implements OnInit {
@@ -41,7 +42,8 @@ export class HeaderComponent  implements OnInit {
       helpCircleOutline,
       settingsOutline,
       logOutOutline,
-      lockClosedOutline
+      lockClosedOutline,
+      chatboxEllipsesOutline
     });
   }
 
