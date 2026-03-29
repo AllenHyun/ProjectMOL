@@ -6,7 +6,18 @@ import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import {AdminPanelComponent} from "../components/admin-panel/admin-panel.component";
 import {Book} from "../models/book";
-import {addDoc, collection, collectionData, deleteDoc, doc, Firestore, updateDoc} from "@angular/fire/firestore";
+import {
+  addDoc,
+  collection,
+  collectionData,
+  deleteDoc,
+  doc,
+  Firestore, getDoc,
+  query,
+  updateDoc,
+  where,
+  getDocs
+} from "@angular/fire/firestore";
 import {addIcons} from "ionicons";
 import {
   searchOutline,
@@ -111,8 +122,22 @@ export class BookManagementPage implements OnInit {
   }
 
   async deleteBook(id: string) {
-    if (confirm("¿Estás seguro de que quieres eliminar este libro?")){
+    if (confirm("¿Estás seguro de que quieres eliminar este libro? Se eliminarán también permanentemente las reseñas y resúmenes asociados")){
       try{
+        const summariesRef = collection(this.firestore, 'summaries');
+        const qSummaries = query(summariesRef, where('bookId', '==', id));
+        const sumSnapshot = await getDocs(qSummaries);
+        const deleteSummaries = sumSnapshot.docs.map( d => deleteDoc(doc(this.firestore, 'summaries', d.id)));
+        await Promise.all(deleteSummaries);
+        console.log(`${sumSnapshot.size} resúmenes eliminados`);
+
+        const reviewsRef = collection(this.firestore, 'reviews');
+        const qReviews = query(reviewsRef, where('bookId', '==', id));
+        const revSnapshot = await getDocs(qReviews);
+        const deleteReview = revSnapshot.docs.map( d => deleteDoc(doc(this.firestore, 'reviews', d.id)));
+        await Promise.all(deleteReview);
+        console.log(`${revSnapshot.size} reseñas eliminadas`);
+
         const bookDocRef = doc(this.firestore, `books/${id}`);
         await deleteDoc(bookDocRef);
         this.book = this.book.filter((book: Book) => book.id !== id);
