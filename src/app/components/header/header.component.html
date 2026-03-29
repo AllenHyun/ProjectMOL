@@ -45,17 +45,22 @@
         </div>
       }
     </ion-buttons>
+
+      <ion-buttons slot="end" class="md:hidden">
+        <ion-button (click)="toggleMenu()">
+          <ion-icon name="menu" class="text-white text-3xl"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     }
-    <ion-buttons slot="end" class="md:hidden">
-      <ion-button>
-        <ion-icon name="menu" class="text-white text-3xl"></ion-icon>
-      </ion-button>
-    </ion-buttons>
 
   </ion-toolbar>
 
-  @if (menuOpen && user){
+  @if (menuOpen){
+    <div class="fixed inset-0 z-[998]" (click)="menuOpen = false"></div>
     <div (click)="$event.stopPropagation()" class="fixed top-[60px] right-4 w-64 bg-[#F5F5F0] rounded-sm shadow-2xl z-[999] border border-[#2E473B22] overflow-hidden text-[#2E473B]">
+
+      @if (user){
+
       <div class="p-4 flex flex-col gap-1">
         <span class="font-lato text-lg font-bold">Perfil</span>
         <span class="text-xs border-b border-[#2E473B] pb-1"> Nivel Escolar: {{user?.level}} </span>
@@ -96,6 +101,26 @@
       <button (click)="onLogout()" class="flex items-center gap-3 p-3 py-2 mt-2 font-bold hover: text-red-600 transition-colors text-sm">
         <ion-icon name="log-out-outline"></ion-icon>Cerrar sesión
       </button>
+
+      } @else {
+        <div class="p-4 border-b border-[#2E47B11] bg-[#2E47B08]">
+
+          <span class="font-lato text-sm font-bold uppercase tracking-wider">Bienvenido</span>
+
+          <button (click)="navigateRegister(); menuOpen = false" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
+
+            <ion-icon name="person-add-outline"></ion-icon> Registrarse / Iniciar sesión
+
+          </button>
+
+          <button (click)="backHome(); menuOpen = false" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
+
+            <ion-icon name="home-outline"></ion-icon> Ir al inicio
+
+          </button>
+
+        </div>
+      }
     </div>
   }
 </ion-header>

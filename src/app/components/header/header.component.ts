@@ -3,7 +3,7 @@ import {IonicModule} from "@ionic/angular";
 import {
   menu, chevronDownOutline, personOutline,
   notificationsOutline, bookOutline, languageOutline, helpCircleOutline,
-  settingsOutline, logOutOutline, person, lockClosedOutline, chatboxEllipsesOutline
+  settingsOutline, logOutOutline, person, lockClosedOutline, chatboxEllipsesOutline, homeOutline, documentTextOutline, personAddOutline
 } from "ionicons/icons";
 import {addIcons} from "ionicons";
 import {Router, RouterLink} from "@angular/router";
@@ -43,7 +43,10 @@ export class HeaderComponent  implements OnInit {
       settingsOutline,
       logOutOutline,
       lockClosedOutline,
-      chatboxEllipsesOutline
+      chatboxEllipsesOutline,
+      homeOutline,
+      documentTextOutline,
+      personAddOutline
     });
   }
 
