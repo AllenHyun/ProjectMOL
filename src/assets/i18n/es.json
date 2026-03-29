@@ -54,7 +54,39 @@
 
   "COMMON": {
     "CANCEL": "Cancelar",
-    "PUBLISH": "Publicar"
+    "PUBLISH": "Publicar",
+    "CONFIRM": "Confirmar guardado"
+  },
+  "BOOK-M": {
+    "TITLE": "Catálogo de libros",
+    "ADD": "Añadir libro",
+    "IMPORT": "Importar ISBN",
+    "PLACEHOLDER": "Buscar libro...",
+    "DATA": {
+      "FRONT": "Portada",
+      "TITLE": "Título",
+      "AUTHOR": "Autor",
+      "ISBN": "ISBN",
+      "CATEGORY": "Categoría",
+      "ACTIONS": "Acciones"
+    },
+    "EMPTY": "No hay libros en el catálogo acordes a la búsqueda",
+    "CREATE": {
+      "TITLE": "Título de la obra",
+      "TITLE_PLACEHOLDER": "Título completo",
+      "AUTHOR": "Autores",
+      "AUTHOR_PLACEHOLDER": "Autor1, Autor2...",
+      "ISBN": "ISBN",
+      "ISBN_PLACEHOLDER": "978-...",
+      "YEAR": "Año de edición",
+      "LANGUAGE": "Idioma",
+      "CATEGORY": "Categorías",
+      "CATEGORY_PLACEHOLDER": "Ficción, Historia...",
+      "TAGS": "Etiquetas/Tags",
+      "TAGS_PLACEHOLDER": "Clásico, Recomendado...",
+      "URL_FRONT": "URL Portada"
+
+    }
   }
 }
 

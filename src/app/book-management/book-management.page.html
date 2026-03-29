@@ -14,32 +14,32 @@
     @if (!showForm){
 
   <div class="flex justify-between items-start mb-8">
-    <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614]">Catálogo de libros</h2>
+    <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614]">{{ 'BOOK-M.TITLE' | translate }}</h2>
     <div class="flex flex-col gap-2">
-      <button (click)="showForm = true" class="px-8 py-2 border !border-solid border-[#C5A059] font-lato bg-white text-black text-sm hover:bg-gray-50 transition-colors"> Añadir Libro </button>
-      <button class="px-8 py-2 !border-solid border border-[#C5A059] font-lato bg-white text-black text-sm hover:bg-gray-50 transition-colors"> Importar ISBN </button>
+      <button (click)="showForm = true" class="px-8 py-2 border !border-solid border-[#C5A059] font-lato bg-white text-black text-sm hover:bg-gray-50 transition-colors"> {{ 'BOOK-M.ADD' | translate }} </button>
+      <button class="px-8 py-2 !border-solid border border-[#C5A059] font-lato bg-white text-black text-sm hover:bg-gray-50 transition-colors"> {{ 'BOOK-M.IMPORT' | translate }} </button>
     </div>
 
   </div>
 
   <div class="relative mb-10">
-    <input type="text" placeholder="Buscar libro..." class="w-full max-w-2xl p-2 pl-2 border text-black border-[#C5A059] bg-white focus:outline-none shadow-sm">
+    <input type="text" [(ngModel)]="searchTerms" placeholder="{{ 'BOOK-M.PLACEHOLDER' | translate }}" class="w-full max-w-2xl p-2 pl-2 border text-black border-[#C5A059] bg-white focus:outline-none shadow-sm">
   </div>
 
     <div class="w-full overflow-x-auto">
       <table class="w-full text-left border-collapse">
         <thead>
           <tr class="border-b border-gray-500 text-sm text-[#1A1614]">
-            <th class="py-2 px-4 font-normal font-lato">Portada</th>
-            <th class="py-2 px-4 font-normal font-lato">Título</th>
-            <th class="py-2 px-4 font-normal font-lato">Autor</th>
-            <th class="py-2 px-4 font-normal font-lato">ISBN</th>
-            <th class="py-2 px-4 font-normal font-lato">Categoría</th>
-            <th class="py-2 px-4 font-normal font-lato text-center w-32">Acciones</th>
+            <th class="py-2 px-4 font-normal font-lato">{{ 'BOOK-M.DATA.FRONT' | translate }}</th>
+            <th class="py-2 px-4 font-normal font-lato">{{ 'BOOK-M.DATA.TITLE' | translate }}</th>
+            <th class="py-2 px-4 font-normal font-lato">{{ 'BOOK-M.DATA.AUTHOR' | translate }}</th>
+            <th class="py-2 px-4 font-normal font-lato">{{ 'BOOK-M.DATA.ISBN' | translate }}</th>
+            <th class="py-2 px-4 font-normal font-lato">{{ 'BOOK-M.DATA.CATEGORY' | translate }}</th>
+            <th class="py-2 px-4 font-normal font-lato text-center w-32">{{ 'BOOK-M.DATA.ACTIONS' | translate }}</th>
           </tr>
         </thead>
         <tbody>
-          @for (libro of book; track libro.id){
+          @for (libro of filteredBooks; track libro.id){
             <tr class="border-b border-gray-100 text-black">
               <td class="py-4 px-4">
                 @if (libro.coverUrl){
@@ -63,7 +63,7 @@
             </tr>
           } @empty {
             <tr>
-              <td colspan="6" class="py-20 text-center text-gray-500 italic"> No hay book en el catálogo. Pulse 'Añadir Libro' </td>
+              <td colspan="6" class="py-20 text-center text-gray-500 italic"> {{ 'BOOK-M.EMPTY' | translate }} </td>
             </tr>
           }
         </tbody>
@@ -75,7 +75,7 @@
           <button (click)="cancelForm()" class="text-[#C5A059] hover:scale-110 transition-transform">
             <ion-icon name="arrow-back-outline" class="text-3xl"></ion-icon>
           </button>
-          <h2 class="text-4xl font-['Cormorant_Garamond'] text-[#1A1614]"> Añadir libro </h2>
+          <h2 class="text-4xl font-['Cormorant_Garamond'] text-[#1A1614]"> {{ 'BOOK-M.ADD' | translate }} </h2>
         </div>
 
         <div class="bg-white p-12 border-2 border-[#C5A059] shadow-sm">
@@ -83,24 +83,24 @@
             <div class="flex flex-col gap-6">
 
               <div class="flex flex-col gap-1">
-                <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">Título de la Obra</label>
-                <input [(ngModel)]="emptyBook.title" type="text" placeholder="Título completo" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
+                <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.TITLE' | translate }}</label>
+                <input [(ngModel)]="emptyBook.title" type="text" placeholder="{{ 'BOOK-M.CREATE.TITLE_PLACEHOLDER' | translate }}" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
               </div>
 
               <div class="flex flex-col gap-1">
-                <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">Autores (Comas)</label>
-                <input [(ngModel)]="emptyBook.authors" type="text" placeholder="Autor 1, Autor 2..." class="p-3 bg-white border border-[#C5A059] outline-none text-black font-lato">
+                <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.AUTHOR' | translate }}</label>
+                <input [(ngModel)]="emptyBook.authors" type="text" placeholder="{{ 'BOOK-M.CREATE.AUTHOR_PLACEHOLDER' | translate }}" class="p-3 bg-white border border-[#C5A059] outline-none text-black font-lato">
               </div>
 
               <div class="grid grid-cols-2 gap-4">
 
                 <div class="flex flex-col gap-1">
-                  <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">ISBN</label>
-                  <input [(ngModel)]="emptyBook.isbn" type="text" placeholder="978-..." class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
+                  <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.ISBN' | translate }}</label>
+                  <input [(ngModel)]="emptyBook.isbn" type="text" placeholder="{{ 'BOOK-M.CREATE.ISBN_PLACEHOLDER' | translate }}" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
                 </div>
 
                 <div class="flex flex-col gap-1">
-                  <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">Año de edición</label>
+                  <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.YEAR' | translate }}</label>
                   <input [(ngModel)]="emptyBook.year" type="number" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
                 </div>
 
@@ -110,22 +110,22 @@
             <div class="flex flex-col gap-6">
 
               <div class="flex flex-col gap-1">
-                <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">Idioma</label>
+                <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.LANGUAGE' | translate }}</label>
                 <input [(ngModel)]="emptyBook.language" type="text" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
               </div>
 
               <div class="flex flex-col gap-1">
-                <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">Categorías (Comas)</label>
-                <input [(ngModel)]="emptyBook.categories" type="text" placeholder="Ficción, Historia..." class="p-3 border border-[#C5A059] bg-white outline-none text-black font-lato">
+                <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.CATEGORY' | translate }}</label>
+                <input [(ngModel)]="emptyBook.categories" type="text" placeholder="{{ 'BOOK-M.CREATE.CATEGORY_PLACEHOLDER' | translate }}" class="p-3 border border-[#C5A059] bg-white outline-none text-black font-lato">
               </div>
 
               <div class="flex flex-col gap-1">
-                <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">Etiquetas / Tags (Comas)</label>
-                <input [(ngModel)]="emptyBook.tags" type="text" placeholder="Clásico, Recomendado..." class="p-3 border border-[#C5A059] bg-white outline-none text-black font-lato">
+                <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.TAGS' | translate }}</label>
+                <input [(ngModel)]="emptyBook.tags" type="text" placeholder="{{ 'BOOK-M.CREATE.TAGS_PLACEHOLDER' | translate }}" class="p-3 border border-[#C5A059] bg-white outline-none text-black font-lato">
               </div>
 
               <div class="flex flex-col gap-1">
-                <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">URL Portada</label>
+                <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.URL_FRONT' | translate }}</label>
                 <input [(ngModel)]="emptyBook.coverUrl" type="text" placeholder="https://..." class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
               </div>
 
@@ -134,8 +134,8 @@
 
           <div class="flex gap-6 mt-12 justify-end">
 
-            <button (click)="cancelForm()" class="px-12 py-4 border-2 border-[#C5A059] text-[#1A1614] font-bold uppercase text-[10px] tracking-widest hover:bg-gray-50 transition-all">Cancelar</button>
-            <button (click)="addBook()" class="px-12 py-4 bg-[#2E473B] text-white font-bold uppercase text-[10px] tracking-widest shadow-lg hover:bg-[#1a2b24] transition-all">Confirmar Guardado</button>
+            <button (click)="cancelForm()" class="px-12 py-4 border-2 border-[#C5A059] text-[#1A1614] font-bold uppercase text-[10px] tracking-widest hover:bg-gray-50 transition-all">{{ 'COMMON.CANCEL' | translate }}</button>
+            <button (click)="addBook()" class="px-12 py-4 bg-[#2E473B] text-white font-bold uppercase text-[10px] tracking-widest shadow-lg hover:bg-[#1a2b24] transition-all">{{ 'COMMON.CONFIRM' | translate }}</button>
 
           </div>
         </div>

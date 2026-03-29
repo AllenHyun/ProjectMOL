@@ -18,21 +18,21 @@ import {
   brushOutline,
 } from "ionicons/icons";
 import {RouterLink} from "@angular/router";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-book-management',
   templateUrl: './book-management.page.html',
   styleUrls: ['./book-management.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, AdminPanelComponent, IonIcon, RouterLink]
+  imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, AdminPanelComponent, IonIcon, RouterLink, TranslatePipe]
 })
 export class BookManagementPage implements OnInit {
   private firestore: Firestore = inject(Firestore);
   public book: Book[] = [];
   public showForm = false;
   public emptyBook : any = this.initBook();
-
-
+  public searchTerms: string = '';
 
   constructor() {
     addIcons({
@@ -141,6 +141,19 @@ export class BookManagementPage implements OnInit {
   cancelForm() {
     this.showForm = false;
     this.emptyBook = this.initBook();
+  }
+
+  get filteredBooks(){
+    const term = this.searchTerms.toLowerCase().trim();
+
+    if(!term){
+      return this.book;
+    }
+    return this.book.filter(book => {
+      const titleMatch = book.title.toLowerCase().includes(term);
+      const authorMatch = book.authors.some(author => author.toLowerCase().includes(term));
+      return titleMatch || authorMatch;
+    });
   }
 
 }
