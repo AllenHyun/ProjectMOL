@@ -77,7 +77,7 @@
       "AUTHOR": "Autores",
       "AUTHOR_PLACEHOLDER": "Autor1, Autor2...",
       "ISBN": "ISBN",
-      "ISBN_PLACEHOLDER": "978-...",
+      "ISBN_PLACEHOLDER": "978...",
       "YEAR": "Año de edición",
       "LANGUAGE": "Idioma",
       "CATEGORY": "Categorías",
@@ -87,6 +87,9 @@
       "URL_FRONT": "URL Portada"
 
     }
+  },
+  "BOOK-D": {
+
   }
 }
 

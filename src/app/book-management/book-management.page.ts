@@ -30,6 +30,7 @@ import {
 } from "ionicons/icons";
 import {RouterLink} from "@angular/router";
 import {TranslatePipe} from "@ngx-translate/core";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-book-management',
@@ -44,6 +45,7 @@ export class BookManagementPage implements OnInit {
   public showForm = false;
   public emptyBook : any = this.initBook();
   public searchTerms: string = '';
+  private http = inject(HttpClient);
 
   constructor() {
     addIcons({
@@ -178,6 +180,39 @@ export class BookManagementPage implements OnInit {
       const titleMatch = book.title.toLowerCase().includes(term);
       const authorMatch = book.authors.some(author => author.toLowerCase().includes(term));
       return titleMatch || authorMatch;
+    });
+  }
+
+  async importIsbn(){
+    const isbn = prompt("Introduce el ISBN del libro (10 a 13 dígitos): ");
+    if(!isbn){
+      return;
+    }
+
+    const cleanIsbn = isbn.replace(/[- ]/g, "");
+    this.http.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${cleanIsbn}`).subscribe((res:any) => {
+      if(res.totalItems === 0){
+        alert("No se ha encontrado un libro con ese ISBN");
+        return;
+      }
+      const info = res.items[0].volumeInfo;
+
+      this.emptyBook = {
+        title: info.title || '',
+        authors: info.authors ? info.authors.join(', ') : '',
+        isbn: cleanIsbn,
+        language: info.language === 'es' ? 'Español' : (info.language === 'en' ? 'Inglés' : info.language),
+        categories: info.categories ? info.categories.join(', ') : '',
+        tags: '',
+        year: info.publishedDate ? new Date(info.publishedDate).getFullYear() : new Date().getFullYear(),
+        coverUrl: info.imageLinks?.thumbnail ? info.imageLinks.thumbnail.replace('http:', 'https:') : ''
+      };
+
+      this.showForm = true;
+      console.log("Datos importados de Google Books: ", info);
+    }, error => {
+      console.error("Error al cargar el libro: ", error);
+      alert("Hubo un error al intentar conectarse con el servicio");
     });
   }
 
