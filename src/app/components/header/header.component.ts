@@ -102,12 +102,6 @@ export class HeaderComponent  implements OnInit {
     this.router.navigate(['/book-management']);
   }
 
-  changeLanguage(){
-    const nextLang = this.translate.currentLang === 'es' ? 'en' : 'es';
-    this.translate.use(nextLang);
-    localStorage.setItem('language', nextLang);
-  }
-
   async openLanguageSelector(){
     const button = this.languages.map(lang => ({
       text: lang.name,
