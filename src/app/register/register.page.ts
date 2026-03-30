@@ -27,13 +27,14 @@ import {addIcons} from "ionicons";
 import {logoGoogle} from "ionicons/icons";
 import {Firestore, doc, setDoc} from "@angular/fire/firestore";
 import {AuthError} from "../services/auth-error";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonCard, IonCardContent, IonCardTitle, IonIcon, IonInput, IonSelect, IonSelectOption]
+  imports: [IonContent, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonCard, IonCardContent, IonCardTitle, IonIcon, IonInput, IonSelect, IonSelectOption, TranslatePipe]
 })
 export class RegisterPage implements OnInit {
   private auth = inject(Auth);

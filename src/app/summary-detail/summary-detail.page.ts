@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import {IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToolbar} from '@ionic/angular/standalone';
 import {FooterComponent} from "../components/footer/footer.component";
 import {HeaderComponent} from "../components/header/header.component";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {doc, Firestore, getDoc} from "@angular/fire/firestore";
 import {Summary} from "../models/summary";
-import { star, starOutline, playOutline, bookmarkOutline, shareOutline, flagOutline, thumbsUpOutline, thumbsDownOutline } from 'ionicons/icons';
+import { star, starOutline, playOutline, bookmarkOutline, shareOutline, flagOutline, thumbsUpOutline, thumbsDownOutline, arrowBackOutline } from 'ionicons/icons';
 import {addIcons} from "ionicons";
 
 @Component({
@@ -15,7 +15,7 @@ import {addIcons} from "ionicons";
   templateUrl: './summary-detail.page.html',
   styleUrls: ['./summary-detail.page.scss'],
   standalone: true,
-    imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonIcon, IonModal]
+  imports: [IonContent, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonIcon, RouterLink]
 })
 export class SummaryDetailPage implements OnInit {
 
@@ -34,7 +34,8 @@ export class SummaryDetailPage implements OnInit {
       shareOutline,
       flagOutline,
       thumbsUpOutline,
-      thumbsDownOutline
+      thumbsDownOutline,
+      arrowBackOutline
     });
   }
 

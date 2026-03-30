@@ -26,7 +26,7 @@ export class ReviewDetailPage implements OnInit {
   private auth = inject(Auth);
 
   public book: any = null;
-  public reviews: Review[] = [];
+  public reviews: any[] = [];
 
   public showReviewModal = false;
   public reviewProsInput = '';
@@ -71,7 +71,7 @@ export class ReviewDetailPage implements OnInit {
 
     collectionData(q, { idField: 'id' }).subscribe({
       next: (data) => {
-        this.reviews = (data as Review[]).sort((a, b) =>
+        this.reviews = (data as any[]).sort((a, b) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
         this.isLoading = false;
@@ -97,7 +97,8 @@ export class ReviewDetailPage implements OnInit {
 
       await addDoc(reviewRef, {
         bookId: this.book.id,
-        userId: user.displayName || user.email || 'Anónimo',
+        userId: user.uid,
+        userName: user.displayName || user.email || 'Anónimo',
         rating: this.newReview.rating,
         text: this.newReview.text,
         pros: prosArray,

@@ -30,9 +30,20 @@
 
                 <button (click)="showReviewModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all shadow-sm">Escribir reseña</button>
 
+
               </div>
 
               <div class="space-y-12">
+
+                <div class="mt-12 flex justify-start">
+
+                  <button [routerLink]="['/book-detail', book.id]" class="text-[#C5A059] text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 hover:translate-x-[-5px] transition-transform">
+
+                    <ion-icon name="arrow-back-outline"></ion-icon> Volver al libro
+
+                  </button>
+
+                </div>
 
                 @for (rev of reviews; track rev.id){
 
@@ -42,7 +53,7 @@
 
                       <div class="flex flex-col">
 
-                        <span class="font-bold text-[#1A1614] font-lato text-base uppercase tracking-wider">{{rev.userId}}</span>
+                        <span class="font-bold text-[#1A1614] font-lato text-base uppercase tracking-wider">{{rev.userName}}</span>
                         <span class="text-[10px] text-gray-500 font-lato">{{rev.createdAt | date: 'longDate'}}</span>
 
                       </div>
@@ -110,16 +121,6 @@
 
                   </div>
                 }
-
-              </div>
-
-              <div class="mt-12 flex justify-start">
-
-                <button [routerLink]="['/book-detail', book.id]" class="text-[#C5A059] text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 hover:translate-x-[-5px] transition-transform">
-
-                  <ion-icon name="arrow-back-outline"></ion-icon> Volver al libro
-
-                </button>
 
               </div>
 

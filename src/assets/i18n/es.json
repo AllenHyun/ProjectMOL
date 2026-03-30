@@ -15,7 +15,19 @@
   "REVIEWS": {
     "MY_REVIEWS": "Mi reseñas",
     "PUBLISHED": "Publicados",
-    "LAST_MOD": "Última modificación"
+    "LAST_MOD": "Última modificación",
+    "REVIEW": "Reseña: ",
+    "REVIEW_MODAL": {
+      "TITLE": "Escribir Críticas",
+      "RATING": "Puntuación (1-5)",
+      "OPINION": "Tu opinión",
+      "OPINION_PLACEHOLDER": "¿Qué te ha parecido la obra?",
+      "PROS": "Pros",
+      "PROS_PLACEHOLDER": "Ágil, intrigantes...",
+      "COS": "Contras",
+      "COS_PLACEHOLDER": "Final previsible..."
+    },
+    "WRITE_REVIEW": "Escribir reseña"
   },
 
   "SUMMARIES": {
@@ -55,7 +67,9 @@
   "COMMON": {
     "CANCEL": "Cancelar",
     "PUBLISH": "Publicar",
-    "CONFIRM": "Confirmar guardado"
+    "CONFIRM": "Confirmar guardado",
+    "SELECT": "Seleccionar el libro",
+    "SELECTED": "Escoge un libro de la biblioteca..."
   },
   "BOOK-M": {
     "TITLE": "Catálogo de libros",
@@ -164,6 +178,33 @@
       "WELCOME": "Bienvenido",
       "LOGIN": "Registrarse / Iniciar sesión",
       "START": "Ir al inicio"
+    }
+  },
+  "REGISTER": {
+    "TITLE": "¡Crea una cuenta nueva y revisa los resúmenes de tus libros preferidos!",
+    "CREATE": "Crea una nueva cuenta",
+    "GOOGLE": "Registrate con Google",
+    "EMAIL": "Correo electrónico",
+    "EMAIL_PLACEHOLDER": "ejemplo@correo.com",
+    "PASSWORD": "Contraseña",
+    "SCHOOL_LEVEL": "Nivel Escolar",
+    "SCHOOL_PLACEHOLDER": "Selecciona tu nivel",
+    "ESO": "ESO / Bachillerato",
+    "UNI": "Universitario",
+    "POS": "Posgrado / Máster",
+    "REGISTER_BTN": "Registrarme",
+    "LOGIN": "¿Ya tienes una cuenta? Iniciar sesión"
+  },
+  "REVIEW-D": {
+    "REVIEW_MODAL": {
+      "TITLE": "Escribir Críticas",
+      "RATING": "Puntuación (1-5)",
+      "OPINION": "Tu opinión",
+      "OPINION_PLACEHOLDER": "¿Qué te ha parecido la obra?",
+      "PROS": "Pros",
+      "PROS_PLACEHOLDER": "Ágil, intrigantes...",
+      "COS": "Contras",
+      "COS_PLACEHOLDER": "Final previsible..."
     }
   }
 }

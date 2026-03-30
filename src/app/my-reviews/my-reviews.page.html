@@ -9,7 +9,7 @@
     <div class="flex justify-between items-center mb-8">
 
       <h2 class="text-2xl font-['Cormorant_Garamond'] text-[#1A1614] mb-8"> {{'REVIEWS.MY_REVIEWS' | translate}}</h2>
-      <button (click)="showModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> Escribir reseña </button>
+      <button (click)="showModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'REVIEWS.WRITE_REVIEW' | translate}} </button>
 
     </div>
 
@@ -53,7 +53,7 @@
 
           </div>
 
-          <p class="mt-4 text-sm text-[#4A443F] leading-relaxed font-lato">Reseña: {{rev.text}}</p>
+          <p class="mt-4 text-sm text-[#4A443F] leading-relaxed font-lato">{{ 'REVIEWS.REVIEW' | translate }}: {{rev.text}}</p>
 
         </div>
 
@@ -73,16 +73,16 @@
 
       <div class="p-8 bg-white h-full flex flex-col gap-6 overflow-y-auto">
 
-        <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614] border-b border-[#C5A059]/20 pb-4"> Escribir Crítica </h2>
+        <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614] border-b border-[#C5A059]/20 pb-4"> {{'REVIEWS.REVIEW_MODAL.TITLE' | translate}} </h2>
 
         <div class="flex flex-col gap-5">
 
           <div>
 
-            <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest"> Seleccionar el libro </label>
+            <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest"> {{'COMMON.SELECT' | translate}} </label>
             <select [(ngModel)]="newReview.bookId" class="w-full p-3 border border-[#C5A059] outline-none text-black font-lato mt-1 bg-white">
 
-              <option value="" disabled selected>Escoge un libro de la biblioteca...</option>
+              <option value="" disabled selected>{{'COMMON.SELECTED' | translate}}</option>
 
               @for (book of books; track book.id) {
                 <option [value]="book.id"> {{book.title}} - {{book.authors?.join(', ')}}</option>
@@ -94,15 +94,15 @@
 
           <div>
 
-            <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Puntuación (1-5)</label>
+            <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">{{'REVIEWS.REVIEW_MODAL.RATING'}}</label>
             <input [(ngModel)]="newReview.rating" type="number" min="0" max="5" class="w-full p-3 border border-[C5A059] text-white font-lato mt-1">
 
           </div>
 
           <div>
 
-            <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Tu opinión</label>
-            <textarea [(ngModel)]="newReview.text" rows="4" placeholder="¿Qué te ha parecido la obra?" class="w-full p-3 border border-[#C5A059] text-white font-lato mt-1"></textarea>
+            <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">{{'REVIEWS.REVIEW_MODAL.OPINION' | translate}}</label>
+            <textarea [(ngModel)]="newReview.text" rows="4" placeholder="{{'REVIEWS.REVIEW_MODAL.OPINION_PLACEHOLDER' | translate}}" class="w-full p-3 border border-[#C5A059] text-white font-lato mt-1"></textarea>
 
           </div>
 
@@ -110,15 +110,15 @@
 
             <div>
 
-              <label class="text-[10px] uppercase font-bold text-green-600 tracking-widest"> Pros </label>
-              <input [(ngModel)]="reviewProsInput" type="text" placeholder="Ágil, intrigantes..." class="w-full p-3 border border-green-200 outline-none text-white font-lato mt-1 text-xs">
+              <label class="text-[10px] uppercase font-bold text-green-600 tracking-widest"> {{'REVIEWS.REVIEW_MODAL.PROS' | translate}} </label>
+              <input [(ngModel)]="reviewProsInput" type="text" placeholder="{{'REVIEWS.REVIEW_MODAL.PROS_PLACEHOLDER' | translate}}" class="w-full p-3 border border-green-200 outline-none text-white font-lato mt-1 text-xs">
 
             </div>
 
             <div>
 
-              <label class="text-[10px] uppercase font-bold text-red-600 tracking-widest"> Contras </label>
-              <input [(ngModel)]="reviewConsInput" type="text" placeholder="Final previsible..." class="w-full p-3 border border-red-200 outline-none text-white font-lato mt-1 text-xs">
+              <label class="text-[10px] uppercase font-bold text-red-600 tracking-widest"> {{'REVIEWS.REVIEW_MODAL.COS' | translate}} </label>
+              <input [(ngModel)]="reviewConsInput" type="text" placeholder="{{'REVIEWS.REVIEW_MODAL.COS_PLACEHOLDER' | translate}}" class="w-full p-3 border border-red-200 outline-none text-white font-lato mt-1 text-xs">
 
             </div>
 
@@ -128,8 +128,8 @@
 
         <div class="flex gap-4 mt-auto pt-6">
 
-          <button (click)="showModal = false" class="flex-1 py-3 border bg-[#2E473B] border-gray-300 uppercase text-[10px] font-bold"> Cancelar </button>
-          <button (click)="saveReview()" class="flex-1 py-3 bg-[#2E473B]  uppercase text-white text-[10px] font-bold shadow-md"> Publicar Reseña </button>
+          <button (click)="showModal = false" class="flex-1 py-3 border bg-[#2E473B] border-gray-300 uppercase text-[10px] font-bold"> {{'COMMON.CANCEL' | translate}} </button>
+          <button (click)="saveReview()" class="flex-1 py-3 bg-[#2E473B]  uppercase text-white text-[10px] font-bold shadow-md"> {{'COMMON.PUBLISH' | translate}} </button>
 
         </div>
 
