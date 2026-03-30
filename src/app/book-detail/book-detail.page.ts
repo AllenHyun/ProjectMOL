@@ -11,12 +11,13 @@ import { FormsModule } from '@angular/forms';
 import {Summary} from '../models/summary';
 import {Auth} from "@angular/fire/auth";
 import { Review } from '../models/review';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-book-detail',
   templateUrl: './book-detail.page.html',
   standalone: true,
-  imports: [IonContent, CommonModule, HeaderComponent, FooterComponent, IonIcon, HeaderComponent, FooterComponent, IonModal, FormsModule, RouterLink]
+  imports: [IonContent, CommonModule, HeaderComponent, FooterComponent, IonIcon, HeaderComponent, FooterComponent, IonModal, FormsModule, RouterLink, TranslatePipe]
 })
 export class BookDetailPage implements OnInit {
   private route = inject(ActivatedRoute);

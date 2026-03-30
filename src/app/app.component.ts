@@ -5,12 +5,15 @@ import {TranslateService} from "@ngx-translate/core";
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
+  standalone: true,
   imports: [IonApp, IonRouterOutlet, IonContent],
 })
 export class AppComponent {
   private translate = inject(TranslateService);
   constructor() {
-    this.translate.setDefaultLang('en');
-    this.translate.use('es');
+    this.translate.addLangs(['es', 'en']);
+    this.translate.setDefaultLang('es');
+    const savedLang = localStorage.getItem('language') || 'es';
+    this.translate.use(savedLang);
   }
 }

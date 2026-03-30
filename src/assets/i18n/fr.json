@@ -1,0 +1,168 @@
+{
+  "LOGIN": {
+    "WELCOME": "Bienvenue sur Project M.O.L !",
+    "TITLE": "Connectez-vous à votre compte",
+    "GOOGLE_BTN": "Se connecter avec Google",
+    "OR_SEPARATOR": "ou",
+    "EMAIL_LABEL": "Adresse e-mail",
+    "EMAIL_PLACEHOLDER": "exemple@courrier.com",
+    "PASSWORD_LABEL": "Mot de passe",
+    "PASSWORD_PLACEHOLDER": "**********",
+    "SUBMIT_BTN": "Se connecter",
+    "FORGOT_PASSWORD": "Mot de passe oublié ?"
+  },
+
+  "REVIEWS": {
+    "MY_REVIEWS": "Mes critiques",
+    "PUBLISHED": "Publiées",
+    "LAST_MOD": "Dernière modification"
+  },
+
+  "SUMMARIES": {
+    "MY_SUMMARIES": "Mes Résumés",
+    "CREATE_BTN": "Créer un nouveau résumé",
+    "LAST_MOD": "Dernière modification",
+    "WORDS": " mots",
+    "READ_MORE": "Lire complet",
+    "EMPTY": "Aucun résumé trouvé dans cette section",
+    "SAVE_DRAFT": "Enregistrer le brouillon",
+    "TABS": {
+      "DRAFT": "Brouillons",
+      "PENDING": "En attente",
+      "PUBLISHED": "Publiés",
+      "REJECTED": "Refusés"
+    },
+
+    "CREATE": {
+      "TITLE": "Nouveau résumé",
+      "SELECT_LABEL": "Sélectionner le livre",
+      "SELECT_PLACEHOLDER": "Choisissez un livre dans la bibliothèque...",
+      "CONTENT_PLACEHOLDER": "Écrivez votre résumé ici..."
+    },
+
+    "EDIT": {
+      "TITLE": "Modifier le résumé",
+      "EDITING": "En cours de modification :"
+    },
+
+    "CONFIRM": {
+      "DELETE": "Êtes-vous sûr de vouloir supprimer ce résumé ?",
+      "EXIT_DRAFT": "Voulez-vous enregistrer ce résumé comme brouillon avant de quitter ?",
+      "SAVE_CHANGES": "Voulez-vous enregistrer les modifications comme brouillon ?"
+    }
+  },
+
+  "COMMON": {
+    "CANCEL": "Annuler",
+    "PUBLISH": "Publier",
+    "CONFIRM": "Confirmer l'enregistrement"
+  },
+  "BOOK-M": {
+    "TITLE": "Catalogue de livres",
+    "ADD": "Ajouter un livre",
+    "IMPORT": "Importer l'ISBN",
+    "PLACEHOLDER": "Rechercher un livre...",
+    "DATA": {
+      "FRONT": "Couverture",
+      "TITLE": "Titre",
+      "AUTHOR": "Auteur",
+      "ISBN": "ISBN",
+      "CATEGORY": "Catégorie",
+      "ACTIONS": "Actions"
+    },
+    "EMPTY": "Aucun livre trouvé dans le catalogue correspondant à la recherche",
+    "CREATE": {
+      "TITLE": "Titre de l'œuvre",
+      "TITLE_PLACEHOLDER": "Titre complet",
+      "AUTHOR": "Auteurs",
+      "AUTHOR_PLACEHOLDER": "Auteur1, Auteur2...",
+      "ISBN": "ISBN",
+      "ISBN_PLACEHOLDER": "978...",
+      "YEAR": "Année d'édition",
+      "LANGUAGE": "Langue",
+      "CATEGORY": "Catégories",
+      "CATEGORY_PLACEHOLDER": "Fiction, Histoire...",
+      "TAGS": "Étiquettes/Tags",
+      "TAGS_PLACEHOLDER": "Classique, Recommandé...",
+      "URL_FRONT": "URL Couverture"
+    }
+  },
+  "BOOK-D": {
+    "ADD_LIST": "Ajouter à la liste",
+    "READ": "Marquer comme lu",
+    "WRITE_RESUME": "Écrire un résumé",
+    "WRITE_REVIEW": "Écrire une critique",
+    "AUTHOR": "Auteur : ",
+    "EDITION": "Édition : ",
+    "TAGS": "Tags : ",
+    "LANGUAGE": "Langue : ",
+    "RATING": "Évaluation : ",
+    "RESUME": {
+      "TITLE": "Résumés",
+      "LISTEN": "Écouter",
+      "EMPTY": "Pas encore de résumés",
+      "EMPTY_FIRST": "Soyez le premier à en ajouter",
+      "MORE": "Voir plus de résumés",
+      "SEE_MORE": "Voir plus...",
+      "SEE_LESS": "Voir moins"
+    },
+    "REVIEWS": {
+      "TITLE": "Critiques des lecteurs",
+      "BEST": "Le meilleur",
+      "WORST": "Le pire",
+      "EMPTY": "Ce livre n'a pas encore de critiques. Soyez le premier à donner votre avis",
+      "SEE_MORE": "Voir toutes les critiques"
+    },
+    "LOAD": "Ouverture du livre demandé, cela peut prendre quelques secondes...",
+    "RESUME_MODAL": {
+      "TITLE": "Nouveau Résumé",
+      "PLACEHOLDER": "Écrire ici votre résumé..."
+    },
+    "REVIEW_MODAL": {
+      "TITLE": "Écrire des critiques",
+      "RATING": "Note (1-5)",
+      "OPINION": "Votre avis",
+      "OPINION_PLACEHOLDER": "Qu'avez-vous pensé de l'œuvre ?",
+      "PROS": "Points positifs",
+      "PROS_PLACEHOLDER": "Rapide, intrigant...",
+      "COS": "Points négatifs",
+      "COS_PLACEHOLDER": "Fin prévisible..."
+    }
+  },
+  "ADMIN": {
+    "TITLE": "Panneau d'administration"
+  },
+  "FOOTER": {
+    "WHO": "Qui sommes-nous ?",
+    "BLOG": "Blog",
+    "HELP": "Aide",
+    "CONTACT": "Contact",
+    "COPYRIGHT": "Copyright • Project M.O.L - Tous droits réservés"
+  },
+  "HEADER": {
+    "TITLE": "PROJECT M.O.L",
+    "PLACEHOLDER": "Découvrir...",
+    "START": "Accueil",
+    "RESUME": "Résumés",
+    "REVIEW": "Critiques",
+    "REGISTER": "S'inscrire",
+    "LOADING": "Chargement...",
+    "LOGIN_MENU": {
+      "PROFILE": "Profil",
+      "SCHOOL_LEVEL": "Nivel scolaire : ",
+      "NOTIFICATIONS": "Notifications",
+      "MY_RESUME": "Mes résumés",
+      "MY_REVIEW": "Mes critiques",
+      "LANGUAGE": "Langue : ",
+      "HELP": "Aide",
+      "SETTINGS": "Paramètres",
+      "ADMIN": "Panneau d'administration",
+      "LOGOUT": "Déconnexion"
+    },
+    "LOGOUT_MENU": {
+      "WELCOME": "Bienvenue",
+      "LOGIN": "S'inscrire / Se connecter",
+      "START": "Aller à l'accueil"
+    }
+  }
+}

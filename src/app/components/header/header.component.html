@@ -3,28 +3,28 @@
 
     <ion-buttons slot="start">
       <span (click)="backHome()" class="ml-4 text-xl md:text-2xl font-serif tracking-tight cursor-default">
-        PROJECT M.O.L
+        {{'HEADER.TITLE' | translate}}
       </span>
     </ion-buttons>
     @if (!isAuthPage){
     <ion-searchbar
       class="menu-escritorio max-w-[400px] hidden md:block ml-9"
-      placeholder="Descubre..."
+      placeholder="{{'HEADER.PLACEHOLDER' | translate}}"
       style="--placeholder-color: #555555; --background: white; --icon-color: black;">
     </ion-searchbar>
 
 
     <ion-buttons slot="end" class="hidden md:flex gap-6">
-      <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">Inicio</ion-button>
-      <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">Resúmenes</ion-button>
-      <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">Reseñas</ion-button>
+      <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">{{'HEADER.START' | translate}}</ion-button>
+      <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">{{'HEADER.RESUME' | translate}}</ion-button>
+      <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">{{'HEADER.REVIEW' | translate}}</ion-button>
     </ion-buttons>
 
 
     <ion-buttons slot="end" class="hidden md:flex pl-6">
       @if (!user){
       <ion-button (click)="navigateRegister()" class="font-lato text-sm normal-case text-[#C5A059] font-medium hover:brightness-110">
-        Registrarse
+        {{'HEADER.REGISTER' | translate}}
       </ion-button>
       } @else {
         <div (click)="toggleMenu()" class="relative z-50 flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity pr-4">
@@ -37,7 +37,7 @@
           </div>
 
           <span class="text-white font-lato font-medium uppercase tracking-wide text-sm">
-            {{user?.username || 'Cargando...' }}
+            {{user?.username || 'HEADER.LOADING' | translate }}
           </span>
           <ion-icon name="chevron-down-outline" class="text-[#4A6356] text-lg transition-transform" [class.rotate-180]="menuOpen">
           </ion-icon>
@@ -62,60 +62,60 @@
       @if (user){
 
       <div class="p-4 flex flex-col gap-1">
-        <span class="font-lato text-lg font-bold">Perfil</span>
-        <span class="text-xs border-b border-[#2E473B] pb-1"> Nivel Escolar: {{user?.level}} </span>
+        <span class="font-lato text-lg font-bold">{{'HEADER.LOGIN_MENU.PROFILE' | translate}}</span>
+        <span class="text-xs border-b border-[#2E473B] pb-1"> {{'HEADER.LOGIN_MENU.SCHOOL_LEVEL' | translate}} {{user?.level}} </span>
       </div>
       <button class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="notifications-outline"></ion-icon>Notificaciones
+        <ion-icon name="notifications-outline"></ion-icon>{{'HEADER.LOGIN_MENU.NOTIFICATIONS' | translate}}
       </button>
 
       <button routerLink="/me/summaries" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="book-outline"></ion-icon>Mis resúmenes
+        <ion-icon name="book-outline"></ion-icon>{{'HEADER.LOGIN_MENU.MY_RESUME' | translate}}
       </button>
 
       <button routerLink="/me/reviews" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="chatbox-ellipses-outline"></ion-icon>Mis reseñas
+        <ion-icon name="chatbox-ellipses-outline"></ion-icon>{{'HEADER.LOGIN_MENU.MY_REVIEW' | translate}}
       </button>
 
       <hr class="border-[#2E473B44] my-2">
 
-      <button class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="language-outline"></ion-icon>Idioma: Español
+      <button (click)="openLanguageSelector()" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
+        <ion-icon name="language-outline"></ion-icon>{{'HEADER.LOGIN_MENU.LANGUAGE' | translate}} {{currentLanguage}}
       </button>
 
       <button class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="help-circle-outline"></ion-icon>Ayuda
+        <ion-icon name="help-circle-outline"></ion-icon>{{'HEADER.LOGIN_MENU.HELP' | translate}}
       </button>
 
       <button class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="settings-outline"></ion-icon>Ajustes
+        <ion-icon name="settings-outline"></ion-icon>{{'HEADER.LOGIN_MENU.SETTINGS' | translate}}
       </button>
 
       @if (user.role === "admin"){
 
       <button (click)="panelAdmin()" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="lock-closed-outline"></ion-icon>Panel Admin
+        <ion-icon name="lock-closed-outline"></ion-icon>{{'HEADER.LOGIN_MENU.ADMIN' | translate}}
       </button>
       }
 
       <button (click)="onLogout()" class="flex items-center gap-3 p-3 py-2 mt-2 font-bold hover: text-red-600 transition-colors text-sm">
-        <ion-icon name="log-out-outline"></ion-icon>Cerrar sesión
+        <ion-icon name="log-out-outline"></ion-icon>{{'HEADER.LOGIN_MENU.LOGOUT' | translate}}
       </button>
 
       } @else {
         <div class="p-4 border-b border-[#2E47B11] bg-[#2E47B08]">
 
-          <span class="font-lato text-sm font-bold uppercase tracking-wider">Bienvenido</span>
+          <span class="font-lato text-sm font-bold uppercase tracking-wider">{{'HEADER.LOGOUT_MENU.WELCOME' | translate}}</span>
 
           <button (click)="navigateRegister(); menuOpen = false" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
 
-            <ion-icon name="person-add-outline"></ion-icon> Registrarse / Iniciar sesión
+            <ion-icon name="person-add-outline"></ion-icon> {{'HEADER.LOGOUT_MENU.LOGIN' | translate}}
 
           </button>
 
           <button (click)="backHome(); menuOpen = false" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
 
-            <ion-icon name="home-outline"></ion-icon> Ir al inicio
+            <ion-icon name="home-outline"></ion-icon> {{'HEADER.LOGOUT_MENU.START' | translate}}
 
           </button>
 

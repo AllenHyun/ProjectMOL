@@ -89,7 +89,82 @@
     }
   },
   "BOOK-D": {
-
+    "ADD_LIST": "Añadir a lista",
+    "READ": "Marcar como leído",
+    "WRITE_RESUME": "Escribir resumen",
+    "WRITE_REVIEW": "Escribir reseña",
+    "AUTHOR": "Autor: ",
+    "EDITION": "Edición: ",
+    "TAGS": "Tags: ",
+    "LANGUAGE": "Idioma: ",
+    "RATING": "Valoración: ",
+    "RESUME": {
+      "TITLE": "Resúmenes",
+      "LISTEN": "Escuchar",
+      "EMPTY": "Aún no hay resúmenes",
+      "EMPTY_FIRST": "Sé el primero en añadir",
+      "MORE": "Ver más resúmenes",
+      "SEE_MORE": "Ver más...",
+      "SEE_LESS": "Ver menos..."
+    },
+    "REVIEWS": {
+      "TITLE": "Reseñas de lectores",
+      "BEST": "Lo mejor",
+      "WORST": "Lo peor",
+      "EMPTY": "Este libro aún no tiene críticas. Sé el primero en opinar",
+      "SEE_MORE": "Ver todas las reseñas"
+    },
+    "LOAD": "Abriendo el libro requerido, puede tardar unos segundos...",
+    "RESUME_MODAL": {
+      "TITLE": "Nuevo Resumen",
+      "PLACEHOLDER": "Escribe aquí tu resumen..."
+    },
+    "REVIEW_MODAL": {
+      "TITLE": "Escribir Críticas",
+      "RATING": "Puntuación (1-5)",
+      "OPINION": "Tu opinión",
+      "OPINION_PLACEHOLDER": "¿Qué te ha parecido la obra?",
+      "PROS": "Pros",
+      "PROS_PLACEHOLDER": "Ágil, intrigantes...",
+      "COS": "Contras",
+      "COS_PLACEHOLDER": "Final previsible..."
+    }
+  },
+  "ADMIN": {
+    "TITLE": "Panel Admin"
+  },
+  "FOOTER": {
+    "WHO": "¿Quiénes somos?",
+    "BLOG": "Blog",
+    "HELP": "Ayuda",
+    "CONTACT": "Contacto",
+    "COPYRIGHT": "Copyright • Project M.O.L - Todos los derechos reservados"
+  },
+  "HEADER": {
+    "TITLE": "PROJECT M.O.L",
+    "PLACEHOLDER": "Descubre...",
+    "START": "Inicio",
+    "RESUME": "Resúmenes",
+    "REVIEW": "Reseñas",
+    "REGISTER": "Registrarse",
+    "LOADING": "Cargando...",
+    "LOGIN_MENU": {
+      "PROFILE": "Perfil",
+      "SCHOOL_LEVEL": "Nivel Escolar: ",
+      "NOTIFICATIONS": "Notificaciones",
+      "MY_RESUME": "Mis resúmenes",
+      "MY_REVIEW": "Mis reseñas",
+      "LANGUAGE": "Idioma: ",
+      "HELP": "Ayuda",
+      "SETTINGS": "Ajustes",
+      "ADMIN": "Panel Admin",
+      "LOGOUT": "Cerrar sesión"
+    },
+    "LOGOUT_MENU": {
+      "WELCOME": "Bienvenido",
+      "LOGIN": "Registrarse / Iniciar sesión",
+      "START": "Ir al inicio"
+    }
   }
 }
 

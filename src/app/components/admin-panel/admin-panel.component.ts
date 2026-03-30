@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule, TranslatePipe]
 })
 export class AdminPanelComponent  implements OnInit {
 

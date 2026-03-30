@@ -1,9 +1,9 @@
 import {Component, OnInit, Input, inject} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
+import {ActionSheetController, IonicModule} from "@ionic/angular";
 import {
   menu, chevronDownOutline, personOutline,
   notificationsOutline, bookOutline, languageOutline, helpCircleOutline,
-  settingsOutline, logOutOutline, person, lockClosedOutline, chatboxEllipsesOutline, homeOutline, documentTextOutline, personAddOutline
+  settingsOutline, logOutOutline, person, lockClosedOutline, chatboxEllipsesOutline, homeOutline, documentTextOutline, personAddOutline,
 } from "ionicons/icons";
 import {addIcons} from "ionicons";
 import {Router, RouterLink} from "@angular/router";
@@ -11,6 +11,7 @@ import {Auth, onAuthStateChanged, authState} from "@angular/fire/auth";
 import {User} from "../../models/user";
 import {doc, docData, Firestore} from "@angular/fire/firestore";
 import {CommonModule} from "@angular/common";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-header',
@@ -21,6 +22,7 @@ import {CommonModule} from "@angular/common";
     IonicModule,
     CommonModule,
     RouterLink,
+    TranslatePipe,
   ]
 })
 export class HeaderComponent  implements OnInit {
@@ -30,6 +32,14 @@ export class HeaderComponent  implements OnInit {
   private auth = inject(Auth);
   public menuOpen: boolean = false;
   private firestore = inject(Firestore);
+
+  private translate = inject(TranslateService);
+  private actionSheet = inject(ActionSheetController);
+  public languages = [
+    {code: 'es', name: 'Español'},
+    {code: 'en', name: 'English'},
+    {code: 'fr', name: 'Français'},
+  ]
 
   constructor() {
     addIcons({menu,
@@ -91,4 +101,43 @@ export class HeaderComponent  implements OnInit {
   async panelAdmin(){
     this.router.navigate(['/book-management']);
   }
+
+  changeLanguage(){
+    const nextLang = this.translate.currentLang === 'es' ? 'en' : 'es';
+    this.translate.use(nextLang);
+    localStorage.setItem('language', nextLang);
+  }
+
+  async openLanguageSelector(){
+    const button = this.languages.map(lang => ({
+      text: lang.name,
+      handler: () => {
+        this.setLanguage(lang.code);
+      }
+    }));
+    button.push({
+      text: 'Cancelar',
+      role: 'cancel',
+      handler: () => {}
+    } as any);
+    const action = await this.actionSheet.create({
+      header: "Seleccionar un idioma / Select language",
+      buttons: button
+    });
+    await action.present();
+  }
+
+  setLanguage(langCode: string){
+    this.translate.use(langCode);
+    localStorage.setItem('language', langCode);
+    this.menuOpen = false;
+  }
+
+  get currentLanguage(): string{
+    const currentLang = this.translate.currentLang || 'es';
+    const language = this.languages.find(lang => lang.code === currentLang);
+    return language ? language.name : 'Español';
+  }
+
+
 }
