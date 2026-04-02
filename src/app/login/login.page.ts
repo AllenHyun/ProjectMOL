@@ -25,7 +25,7 @@ import {
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from "../components/header/header.component";
 import { FooterComponent } from "../components/footer/footer.component";
-import { Router } from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import { doc, docData, Firestore, getDoc, setDoc } from "@angular/fire/firestore";
 import { User } from "../models/user";
 import {AuthError} from "../services/auth-error";
@@ -36,7 +36,7 @@ import {TranslatePipe} from "@ngx-translate/core";
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, IonCard, IonCardTitle, IonCardContent, IonInput, IonIcon, TranslatePipe]
+  imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, IonCard, IonCardTitle, IonCardContent, IonInput, IonIcon, TranslatePipe, RouterLink]
 })
 export class LoginPage implements OnInit {
   private auth = inject(Auth);
@@ -104,7 +104,7 @@ export class LoginPage implements OnInit {
         }
 
         console.log("Bienvenid@ de nuevo! ", user.email);
-        this.router.navigate(['/home']);
+        this.router.navigate(['/first-page']);
       } else {
         await signOut(this.auth);
         alert("Debes verificar primero tu cuenta.")
@@ -139,7 +139,7 @@ export class LoginPage implements OnInit {
         await setDoc(userDocRef, newUser, { merge: true });
       }
       console.log("Bienvenid@ de nuevo! ", user.email);
-      this.router.navigate(['/home']);
+      this.router.navigate(['/first-page']);
     }
     catch (error: any) {
       const msg = this.errorService.getErrorMessage(error.code);

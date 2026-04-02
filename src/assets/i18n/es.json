@@ -9,7 +9,9 @@
     "PASSWORD_LABEL": "Contraseña",
     "PASSWORD_PLACEHOLDER": "**********",
     "SUBMIT_BTN": "Iniciar sesión",
-    "FORGOT_PASSWORD": "¿Has olvidado tu contraseña?"
+    "FORGOT_PASSWORD": "¿Has olvidado tu contraseña?",
+    "NO_ACCOUNT": "¿Eres nuevo en Project M.O.L?",
+    "NA_REDIRECT": "Crear cuenta nueva"
   },
 
   "REVIEWS": {

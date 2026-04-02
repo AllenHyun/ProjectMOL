@@ -11,6 +11,7 @@
         <h1 class="text-white text-8xl font-['Cormorant_Garamond'] leading-tight p-[70px]">
           {{ 'LOGIN.WELCOME' | translate }}
         </h1>
+
       </div>
       <div class="w-full md:w-1/2 p-[70px]">
         <ion-card class="bg-white rounded-2xl p-8 shadow-2xl">
@@ -60,9 +61,20 @@
               {{ 'LOGIN.SUBMIT_BTN' | translate }}
             </button>
 
-            <button (click)="forgotPassword()" class="items-start p-3 text-sm text-gray-600 hover:underline hover:text-[#2E473B] transition-all cursor-pointer">
-              {{ 'LOGIN.FORGOT_PASSWORD' | translate }}
-            </button>
+            <div class="flex justify-center w-full mt-2">
+
+              <button (click)="forgotPassword()" class=" text-center p-3 text-sm text-gray-600 hover:underline hover:text-[#2E473B] transition-all cursor-pointer">
+                {{ 'LOGIN.FORGOT_PASSWORD' | translate }}
+              </button>
+
+            </div>
+
+            <p class="text-sm text-gray-600 text-center font-lato">{{ 'LOGIN.NO_ACCOUNT' | translate }}
+
+              <span [routerLink]="'/register'" class="block mt-2 text-[#2E473B] font-bold hover:underline cursor-pointer text-base text-center">{{'LOGIN.NA_REDIRECT' | translate}}</span>
+
+            </p>
+
           </ion-card-content>
         </ion-card>
       </div>
