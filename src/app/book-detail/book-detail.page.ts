@@ -14,7 +14,7 @@ import {
 } from '@angular/fire/firestore';
 import {IonContent, IonIcon, IonModal} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { star, starOutline, playOutline, thumbsUp, thumbsDown } from 'ionicons/icons';
+import { star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline } from 'ionicons/icons';
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import { FormsModule } from '@angular/forms';
@@ -70,7 +70,8 @@ export class BookDetailPage implements OnInit {
   }
 
   constructor() {
-    addIcons({ star, starOutline, playOutline, thumbsUp, thumbsDown });
+    addIcons( {
+      star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline });
   }
 
   ngOnInit() {

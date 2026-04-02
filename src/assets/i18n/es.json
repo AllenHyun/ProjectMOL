@@ -141,7 +141,8 @@
       "PROS_PLACEHOLDER": "Ágil, intrigantes...",
       "COS": "Contras",
       "COS_PLACEHOLDER": "Final previsible..."
-    }
+    },
+    "BACK": "Volver"
   },
   "ADMIN": {
     "TITLE": "Panel Admin"
