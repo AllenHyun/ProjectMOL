@@ -212,6 +212,23 @@
     "RECOMMEND": "Recomendaciones",
     "REVIEW": "Reseñas destacadas",
     "EXAMS": "Para exámenes"
+  },
+  "SUMMARY-D": {
+    "TITLE": "Resumen completo",
+    "BUTTONS": {
+      "SAVE": "Guardar",
+      "REPORT": "Reportar",
+      "USEFUL": "Útil",
+      "USELESS": "No útil"
+    },
+    "AUTHOR": "Autor del resumen: ",
+    "YEAR": "Edición: ",
+    "TAGS": "Tags: ",
+    "LANGUAGE": "Idioma: ",
+    "RATING": "Valoración",
+    "SUMMARY": "Resumen",
+    "BACK": "Volver al libro",
+    "LOAD": "Abriendo el libro requerido, puede tardar unos segundos..."
   }
 }
 

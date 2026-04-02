@@ -9,13 +9,14 @@ import {doc, Firestore, getDoc} from "@angular/fire/firestore";
 import {Summary} from "../models/summary";
 import { star, starOutline, playOutline, bookmarkOutline, shareOutline, flagOutline, thumbsUpOutline, thumbsDownOutline, arrowBackOutline } from 'ionicons/icons';
 import {addIcons} from "ionicons";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-summary-detail',
   templateUrl: './summary-detail.page.html',
   styleUrls: ['./summary-detail.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonIcon, RouterLink]
+  imports: [IonContent, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonIcon, RouterLink, TranslatePipe]
 })
 export class SummaryDetailPage implements OnInit {
 
@@ -68,7 +69,7 @@ export class SummaryDetailPage implements OnInit {
       const bookSnap = await getDoc(bookRef);
 
       if (bookSnap.exists()) {
-        this.book = bookSnap.data();
+        this.book = {...bookSnap.data(), id: bookSnap.id};
       }
     } catch (error) {
       console.error("Error al cargar libro: ", error);

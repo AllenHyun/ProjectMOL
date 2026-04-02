@@ -9,7 +9,7 @@
         <div class="flex items-baseline justify-center gap-4 mb-16">
 
 
-        <h1 class="text-center text-5xl font-bold font-['Cormorant_Garamond'] uppercase tracking-tighter mb-16 text-[#1A1614]">Resumen completo</h1>
+        <h1 class="text-center text-5xl font-bold font-['Cormorant_Garamond'] uppercase tracking-tighter mb-16 text-[#1A1614]">{{'SUMMARY-D.TITLE'|translate}}</h1>
         <span class="text-center text-2xl font-bold font-['Cormorant_Garamond'] uppercase tracking-tighter mb-16 text-[#1A1614]">{{summary?.authorId}}</span>
 
         </div>
@@ -28,23 +28,23 @@
 
               <div class="flex flex-wrap justify-end gap-4 mb-12">
 
-                <button class="px-6 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#FDFBF7] transition-all"> Guardar </button>
-                <button class="px-6 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#FDFBF7] transition-all"> Reportar </button>
-                <button class="px-6 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#FDFBF7] transition-all"> Útil </button>
-                <button class="px-6 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#FDFBF7] transition-all"> No útil </button>
+                <button class="px-6 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'SUMMARY-D.BUTTONS.SAVE'|translate}} </button>
+                <button class="px-6 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'SUMMARY-D.BUTTONS.REPORT'|translate}} </button>
+                <button class="px-6 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'SUMMARY-D.BUTTONS.USEFUL'|translate}} </button>
+                <button class="px-6 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'SUMMARY-D.BUTTONS.USELESS'|translate}} </button>
 
               </div>
 
               <div class="space-y-3 font-lato text-sm text-[#1A1614] border-b border-[#C5A059]/20 pb-6">
 
-                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Autor del resumen: </span> {{summary?.authorId}}</p>
-                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Edición: </span> {{book.year}}</p>
-                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Tags: </span> {{book.tags.join(', ')}} </p>
-                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> Idioma: </span> {{ book.language}}</p>
+                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'SUMMARY-D.AUTHOR'|translate}} </span> {{summary?.authorId}}</p>
+                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'SUMMARY-D.YEAR'|translate}} </span> {{book.year}}</p>
+                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'SUMMARY-D.TAGS'|translate}} </span> {{book.tags.join(', ')}} </p>
+                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'SUMMARY-D.LANGUAGE'|translate}} </span> {{ book.language}}</p>
 
                 <div class="flex items-center gap-1 mt-4">
 
-                  <span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4">Valoración: </span>
+                  <span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4">{{'SUMMARY-D.RATING'|translate}}</span>
                   <div class="flex text-[#FFD700] text-lg">
 
                     <ion-icon name="star"></ion-icon>
@@ -57,7 +57,7 @@
 
               <div class="flex justify-between items-center mb-6">
 
-                <h2 class="text-[#1A1614] text-4xl font-['Cormorant_Garamond']">Resumen</h2>
+                <h2 class="text-[#1A1614] text-4xl font-['Cormorant_Garamond']">{{'SUMMARY-D.SUMMARY'|translate}}</h2>
 
               </div>
 
@@ -71,7 +71,7 @@
 
                 <button [routerLink]="['/book-detail', book.id]" class="text-[#C5A059] text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 hover:translate-x-[-5px] transition-transform">
 
-                  <ion-icon name="arrow-back-outline"></ion-icon> Volver al libro
+                  <ion-icon name="arrow-back-outline"></ion-icon> {{'SUMMARY-D.BACK'|translate}}
 
                 </button>
 
@@ -86,7 +86,7 @@
         <div class="flex flex-col items-center justify-center py-40 gap-4">
 
           <div class="w-12 h-12 border-4 border-[#C5A059] border-t-transparent rounded-full animate-spin"></div>
-          <p class="font-lato italic text-2xl"> Abriendo el libro requerido, puede tardar unos segundos...</p>
+          <p class="font-lato italic text-2xl"> {{'SUMMARY-D.LOAD'|translate}}</p>
 
         </div>
       }
