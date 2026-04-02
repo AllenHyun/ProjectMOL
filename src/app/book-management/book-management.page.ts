@@ -111,7 +111,7 @@ export class BookManagementPage implements OnInit {
       const booksCollection = collection(this.firestore, 'books');
       await addDoc(booksCollection, {
         ...finalBook,
-        createAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
         ratingAvg: 0,
         ratingCount: 0,
         sumaryCount: 0

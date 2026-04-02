@@ -104,7 +104,6 @@
   },
   "BOOK-D": {
     "ADD_LIST": "Añadir a lista",
-    "READ": "Marcar como leído",
     "WRITE_RESUME": "Escribir resumen",
     "WRITE_REVIEW": "Escribir reseña",
     "AUTHOR": "Autor: ",
@@ -206,6 +205,13 @@
       "COS": "Contras",
       "COS_PLACEHOLDER": "Final previsible..."
     }
+  },
+  "FIRST_PAGE": {
+    "TITLE": "Encuentra los mejores resúmenes. Domina hoy cualquier materia",
+    "NEW": "Novedades",
+    "RECOMMEND": "Recomendaciones",
+    "REVIEW": "Reseñas destacadas",
+    "EXAMS": "Para exámenes"
   }
 }
 

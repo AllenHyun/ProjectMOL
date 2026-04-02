@@ -12,6 +12,7 @@ import {User} from "../../models/user";
 import {doc, docData, Firestore} from "@angular/fire/firestore";
 import {CommonModule} from "@angular/common";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
+import {of, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-header',
@@ -61,14 +62,18 @@ export class HeaderComponent  implements OnInit {
   }
 
   ngOnInit() {
-    authState(this.auth).subscribe((authUser) => {
-      if (authUser) {
-        const userDocRef = doc(this.firestore, `users/${authUser.uid}`);
-        docData(userDocRef).subscribe((data) => {
-          this.user = data as User;
-        });
-      } else {
-        this.user = null;
+    authState(this.auth).pipe(
+      switchMap(authUser => {
+        if (authUser) {
+          const userDocRef = doc(this.firestore, `users/${authUser.uid}`);
+          return docData(userDocRef);
+        } else {
+          return of(null);
+        }
+      })
+    ).subscribe((data) => {
+      this.user = data as User;
+      if (!data) {
         this.menuOpen = false;
       }
     });
@@ -85,8 +90,8 @@ export class HeaderComponent  implements OnInit {
   async onLogout(){
     try {
       this.menuOpen = false;
-      await this.auth.signOut();
       this.user = null;
+      await this.auth.signOut();
       this.router.navigate(['/login']);
     } catch (error) {
       console.log("Ha ocurrido un problema al intentar hacer logout, vuelva a intentarlo");

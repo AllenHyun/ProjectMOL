@@ -15,7 +15,7 @@
 
 
     <ion-buttons slot="end" class="hidden md:flex gap-6">
-      <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">{{'HEADER.START' | translate}}</ion-button>
+      <ion-button [routerLink]="['/first-page']" class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">{{'HEADER.START' | translate}}</ion-button>
       <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">{{'HEADER.RESUME' | translate}}</ion-button>
       <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">{{'HEADER.REVIEW' | translate}}</ion-button>
     </ion-buttons>

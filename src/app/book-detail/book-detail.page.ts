@@ -1,10 +1,20 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ActivatedRoute, RouterLink} from '@angular/router';
-import {Firestore, doc, getDoc, collection, query, where, collectionData, addDoc} from '@angular/fire/firestore';
+import {
+  Firestore,
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  collectionData,
+  addDoc,
+  updateDoc, setDoc
+} from '@angular/fire/firestore';
 import {IonContent, IonIcon, IonModal} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { star, starOutline, playOutline } from 'ionicons/icons';
+import { star, starOutline, playOutline, thumbsUp, thumbsDown } from 'ionicons/icons';
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import { FormsModule } from '@angular/forms';
@@ -12,6 +22,7 @@ import {Summary} from '../models/summary';
 import {Auth} from "@angular/fire/auth";
 import { Review } from '../models/review';
 import {TranslatePipe} from "@ngx-translate/core";
+import {Vote} from "../models/vote";
 
 @Component({
   selector: 'app-book-detail',
@@ -46,6 +57,8 @@ export class BookDetailPage implements OnInit {
 
   public showAllReviews = false;
 
+  public userVote: number | null = null;
+
   get visibleReviews(): Review[] {
     const sortedReviews = [...this.reviews].sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     return this.showAllReviews ? sortedReviews: sortedReviews.slice(0,3);
@@ -57,7 +70,7 @@ export class BookDetailPage implements OnInit {
   }
 
   constructor() {
-    addIcons({ star, starOutline, playOutline });
+    addIcons({ star, starOutline, playOutline, thumbsUp, thumbsDown });
   }
 
   ngOnInit() {
@@ -79,6 +92,7 @@ export class BookDetailPage implements OnInit {
         this.book.id = id;
         this.getSummaries(id);
         this.getReviews(id);
+        this.checkUserVote(id);
         console.log("Datos cargados correctamente:", this.book);
       } else {
         console.error("No se encontró el documento en Firebase con ID:", id);
@@ -194,4 +208,70 @@ export class BookDetailPage implements OnInit {
       this.showModal = false;
     }
   }
+
+  async rateBook(value: number){
+    const user = this.auth.currentUser;
+
+    if (!user || !this.book){
+      console.warn("Debes estar logueado para votar");
+      return;
+    }
+
+    if(this.userVote === value){
+      return;
+    }
+
+    const voteId = `${user.uid}_${this.book.id}`;
+    const voteRef = doc(this.firestore, 'bookVotes', voteId);
+
+    let currentCount = this.book.ratingCount || 0;
+    let currentAvg = this.book.ratingAvg || 0;
+    let newCount = currentCount;
+    let newAvg = currentAvg;
+
+    if (this.userVote === null){
+      newCount = currentCount + 1;
+      newAvg = ((currentAvg*currentCount)+value)/newCount;
+    } else{
+      newAvg = ((currentAvg*currentCount)-this.userVote + value)/currentCount;
+    }
+
+    try {
+      await setDoc(voteRef, {
+        userId: user.uid,
+        bookId: this.book.id,
+        value: value,
+        updatedAt: new Date().toISOString()
+      });
+      const bookRef = doc(this.firestore, 'books', this.book.id);
+      await updateDoc(bookRef, {
+        ratingCount: newCount,
+        ratingAvg: newAvg,
+      });
+
+      this.book.ratingCount = newCount;
+      this.book.ratingAvg = newAvg;
+      this.userVote = value;
+      console.log('Valoración actualizada con éxito');
+    } catch (error) {
+      console.error("Error al actualizar la valoración: ", error);
+    }
+  }
+
+  async checkUserVote(bookId: string){
+    const user = this.auth.currentUser;
+    if(!user){
+      return;
+    }
+
+    const voteId = `${user.uid}_${bookId}`;
+    const voteRef = doc(this.firestore, 'booksVotes', voteId);
+    const voteSnap = await getDoc(voteRef)
+
+    if (voteSnap.exists()){
+      const data = voteSnap.data() as Vote;
+      this.userVote = data.value;
+    }
+  }
+
 }

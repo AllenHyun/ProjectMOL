@@ -77,7 +77,7 @@ export class LoginPage implements OnInit {
     });
   }
 
-  // Si el usuario inicia sesión con Google/Facebook/Apple, directamente le creará la cuenta si no existe
+  // Si el usuario inicia sesión con Google, directamente le creará la cuenta si no existe
   // SI el usuario añade directamente el correo y la contraseña, el sistema mirará si tiene cuenta o no
 
   async onLogin() {

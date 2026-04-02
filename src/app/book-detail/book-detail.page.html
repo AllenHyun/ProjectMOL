@@ -20,34 +20,63 @@
           <div class="lg:col-span-7 flex flex-col gap-8">
             <div class="bg-white/50 p-8 border border-white shadow-sm">
 
-            <div class="flex flex-wrap justify-end gap-4 mb-12">
+              <div class="flex flex-wrap justify-end gap-4 mb-12">
 
-              <button class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.ADD_LIST'|translate}} </button>
-              <button class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.READ'|translate}} </button>
-              <button (click)="showModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.WRITE_RESUME'|translate}} </button>
-              <button (click)="showReviewModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.WRITE_REVIEW'|translate}} </button>
+                <button class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.ADD_LIST'|translate}} </button>
+                <button (click)="showModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.WRITE_RESUME'|translate}} </button>
+                <button (click)="showReviewModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.WRITE_REVIEW'|translate}} </button>
 
-            </div>
+              </div>
 
-            <div class="space-y-3 font-lato text-sm text-[#1A1614] border-b border-[#C5A059]/20 pb-6">
+              <div class="space-y-3 font-lato text-sm text-[#1A1614] border-b border-[#C5A059]/20 pb-6">
 
-              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'BOOK-D.AUTHOR' | translate}} </span> {{book.authors.join(', ')}}</p>
-              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'BOOK-D.EDITION' | translate}} </span> {{book.year}}</p>
-              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'BOOK-D.TAGS' | translate}} </span> {{book.tags.join(', ')}} </p>
-              <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'BOOK-D.LANGUAGE' | translate}} </span> {{ book.language}}</p>
+                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'BOOK-D.AUTHOR' | translate}} </span> {{book.authors.join(', ')}}</p>
+                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'BOOK-D.EDITION' | translate}} </span> {{book.year}}</p>
+                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'BOOK-D.TAGS' | translate}} </span> {{book.tags.join(', ')}} </p>
+                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'BOOK-D.LANGUAGE' | translate}} </span> {{ book.language}}</p>
 
-              <div class="flex items-center gap-1 mt-4">
+                <div class="flex flex-wrap items-center gap-y-4 mt-4">
 
-                <span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4">{{'BOOK-D.RATING' | translate}}</span>
-                <div class="flex text-[#FFD700] text-lg">
+                  <span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4">{{'BOOK-D.RATING' | translate}}</span>
 
-                  <ion-icon name="star"></ion-icon>
+                  <div class="flex text-[#FFD700] text-lg mr-4">
+
+                    @for (i of [1,2,3,4,5]; track i) {
+                      <ion-icon [name]="i <= (book.ratingAvg || 0) ? 'star' : 'star-outline'"></ion-icon>
+                    }
+
+                    <span class="ml-2 text-[#1A1614] text-xs font-bold self-center">
+
+                      {{book.ratingAvg | number:'1.1-1'}}
+
+                    </span>
+
+                  </div>
+
+                  <div class="flex gap-3 ml-2 border-l border-[#C5A059]/20 pl-4">
+
+                    <button (click)="rateBook(5)" class="flex items-center justify-center text-green-700 hover:scale-110 transition-transform" title="Me gusta">
+
+                      <ion-icon name="thumbs-up" class="text-xl"></ion-icon>
+
+                    </button>
+
+                    <div class="flex gap-3 ml-2 border-l border-[#C5A059]/20 pl-4">
+
+                      <button (click)="rateBook(1)" class="flex items-center justify-center text-red-700 hover:scale-110 transition-transform" title="No me gusta">
+
+                        <ion-icon name="thumbs-down" class="text-xl"></ion-icon>
+
+                      </button>
+
+                    </div>
+
+
+                  </div>
 
                 </div>
 
               </div>
-
-            </div>
 
               <div class="flex justify-between items-center mb-6">
 
@@ -75,7 +104,7 @@
                     <p class="text-sm text-[#1A1614] leading-relaxed text-justify font-lato" [class.line-clamp-4]="!expandedSummaries[res.id]">{{ res.structure?.tldr }}</p>
 
                     @if (res.structure?.tldr && res.structure.tldr.length > 280){
-                    <button (click)="$event.stopPropagation(); toggleSummary(res.id)" class="text-[#C5A059] text-[10px] font-bold uppercase tracking-widest mt-1 hover:underline">{{(expandedSummaries[res.id] ? 'BOOK-D.RESUME.SEE_LESS' : 'BOOK-D.RESUME.SEE_MORE') | translate}}</button>
+                      <button (click)="$event.stopPropagation(); toggleSummary(res.id)" class="text-[#C5A059] text-[10px] font-bold uppercase tracking-widest mt-1 hover:underline">{{(expandedSummaries[res.id] ? 'BOOK-D.RESUME.SEE_LESS' : 'BOOK-D.RESUME.SEE_MORE') | translate}}</button>
                     }
                   </div>
                 } @empty {
@@ -184,7 +213,7 @@
             </div>
 
           </div>
-          </div>
+        </div>
 
       } @else {
         <div class="flex flex-col items-center justify-center py-40 gap-4">
@@ -198,7 +227,7 @@
 
   </div>
 
-<app-footer></app-footer>
+  <app-footer></app-footer>
 
   <ion-modal [isOpen]="showModal" (didDismiss)="showModal = false">
 
