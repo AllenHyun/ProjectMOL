@@ -29,7 +29,7 @@ import {Router, RouterLink} from "@angular/router";
 import { doc, docData, Firestore, getDoc, setDoc } from "@angular/fire/firestore";
 import { User } from "../models/user";
 import {AuthError} from "../services/auth-error";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-login',
@@ -44,6 +44,7 @@ export class LoginPage implements OnInit {
   private alertCtrl = inject(AlertController);
   private firestore = inject(Firestore);
   private errorService = inject(AuthError);
+  private translate = inject(TranslateService);
   public user: User | null = null;
   email: string = '';
   password: string = '';
@@ -149,23 +150,23 @@ export class LoginPage implements OnInit {
 
   async forgotPassword() {
     const alert = await this.alertCtrl.create({
-      header: 'Restablecer contraseña',
-      message: 'Introduce tu correo electrónico para poder restablecer la contraseña',
+      header: this.translate.instant('LOGIN.FORGOT_PASSWORD_MODAL.HEADER'),
+      message: this.translate.instant('LOGIN.FORGOT_PASSWORD_MODAL.MESSAGE'),
       inputs: [
         {
           name: 'resetEmail',
           type: 'email',
-          placeholder: 'ejemplo@correo.com',
+          placeholder: this.translate.instant('LOGIN.FORGOT_PASSWORD_MODAL.PLACEHOLDER'),
           value: this.email,
         }
       ],
       buttons: [
         {
-          text: 'Cancelar',
+          text: this.translate.instant('LOGIN.FORGOT_PASSWORD_MODAL.CANCEL'),
           role: 'cancel',
         },
         {
-          text: 'Enviar enlace',
+          text: this.translate.instant('LOGIN.FORGOT_PASSWORD_MODAL.CONFIRM'),
           handler: (data) => {
             this.sendResetLink(data.resetEmail);
           }
@@ -177,13 +178,13 @@ export class LoginPage implements OnInit {
 
   async sendResetLink(email: string) {
     if (!email) {
-      alert("Introduce un correo válido");
+      alert(this.translate.instant('LOGIN.MESSAGES.INVALID_EMAIL'));
       return;
     }
 
     try {
       await sendPasswordResetEmail(this.auth, email);
-      alert("Correo enviado. Revisa tu bandeja de correo, puede estar en Spam.");
+      alert(this.translate.instant('LOGIN.MESSAGES.RESET_MAIL_SENT'));
     }
     catch (error: any) {
       const msg = this.errorService.getErrorMessage(error.code);

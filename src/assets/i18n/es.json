@@ -11,7 +11,18 @@
     "SUBMIT_BTN": "Iniciar sesión",
     "FORGOT_PASSWORD": "¿Has olvidado tu contraseña?",
     "NO_ACCOUNT": "¿Eres nuevo en Project M.O.L?",
-    "NA_REDIRECT": "Crear cuenta nueva"
+    "NA_REDIRECT": "Crear cuenta nueva",
+    "FORGOT_PASSWORD_MODAL": {
+      "HEADER": "Restablecer contraseña",
+      "MESSAGE": "Introduce tu correo electrónico para poder restablecer la contraseña",
+      "PLACEHOLDER": "ejemplo@correo.com",
+      "CANCEL": "Cancelar",
+      "CONFIRM": "Enviar enlace"
+    },
+    "MESSAGES": {
+      "INVALID_EMAIL": "Introduce un correo válido",
+      "RESET_MAIL_SENT": "Correo enviado. Revisa tu bandeja de correo, puede estar en Spam."
+    }
   },
 
   "REVIEWS": {
