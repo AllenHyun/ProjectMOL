@@ -94,7 +94,7 @@ export class MySummariesPage implements OnInit {
         const bookData = bookSnap.data();
         return {
           ...sum,
-          bookTitle: bookData ? bookData['title'] : 'Libro no encontrado',
+          bookTitle: bookData ? bookData['title'] : this.translate.instant('SUMMARIES.NOT_FOUND'),
           bookAuthor: bookData ? bookData['authors']?.join(', ') : '---'
         };
       }));

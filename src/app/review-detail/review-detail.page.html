@@ -26,9 +26,9 @@
 
               <div class="flex justify-between items-center mb-10 pb-6 border-b border-[#C5A059]/10">
 
-                <h2 class="text-2xl font-['Cormorant_Garamond'] text-[#1A1614] uppercase tracking-widest">Reseñas</h2>
+                <h2 class="text-2xl font-['Cormorant_Garamond'] text-[#1A1614] uppercase tracking-widest">{{'REVIEW-D.TITLE' | translate}}</h2>
 
-                <button (click)="showReviewModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all shadow-sm">Escribir reseña</button>
+                <button (click)="showReviewModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all shadow-sm">{{'REVIEW-D.CREATE' | translate}}</button>
 
 
               </div>
@@ -39,7 +39,7 @@
 
                   <button [routerLink]="['/book-detail', book.id]" class="text-[#C5A059] text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 hover:translate-x-[-5px] transition-transform">
 
-                    <ion-icon name="arrow-back-outline"></ion-icon> Volver al libro
+                    <ion-icon name="arrow-back-outline"></ion-icon> {{'REVIEW-D.BACK' | translate}}
 
                   </button>
 
@@ -81,7 +81,7 @@
                       @if (rev.pros && rev.pros.length > 0) {
                         <div class="flex flex-col gap-2">
 
-                          <span class="text-[10px] font-bold uppercase text-green-700 tracking-[0.2em]">Lo mejor</span>
+                          <span class="text-[10px] font-bold uppercase text-green-700 tracking-[0.2em]">{{'REVIEW-D.BEST' | translate}}</span>
 
                           <div class="flex flex-wrap gap-2">
 
@@ -97,7 +97,7 @@
                       @if (rev.cons && rev.cons.length > 0) {
                         <div class="flex flex-col gap-2">
 
-                          <span class="text-[10px] font-bold uppercase text-red-700 tracking-[0.2em]">Lo peor</span>
+                          <span class="text-[10px] font-bold uppercase text-red-700 tracking-[0.2em]">{{'REVIEW-D.WORST' | translate}}</span>
 
                           <div class="flex flex-wrap gap-2">
 
@@ -117,7 +117,7 @@
                 } @empty {
                   <div class="py-2 text-center">
 
-                    <p class="text-gray-500 italic font-lato text-lg">Aún no se han publicado críticas para esta obra</p>
+                    <p class="text-gray-500 italic font-lato text-lg">{{'REVIEW-D.EMPTY' | translate}}</p>
 
                   </div>
                 }
@@ -133,7 +133,7 @@
         <div class="flex flex-col items-center justify-center py-40 gap-4">
 
           <div class="w-12 h-12 border-4 border-[#C5A059] border-t-transparent rounded-full animate-spin"></div>
-          <p class="font-lato italic text-2xl"> Cargando reseñas de los lectores...</p>
+          <p class="font-lato italic text-2xl"> {{'REVIEW-D.LOAD' | translate}}</p>
 
         </div>
       }
@@ -149,13 +149,13 @@
 
       <div class="p-8 bg-white h-full flex flex-col gap-6 overflow-y-auto">
 
-        <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614] border-b border-[#C5A059]/20 pb-4">Escribir Crítica</h2>
+        <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614] border-b border-[#C5A059]/20 pb-4">{{'REVIEW-D.REVIEW_MODAL.TITLE' | translate}}</h2>
 
         <div class="flex flex-col gap-5">
 
           <div>
 
-            <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest"> Puntuación (1-5) </label>
+            <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest"> {{'REVIEW-D.REVIEW_MODAL.RATING' | translate}} </label>
 
             <input [(ngModel)]="newReview.rating" type="number" min="0" max="5" class="w-full p-3 border border-[#C5A059] outline-none text-white font-lato mt-1">
 
@@ -163,8 +163,8 @@
 
           <div>
 
-            <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest"> Tu opinión </label>
-            <textarea [(ngModel)]="newReview.text" rows="4" placeholder="¿Qué te ha ha parecido la obra?" class="w-full p-3 border border-[#C5A059] outline-none text-white font-lato mt-1"></textarea>
+            <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest"> {{'REVIEW-D.REVIEW_MODAL.OPINION' | translate}} </label>
+            <textarea [(ngModel)]="newReview.text" rows="4" placeholder="{{'REVIEW-D.REVIEW_MODAL.OPINION_PLACEHOLDER' | translate}}" class="w-full p-3 border border-[#C5A059] outline-none text-white font-lato mt-1"></textarea>
 
           </div>
 
@@ -172,15 +172,15 @@
 
             <div>
 
-              <label class="text-[10px] uppercase font-bold text-green-600 tracking-widest"> Pros </label>
-              <input [(ngModel)]="reviewProsInput" type="text" placeholder="Ágil, intrigantes..." class="w-full p-3 border border-green-200 outline-none text-white font-lato mt-1 text-xs">
+              <label class="text-[10px] uppercase font-bold text-green-600 tracking-widest"> {{'REVIEW-D.REVIEW_MODAL.PROS' | translate}} </label>
+              <input [(ngModel)]="reviewProsInput" type="text" placeholder="{{'REVIEW-D.REVIEW_MODAL.PROS_PLACEHOLDER' | translate}}" class="w-full p-3 border border-green-200 outline-none text-white font-lato mt-1 text-xs">
 
             </div>
 
             <div>
 
-              <label class="text-[10px] uppercase font-bold text-red-600 tracking-widest"> Contras </label>
-              <input [(ngModel)]="reviewConsInput" type="text" placeholder="Final previsible..." class="w-full p-3 border border-red-200 outline-none text-white font-lato mt-1 text-xs">
+              <label class="text-[10px] uppercase font-bold text-red-600 tracking-widest"> {{'REVIEW-D.REVIEW_MODAL.COS' | translate}} </label>
+              <input [(ngModel)]="reviewConsInput" type="text" placeholder="{{'REVIEW-D.REVIEW_MODAL.COS_PLACEHOLDER' | translate}}" class="w-full p-3 border border-red-200 outline-none text-white font-lato mt-1 text-xs">
 
             </div>
 
@@ -190,8 +190,8 @@
 
         <div class="flex gap-4 mt-auto pt-6">
 
-          <button (click)="showReviewModal = false" class="flex-1 py-3 border bg-[#2E473B] border-gray-300 uppercase text-[10px] font-bold"> Cancelar </button>
-          <button (click)="saveReview()" class="flex-1 py-3 bg-[#2E473B]  uppercase text-white text-[10px] font-bold shadow-md"> Publicar Reseña </button>
+          <button (click)="showReviewModal = false" class="flex-1 py-3 border bg-[#2E473B] border-gray-300 uppercase text-[10px] font-bold"> {{'COMMON.CANCEL' | translate}} </button>
+          <button (click)="saveReview()" class="flex-1 py-3 bg-[#2E473B]  uppercase text-white text-[10px] font-bold shadow-md"> {{'COMMON.PUBLISH' | translate}} </button>
 
         </div>
 

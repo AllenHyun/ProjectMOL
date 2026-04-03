@@ -27,7 +27,7 @@ import {addIcons} from "ionicons";
 import {logoGoogle} from "ionicons/icons";
 import {Firestore, doc, setDoc} from "@angular/fire/firestore";
 import {AuthError} from "../services/auth-error";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-register',
@@ -41,6 +41,7 @@ export class RegisterPage implements OnInit {
   private router = inject(Router);
   private firestore = inject(Firestore);
   private errorService = inject(AuthError);
+  private translate = inject(TranslateService);
   email: string = '';
   password: string = '';
   selectLevel: 'ESO' | 'Uni' | 'Posgrado' = 'ESO';
@@ -76,7 +77,7 @@ export class RegisterPage implements OnInit {
       await sendEmailVerification(userCredential.user);
       this.checkVerificationStatus(userCredential.user);
 
-      alert("Cuenta creada. Por favor, revise su correo para verificarla antes de iniciar sesión. Puede que se encuentre en Spam");
+      alert(this.translate.instant('REGISTER.ACCOUNT_CREATED'));
     }
     catch(error: any){
       const msg = this.errorService.getErrorMessage(error.code);

@@ -2,20 +2,54 @@
   "LOGIN": {
     "WELCOME": "Welcome to Project M.O.L!",
     "TITLE": "Log in to your account",
-    "GOOGLE_BTN": "Log in with Google",
+    "GOOGLE_BTN": "Sign in with Google",
     "OR_SEPARATOR": "or",
-    "EMAIL_LABEL": "Email",
+    "EMAIL_LABEL": "Email address",
     "EMAIL_PLACEHOLDER": "example@email.com",
     "PASSWORD_LABEL": "Password",
     "PASSWORD_PLACEHOLDER": "**********",
-    "SUBMIT_BTN": "Log in",
-    "FORGOT_PASSWORD": "Forgot your password?"
+    "SUBMIT_BTN": "Sign In",
+    "FORGOT_PASSWORD": "Forgot your password?",
+    "NO_ACCOUNT": "New to Project M.O.L?",
+    "NA_REDIRECT": "Create a new account",
+    "FORGOT_PASSWORD_MODAL": {
+      "HEADER": "Reset Password",
+      "MESSAGE": "Enter your email address to receive a password reset link",
+      "PLACEHOLDER": "example@email.com",
+      "CANCEL": "Cancel",
+      "CONFIRM": "Send Link"
+    },
+    "MESSAGES": {
+      "INVALID_EMAIL": "Please enter a valid email",
+      "RESET_MAIL_SENT": "Email sent. Please check your inbox (and your Spam folder)."
+    },
+    "VERIFY": "You must verify your account first."
   },
 
   "REVIEWS": {
-    "MY_REVIEWS": "My reviews",
+    "MY_REVIEWS": "My Reviews",
     "PUBLISHED": "Published",
-    "LAST_MOD": "Last modified"
+    "LAST_MOD": "Last modified",
+    "REVIEW": "Review: ",
+    "REVIEW_MODAL": {
+      "TITLE": "Write Review",
+      "RATING": "Rating (1-5)",
+      "OPINION": "Your opinion",
+      "OPINION_PLACEHOLDER": "What did you think of the book?",
+      "PROS": "Pros",
+      "PROS_PLACEHOLDER": "Fast-paced, intriguing...",
+      "COS": "Cons",
+      "COS_PLACEHOLDER": "Predictable ending..."
+    },
+    "WRITE_REVIEW": "Write a review",
+    "SAVE": {
+      "HEADER": "Attention",
+      "MESSAGE": "Please log in to upload your review",
+      "CANCEL": "Cancel",
+      "LOGIN": "Login",
+      "NOT_FOUND": "Book not found",
+      "CONFIRM": "Are you sure you want to delete this review?"
+    }
   },
 
   "SUMMARIES": {
@@ -23,9 +57,10 @@
     "CREATE_BTN": "Create new summary",
     "LAST_MOD": "Last modified",
     "WORDS": " words",
-    "READ_MORE": "Read full",
+    "READ_MORE": "Read full summary",
     "EMPTY": "No summaries found in this section",
     "SAVE_DRAFT": "Save Draft",
+    "NOT_FOUND": "Book not found",
     "TABS": {
       "DRAFT": "Drafts",
       "PENDING": "Pending",
@@ -34,32 +69,34 @@
     },
 
     "CREATE": {
-      "TITLE": "New summary",
+      "TITLE": "New Summary",
       "SELECT_LABEL": "Select book",
-      "SELECT_PLACEHOLDER": "Pick a book from the library...",
+      "SELECT_PLACEHOLDER": "Choose a book from the library...",
       "CONTENT_PLACEHOLDER": "Write your summary here..."
     },
 
     "EDIT": {
-      "TITLE": "Edit summary",
+      "TITLE": "Edit Summary",
       "EDITING": "Editing:"
     },
 
     "CONFIRM": {
       "DELETE": "Are you sure you want to delete this summary?",
-      "EXIT_DRAFT": "Do you want to save this summary as a draft before leaving?",
-      "SAVE_CHANGES": "Do you want to save the changes made as a draft?"
+      "EXIT_DRAFT": "Would you like to save this summary as a draft before leaving?",
+      "SAVE_CHANGES": "Would you like to save the changes as a draft?"
     }
   },
 
   "COMMON": {
     "CANCEL": "Cancel",
     "PUBLISH": "Publish",
-    "CONFIRM": "Confirm save"
+    "CONFIRM": "Confirm Save",
+    "SELECT": "Select book",
+    "SELECTED": "Choose a book from the library..."
   },
   "BOOK-M": {
-    "TITLE": "Book catalogue",
-    "ADD": "Add book",
+    "TITLE": "Book Catalog",
+    "ADD": "Add Book",
     "IMPORT": "Import ISBN",
     "PLACEHOLDER": "Search book...",
     "DATA": {
@@ -70,26 +107,29 @@
       "CATEGORY": "Category",
       "ACTIONS": "Actions"
     },
-    "EMPTY": "No books found in the catalogue matching your search",
+    "EMPTY": "No books in the catalog match your search",
     "CREATE": {
-      "TITLE": "Work title",
+      "TITLE": "Book Title",
       "TITLE_PLACEHOLDER": "Full title",
       "AUTHOR": "Authors",
       "AUTHOR_PLACEHOLDER": "Author1, Author2...",
       "ISBN": "ISBN",
       "ISBN_PLACEHOLDER": "978...",
-      "YEAR": "Publication year",
+      "YEAR": "Edition Year",
       "LANGUAGE": "Language",
       "CATEGORY": "Categories",
       "CATEGORY_PLACEHOLDER": "Fiction, History...",
-      "TAGS": "Labels/Tags",
+      "TAGS": "Tags",
       "TAGS_PLACEHOLDER": "Classic, Recommended...",
       "URL_FRONT": "Cover URL"
-    }
+    },
+    "DELETE_CONFIRM": "Are you sure you want to delete this book? All associated reviews and summaries will also be permanently removed.",
+    "ISBN_NOT_FOUND": "No book was found with that ISBN",
+    "ERROR_LOADING": "There was an error connecting to the service",
+    "IMPORT_ISBN": "Enter the book's ISBN (10 to 13 digits): "
   },
   "BOOK-D": {
     "ADD_LIST": "Add to list",
-    "READ": "Mark as read",
     "WRITE_RESUME": "Write summary",
     "WRITE_REVIEW": "Write review",
     "AUTHOR": "Author: ",
@@ -102,38 +142,64 @@
       "LISTEN": "Listen",
       "EMPTY": "No summaries yet",
       "EMPTY_FIRST": "Be the first to add one",
-      "MORE": "See more summaries",
+      "MORE": "View more summaries",
       "SEE_MORE": "See more...",
       "SEE_LESS": "See less..."
     },
     "REVIEWS": {
-      "TITLE": "Reader reviews",
-      "BEST": "The best",
-      "WORST": "The worst",
-      "EMPTY": "This book has no reviews yet. Be the first to give your opinion",
-      "SEE_MORE": "See all reviews"
+      "TITLE": "Reader Reviews",
+      "BEST": "The Best",
+      "WORST": "The Worst",
+      "EMPTY": "This book has no reviews yet. Be the first to share your opinion",
+      "SEE_MORE": "View all reviews"
     },
-    "LOAD": "Opening the requested book, it may take a few seconds...",
+    "LOAD": "Opening book details, this may take a few seconds...",
     "RESUME_MODAL": {
       "TITLE": "New Summary",
       "PLACEHOLDER": "Write your summary here..."
     },
     "REVIEW_MODAL": {
-      "TITLE": "Write Reviews",
+      "TITLE": "Write Review",
       "RATING": "Rating (1-5)",
       "OPINION": "Your opinion",
-      "OPINION_PLACEHOLDER": "What did you think of the work?",
+      "OPINION_PLACEHOLDER": "What did you think of the book?",
       "PROS": "Pros",
       "PROS_PLACEHOLDER": "Fast-paced, intriguing...",
       "COS": "Cons",
       "COS_PLACEHOLDER": "Predictable ending..."
+    },
+    "BACK": "Back",
+    "SAVE_SUMMARY": {
+      "HEADER": "Attention",
+      "MESSAGE": "Please log in to upload your summary",
+      "CANCEL": "Cancel",
+      "LOGIN": "Login"
+    },
+    "SAVE_REVIEW": {
+      "HEADER": "Attention",
+      "MESSAGE": "Please log in to upload your review",
+      "CANCEL": "Cancel",
+      "LOGIN": "Login"
+    },
+    "CANCEL_MESSAGE": "Would you like to save this summary as a draft before leaving?",
+    "VOTE": {
+      "HEADER": "Attention",
+      "MESSAGE": "Please log in to vote",
+      "CANCEL": "Cancel",
+      "LOGIN": "Login"
     }
   },
   "ADMIN": {
-    "TITLE": "Admin Panel"
+    "TITLE": "Admin Panel",
+    "MODERATION": "Moderation",
+    "BOOK": "Book Management",
+    "USERS": "Users",
+    "TAXONOMY": "Taxonomy",
+    "TAKEDOWN": "Takedowns",
+    "ANALYTICS": "Analytics"
   },
   "FOOTER": {
-    "WHO": "About us",
+    "WHO": "About Us",
     "BLOG": "Blog",
     "HELP": "Help",
     "CONTACT": "Contact",
@@ -157,12 +223,76 @@
       "HELP": "Help",
       "SETTINGS": "Settings",
       "ADMIN": "Admin Panel",
-      "LOGOUT": "Logout"
+      "LOGOUT": "Log Out"
     },
     "LOGOUT_MENU": {
       "WELCOME": "Welcome",
-      "LOGIN": "Register / Login",
-      "START": "Go home"
+      "LOGIN": "Register / Sign In",
+      "START": "Go to Home"
+    },
+    "LANGUAGE": {
+      "CANCEL": "Cancel",
+      "SELECT": "Select Language"
     }
+  },
+  "REGISTER": {
+    "TITLE": "Create a new account and check summaries of your favorite books!",
+    "CREATE": "Create new account",
+    "GOOGLE": "Register with Google",
+    "EMAIL": "Email address",
+    "EMAIL_PLACEHOLDER": "example@email.com",
+    "PASSWORD": "Password",
+    "SCHOOL_LEVEL": "School Level",
+    "SCHOOL_PLACEHOLDER": "Select your level",
+    "ESO": "Secondary / High School",
+    "UNI": "Undergraduate / University",
+    "POS": "Postgraduate / Master",
+    "REGISTER_BTN": "Register",
+    "LOGIN": "Already have an account? Sign In",
+    "ACCOUNT_CREATED": "Account created. Please check your email to verify it before logging in. Check your Spam folder as well."
+  },
+  "REVIEW-D": {
+    "TITLE": "Reviews",
+    "CREATE": "Write review",
+    "BACK": "Back to book",
+    "BEST": "The Best",
+    "WORST": "The Worst",
+    "EMPTY": "No reviews have been published for this book yet",
+    "LOAD": "Loading reader reviews...",
+    "REVIEW_MODAL": {
+      "TITLE": "Write Review",
+      "RATING": "Rating (1-5)",
+      "OPINION": "Your opinion",
+      "OPINION_PLACEHOLDER": "What did you think of the book?",
+      "PROS": "Pros",
+      "PROS_PLACEHOLDER": "Fast-paced, intriguing...",
+      "COS": "Cons",
+      "COS_PLACEHOLDER": "Predictable ending..."
+    },
+    "LOGIN_COMMENT": "You must be logged in to comment"
+  },
+  "FIRST_PAGE": {
+    "TITLE": "Find the best summaries. Master any subject today",
+    "NEW": "New Releases",
+    "RECOMMEND": "Recommended",
+    "REVIEW": "Featured Reviews",
+    "EXAMS": "For Exams"
+  },
+  "SUMMARY-D": {
+    "TITLE": "Full Summary",
+    "BUTTONS": {
+      "SAVE": "Save",
+      "REPORT": "Report",
+      "USEFUL": "Useful",
+      "USELESS": "Not useful"
+    },
+    "AUTHOR": "Summary author: ",
+    "YEAR": "Edition: ",
+    "TAGS": "Tags: ",
+    "LANGUAGE": "Language: ",
+    "RATING": "Rating",
+    "SUMMARY": "Summary",
+    "BACK": "Back to book",
+    "LOAD": "Opening book details, this may take a few seconds..."
   }
 }

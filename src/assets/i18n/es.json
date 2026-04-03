@@ -22,7 +22,8 @@
     "MESSAGES": {
       "INVALID_EMAIL": "Introduce un correo válido",
       "RESET_MAIL_SENT": "Correo enviado. Revisa tu bandeja de correo, puede estar en Spam."
-    }
+    },
+    "VERIFY": "Debes verificar primero tu cuenta."
   },
 
   "REVIEWS": {
@@ -40,7 +41,15 @@
       "COS": "Contras",
       "COS_PLACEHOLDER": "Final previsible..."
     },
-    "WRITE_REVIEW": "Escribir reseña"
+    "WRITE_REVIEW": "Escribir reseña",
+    "SAVE": {
+      "HEADER": "Atención",
+      "MESSAGE": "Inicia sesión para subir tu reseña",
+      "CANCEL": "Cancelar",
+      "LOGIN": "Login",
+      "NOT_FOUND": "Libro no encontrado",
+      "CONFIRM": "¿Está seguro de eliminar esta reseña?"
+    }
   },
 
   "SUMMARIES": {
@@ -51,6 +60,7 @@
     "READ_MORE": "Leer completo",
     "EMPTY": "No se han encontrado resúmenes en esta sección",
     "SAVE_DRAFT": "Guardar Borrador",
+    "NOT_FOUND": "Libro no encontrado",
     "TABS": {
       "DRAFT": "Borradores",
       "PENDING": "Enviados",
@@ -112,8 +122,11 @@
       "TAGS": "Etiquetas/Tags",
       "TAGS_PLACEHOLDER": "Clásico, Recomendado...",
       "URL_FRONT": "URL Portada"
-
-    }
+    },
+    "DELETE_CONFIRM": "¿Estás seguro de que quieres eliminar este libro? Se eliminarán también permanentemente las reseñas y resúmenes asociados",
+    "ISBN_NOT_FOUND": "No se ha encontrado un libro con ese ISBN",
+    "ERROR_LOADING": "Hubo un error al intentar coenctarse con el servicio",
+    "IMPORT_ISBN": "Introduce el ISBN del libro (10 a 13 dígitos): "
   },
   "BOOK-D": {
     "ADD_LIST": "Añadir a lista",
@@ -155,10 +168,35 @@
       "COS": "Contras",
       "COS_PLACEHOLDER": "Final previsible..."
     },
-    "BACK": "Volver"
+    "BACK": "Volver",
+    "SAVE_SUMMARY": {
+      "HEADER": "Atención",
+      "MESSAGE": "Inicia sesión para subir tu resumen",
+      "CANCEL": "Cancelar",
+      "LOGIN": "Login"
+    },
+    "SAVE_REVIEW": {
+      "HEADER": "Atención",
+      "MESSAGE": "Inicia sesión para subir tu reseña",
+      "CANCEL": "Cancelar",
+      "LOGIN": "Login"
+    },
+    "CANCEL_MESSAGE": "¿Desea guardar este resumen como borrador antes de salir?",
+    "VOTE": {
+      "HEADER": "Atención",
+      "MESSAGE": "Inicia sesión para subir tu reseña",
+      "CANCEL": "Cancelar",
+      "LOGIN": "Login"
+    }
   },
   "ADMIN": {
-    "TITLE": "Panel Admin"
+    "TITLE": "Panel Admin",
+    "MODERATION": "Moderación",
+    "BOOK": "Gestión de Libros",
+    "USERS": "Usuarios",
+    "TAXONOMY": "Taxonomía",
+    "TAKEDOWN": "Takedowns",
+    "ANALYTICS": "Analíticas"
   },
   "FOOTER": {
     "WHO": "¿Quiénes somos?",
@@ -191,6 +229,10 @@
       "WELCOME": "Bienvenido",
       "LOGIN": "Registrarse / Iniciar sesión",
       "START": "Ir al inicio"
+    },
+    "LANGUAGE": {
+      "CANCEL": "Cancelar",
+      "SELECT": "Seleccionar un idioma"
     }
   },
   "REGISTER": {
@@ -206,9 +248,17 @@
     "UNI": "Universitario",
     "POS": "Posgrado / Máster",
     "REGISTER_BTN": "Registrarme",
-    "LOGIN": "¿Ya tienes una cuenta? Iniciar sesión"
+    "LOGIN": "¿Ya tienes una cuenta? Iniciar sesión",
+    "ACCOUNT_CREATED": "Cuenta creada. Por favor, revise su correo para validarla antes de iniciar sesión. Puede que se encuentre en Spam."
   },
   "REVIEW-D": {
+    "TITLE": "Reseñas",
+    "CREATE": "Escrbir reseña",
+    "BACK": "Volver al libro",
+    "BEST": "Lo mejor",
+    "WORST": "Lo peor",
+    "EMPTY": "Aún no se han publicado críticas para esta obra",
+    "LOAD": "Cargando reseñas de los lectores...",
     "REVIEW_MODAL": {
       "TITLE": "Escribir Críticas",
       "RATING": "Puntuación (1-5)",
@@ -218,7 +268,8 @@
       "PROS_PLACEHOLDER": "Ágil, intrigantes...",
       "COS": "Contras",
       "COS_PLACEHOLDER": "Final previsible..."
-    }
+    },
+    "LOGIN_COMMENT": "Debes iniciar sesión para comentar"
   },
   "FIRST_PAGE": {
     "TITLE": "Encuentra los mejores resúmenes. Domina hoy cualquier materia",

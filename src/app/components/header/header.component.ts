@@ -115,12 +115,12 @@ export class HeaderComponent  implements OnInit {
       }
     }));
     button.push({
-      text: 'Cancelar',
+      text: this.translate.instant('HEADER.LANGUAGE.CANCEL'),
       role: 'cancel',
       handler: () => {}
     } as any);
     const action = await this.actionSheet.create({
-      header: "Seleccionar un idioma / Select language",
+      header: this.translate.instant('HEADER.LANGUAGE.SELECT'),
       buttons: button
     });
     await action.present();

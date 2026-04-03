@@ -29,7 +29,7 @@ import {
   brushOutline,
 } from "ionicons/icons";
 import {RouterLink} from "@angular/router";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {HttpClient} from "@angular/common/http";
 
 @Component({
@@ -46,6 +46,7 @@ export class BookManagementPage implements OnInit {
   public emptyBook : any = this.initBook();
   public searchTerms: string = '';
   private http = inject(HttpClient);
+  private translate = inject(TranslateService);
 
   constructor() {
     addIcons({
@@ -124,7 +125,7 @@ export class BookManagementPage implements OnInit {
   }
 
   async deleteBook(id: string) {
-    if (confirm("¿Estás seguro de que quieres eliminar este libro? Se eliminarán también permanentemente las reseñas y resúmenes asociados")){
+    if (confirm(this.translate.instant('BOOK-M.DELETE_CONFIRM'))) {
       try{
         const summariesRef = collection(this.firestore, 'summaries');
         const qSummaries = query(summariesRef, where('bookId', '==', id));
@@ -184,7 +185,7 @@ export class BookManagementPage implements OnInit {
   }
 
   async importIsbn(){
-    const isbn = prompt("Introduce el ISBN del libro (10 a 13 dígitos): ");
+    const isbn = prompt(this.translate.instant('BOOK-M.IMPORT_ISBN'));
     if(!isbn){
       return;
     }
@@ -192,7 +193,7 @@ export class BookManagementPage implements OnInit {
     const cleanIsbn = isbn.replace(/[- ]/g, "");
     this.http.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${cleanIsbn}`).subscribe((res:any) => {
       if(res.totalItems === 0){
-        alert("No se ha encontrado un libro con ese ISBN");
+        alert(this.translate.instant('BOOK-M.ISBN_NOT_FOUND'));
         return;
       }
       const info = res.items[0].volumeInfo;
@@ -212,7 +213,7 @@ export class BookManagementPage implements OnInit {
       console.log("Datos importados de Google Books: ", info);
     }, error => {
       console.error("Error al cargar el libro: ", error);
-      alert("Hubo un error al intentar conectarse con el servicio");
+      alert(this.translate.instant('BOOK-M.ERROR_LOADING'));
     });
   }
 

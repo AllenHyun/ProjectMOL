@@ -127,15 +127,15 @@ export class BookDetailPage implements OnInit {
     const user = this.auth.currentUser;
     if (!user) {
       const alert = await this.alertCtrl.create({
-        header: 'Atención',
-        message: 'Inicia sesión para subir tu resumen',
+        header: this.translate.instant('BOOK-D.SAVE_SUMMARY.HEADER'),
+        message: this.translate.instant('BOOK-D.SAVE_SUMMARY.MESSAGE'),
         buttons: [
           {
-            text: 'Cancelar',
+            text: this.translate.instant('BOOK-D.SAVE_SUMMARY.CANCEL'),
             role: 'cancel'
           },
           {
-            text: 'Login',
+            text: this.translate.instant('BOOK-D.SAVE_SUMMARY.LOGIN'),
             handler: () => {
               this.zone.run(() => {
                 this.router.navigate(['/login']);
@@ -186,15 +186,15 @@ export class BookDetailPage implements OnInit {
     const user = this.auth.currentUser;
     if (!user) {
       const alert = await this.alertCtrl.create({
-        header: 'Atención',
-        message: 'Inicia sesión para subir tu reseña',
+        header: this.translate.instant('BOOK-D.SAVE_REVIEW.HEADER'),
+        message: this.translate.instant('BOOK-D.SAVE_REVIEW.MESSAGE'),
         buttons: [
           {
-            text: 'Cancelar',
+            text: this.translate.instant('BOOK-D.SAVE_REVIEW.CANCEL'),
             role: 'cancel'
           },
           {
-            text: 'Login',
+            text: this.translate.instant('BOOK-D.SAVE_REVIEW.LOGIN'),
             handler: () => {
               this.zone.run(() => {
                 this.router.navigate(['/login']);
@@ -241,7 +241,7 @@ export class BookDetailPage implements OnInit {
     const content = this.newSummary.content.trim();
 
     if (content.length > 0) {
-      if (confirm("¿Desea guardar este resumen como borrador antes de salir?")){
+      if (confirm(this.translate.instant('BOOK-D.SAVE_SUMMARY.CANCEL_MESSAGE'))){
         this.saveSummaries('draft');
       } else{
         this.showModal = false;
@@ -256,7 +256,25 @@ export class BookDetailPage implements OnInit {
     const user = this.auth.currentUser;
 
     if (!user || !this.book){
-      console.warn("Debes estar logueado para votar");
+      const alert = await this.alertCtrl.create({
+        header: this.translate.instant('BOOK-D.VOTE.HEADER'),
+        message: this.translate.instant('BOOK-D.VOTE.MESSAGE'),
+        buttons: [
+          {
+            text: this.translate.instant('BOOK-D.VOTE.CANCEL'),
+            role: 'cancel'
+          },
+          {
+            text: this.translate.instant('BOOK-D.VOTE.LOGIN'),
+            handler: () => {
+              this.zone.run(() => {
+                this.router.navigate(['/login']);
+              });
+            }
+          }
+        ]
+      });
+      await alert.present();
       return;
     }
 

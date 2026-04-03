@@ -86,15 +86,15 @@ export class MyReviewsPage implements OnInit {
     const user = this.auth.currentUser;
     if (!user || !this.newReview.bookId) {
       const alert = await this.alertCtrl.create({
-        header: 'Atención',
-        message: 'Inicia sesión para subir tu reseña',
+        header: this.translate.instant('REVIEWS.SAVE.HEADER'),
+        message: this.translate.instant('REVIEWS.SAVE.MESSAGE'),
         buttons: [
           {
-            text: 'Cancelar',
+            text: this.translate.instant('REVIEWS.SAVE.CANCEL'),
             role: 'cancel'
           },
           {
-            text: 'Login',
+            text: this.translate.instant('REVIEWS.SAVE.LOGIN'),
             handler: () => {
               this.zone.run(() => {
                 this.router.navigate(['/login']);
@@ -149,7 +149,7 @@ export class MyReviewsPage implements OnInit {
         const bookSnap = await getDoc(doc(this.firestore, 'books', rev.bookId));
         const bookData = bookSnap.data();
         return {
-          ...rev, bookTitle: bookData ? bookData['title'] : 'Libro no encontrado', bookAuthor: bookData ? bookData['authors'].join(', ') : '---'
+          ...rev, bookTitle: bookData ? bookData['title'] : this.translate.instant('REVIEWS.SAVE.NOT_FOUND'), bookAuthor: bookData ? bookData['authors'].join(', ') : '---'
         };
       }));
     } catch (e) {
@@ -158,7 +158,7 @@ export class MyReviewsPage implements OnInit {
   }
 
   async deleteReview(reviewId: string) {
-    if (confirm("¿Está seguro de eliminar esta reseña")){
+    if (confirm(this.translate.instant('REVIEWS.SAVE.CONFIRM'))){
       await deleteDoc(doc(this.firestore, 'reviews', reviewId));
       this.myFullReviews = this.myFullReviews.filter(review => review.id !== reviewId);
     }

@@ -11,19 +11,21 @@ import {Review} from "../models/review";
 import {addIcons} from "ionicons";
 import {arrowBackOutline, star, starOutline} from "ionicons/icons";
 import {Auth} from "@angular/fire/auth";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-review-detail',
   templateUrl: './review-detail.page.html',
   styleUrls: ['./review-detail.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonIcon, RouterLink, IonModal]
+  imports: [IonContent, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonIcon, RouterLink, IonModal, TranslatePipe]
 })
 export class ReviewDetailPage implements OnInit {
 
   private route = inject(ActivatedRoute);
   private firestore = inject(Firestore);
   private auth = inject(Auth);
+  private translate = inject(TranslateService);
 
   public book: any = null;
   public reviews: any[] = [];
@@ -86,7 +88,7 @@ export class ReviewDetailPage implements OnInit {
   async saveReview(){
     const user = this.auth.currentUser;
     if(!user){
-      alert("Debes iniciar sesión para comentar");
+      alert(this.translate.instant('REVIEW-D.LOGIN_COMMENT'));
       return;
     }
     try{

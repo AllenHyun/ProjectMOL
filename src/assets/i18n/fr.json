@@ -9,23 +9,58 @@
     "PASSWORD_LABEL": "Mot de passe",
     "PASSWORD_PLACEHOLDER": "**********",
     "SUBMIT_BTN": "Se connecter",
-    "FORGOT_PASSWORD": "Mot de passe oublié ?"
+    "FORGOT_PASSWORD": "Mot de passe oublié ?",
+    "NO_ACCOUNT": "Nouveau sur Project M.O.L ?",
+    "NA_REDIRECT": "Créer un nouveau compte",
+    "FORGOT_PASSWORD_MODAL": {
+      "HEADER": "Réinitialiser le mot de passe",
+      "MESSAGE": "Saisissez votre adresse e-mail pour recevoir un lien de réinitialisation",
+      "PLACEHOLDER": "exemple@courrier.com",
+      "CANCEL": "Annuler",
+      "CONFIRM": "Envoyer le lien"
+    },
+    "MESSAGES": {
+      "INVALID_EMAIL": "Veuillez saisir un e-mail valide",
+      "RESET_MAIL_SENT": "E-mail envoyé. Veuillez vérifier votre boîte de réception (et vos spams)."
+    },
+    "VERIFY": "Vous devez d'abord vérifier votre compte."
   },
 
   "REVIEWS": {
     "MY_REVIEWS": "Mes critiques",
     "PUBLISHED": "Publiées",
-    "LAST_MOD": "Dernière modification"
+    "LAST_MOD": "Dernière modification",
+    "REVIEW": "Critique : ",
+    "REVIEW_MODAL": {
+      "TITLE": "Rédiger une critique",
+      "RATING": "Note (1-5)",
+      "OPINION": "Votre avis",
+      "OPINION_PLACEHOLDER": "Qu'avez-vous pensé de l'œuvre ?",
+      "PROS": "Points forts",
+      "PROS_PLACEHOLDER": "Fluide, intrigant...",
+      "COS": "Points faibles",
+      "COS_PLACEHOLDER": "Fin prévisible..."
+    },
+    "WRITE_REVIEW": "Rédiger une critique",
+    "SAVE": {
+      "HEADER": "Attention",
+      "MESSAGE": "Veuillez vous connecter pour publier votre critique",
+      "CANCEL": "Annuler",
+      "LOGIN": "Connexion",
+      "NOT_FOUND": "Livre non trouvé",
+      "CONFIRM": "Êtes-vous sûr de vouloir supprimer cette critique ?"
+    }
   },
 
   "SUMMARIES": {
-    "MY_SUMMARIES": "Mes Résumés",
+    "MY_SUMMARIES": "Mes résumés",
     "CREATE_BTN": "Créer un nouveau résumé",
     "LAST_MOD": "Dernière modification",
     "WORDS": " mots",
     "READ_MORE": "Lire complet",
     "EMPTY": "Aucun résumé trouvé dans cette section",
     "SAVE_DRAFT": "Enregistrer le brouillon",
+    "NOT_FOUND": "Livre non trouvé",
     "TABS": {
       "DRAFT": "Brouillons",
       "PENDING": "En attente",
@@ -42,7 +77,7 @@
 
     "EDIT": {
       "TITLE": "Modifier le résumé",
-      "EDITING": "En cours de modification :"
+      "EDITING": "Modification de :"
     },
 
     "CONFIRM": {
@@ -55,12 +90,14 @@
   "COMMON": {
     "CANCEL": "Annuler",
     "PUBLISH": "Publier",
-    "CONFIRM": "Confirmer l'enregistrement"
+    "CONFIRM": "Confirmer l'enregistrement",
+    "SELECT": "Sélectionner le livre",
+    "SELECTED": "Choisissez un livre dans la bibliothèque..."
   },
   "BOOK-M": {
     "TITLE": "Catalogue de livres",
     "ADD": "Ajouter un livre",
-    "IMPORT": "Importer l'ISBN",
+    "IMPORT": "Importer par ISBN",
     "PLACEHOLDER": "Rechercher un livre...",
     "DATA": {
       "FRONT": "Couverture",
@@ -70,7 +107,7 @@
       "CATEGORY": "Catégorie",
       "ACTIONS": "Actions"
     },
-    "EMPTY": "Aucun livre trouvé dans le catalogue correspondant à la recherche",
+    "EMPTY": "Aucun livre ne correspond à votre recherche",
     "CREATE": {
       "TITLE": "Titre de l'œuvre",
       "TITLE_PLACEHOLDER": "Titre complet",
@@ -82,55 +119,84 @@
       "LANGUAGE": "Langue",
       "CATEGORY": "Catégories",
       "CATEGORY_PLACEHOLDER": "Fiction, Histoire...",
-      "TAGS": "Étiquettes/Tags",
+      "TAGS": "Étiquettes",
       "TAGS_PLACEHOLDER": "Classique, Recommandé...",
       "URL_FRONT": "URL Couverture"
-    }
+    },
+    "DELETE_CONFIRM": "Êtes-vous sûr de vouloir supprimer ce livre ? Les critiques et résumés associés seront également supprimés définitivement.",
+    "ISBN_NOT_FOUND": "Aucun livre trouvé avec cet ISBN",
+    "ERROR_LOADING": "Une erreur est survenue lors de la connexion au service",
+    "IMPORT_ISBN": "Entrez l'ISBN du livre (10 à 13 chiffres) : "
   },
   "BOOK-D": {
     "ADD_LIST": "Ajouter à la liste",
-    "READ": "Marquer comme lu",
-    "WRITE_RESUME": "Écrire un résumé",
-    "WRITE_REVIEW": "Écrire une critique",
+    "WRITE_RESUME": "Rédiger un résumé",
+    "WRITE_REVIEW": "Rédiger une critique",
     "AUTHOR": "Auteur : ",
     "EDITION": "Édition : ",
     "TAGS": "Tags : ",
     "LANGUAGE": "Langue : ",
-    "RATING": "Évaluation : ",
+    "RATING": "Note : ",
     "RESUME": {
       "TITLE": "Résumés",
       "LISTEN": "Écouter",
-      "EMPTY": "Pas encore de résumés",
-      "EMPTY_FIRST": "Soyez le premier à en ajouter",
+      "EMPTY": "Il n'y a pas encore de résumés",
+      "EMPTY_FIRST": "Soyez le premier à en ajouter un",
       "MORE": "Voir plus de résumés",
       "SEE_MORE": "Voir plus...",
-      "SEE_LESS": "Voir moins"
+      "SEE_LESS": "Voir moins..."
     },
     "REVIEWS": {
       "TITLE": "Critiques des lecteurs",
       "BEST": "Le meilleur",
       "WORST": "Le pire",
-      "EMPTY": "Ce livre n'a pas encore de critiques. Soyez le premier à donner votre avis",
+      "EMPTY": "Ce livre n'a pas encore de critiques. Donnez votre avis !",
       "SEE_MORE": "Voir toutes les critiques"
     },
-    "LOAD": "Ouverture du livre demandé, cela peut prendre quelques secondes...",
+    "LOAD": "Ouverture du livre, cela peut prendre quelques secondes...",
     "RESUME_MODAL": {
       "TITLE": "Nouveau Résumé",
-      "PLACEHOLDER": "Écrire ici votre résumé..."
+      "PLACEHOLDER": "Écrivez votre résumé ici..."
     },
     "REVIEW_MODAL": {
-      "TITLE": "Écrire des critiques",
+      "TITLE": "Rédiger une critique",
       "RATING": "Note (1-5)",
       "OPINION": "Votre avis",
       "OPINION_PLACEHOLDER": "Qu'avez-vous pensé de l'œuvre ?",
-      "PROS": "Points positifs",
-      "PROS_PLACEHOLDER": "Rapide, intrigant...",
-      "COS": "Points négatifs",
+      "PROS": "Points forts",
+      "PROS_PLACEHOLDER": "Fluide, intrigant...",
+      "COS": "Points faibles",
       "COS_PLACEHOLDER": "Fin prévisible..."
+    },
+    "BACK": "Retour",
+    "SAVE_SUMMARY": {
+      "HEADER": "Attention",
+      "MESSAGE": "Veuillez vous connecter pour publier votre résumé",
+      "CANCEL": "Annuler",
+      "LOGIN": "Connexion"
+    },
+    "SAVE_REVIEW": {
+      "HEADER": "Attention",
+      "MESSAGE": "Veuillez vous connecter pour publier votre critique",
+      "CANCEL": "Annuler",
+      "LOGIN": "Connexion"
+    },
+    "CANCEL_MESSAGE": "Voulez-vous enregistrer ce résumé comme brouillon avant de quitter ?",
+    "VOTE": {
+      "HEADER": "Attention",
+      "MESSAGE": "Veuillez vous connecter pour voter",
+      "CANCEL": "Annuler",
+      "LOGIN": "Connexion"
     }
   },
   "ADMIN": {
-    "TITLE": "Panneau d'administration"
+    "TITLE": "Panel Admin",
+    "MODERATION": "Modération",
+    "BOOK": "Gestion des livres",
+    "USERS": "Utilisateurs",
+    "TAXONOMY": "Taxonomie",
+    "TAKEDOWN": "Signalements",
+    "ANALYTICS": "Analytiques"
   },
   "FOOTER": {
     "WHO": "Qui sommes-nous ?",
@@ -149,20 +215,84 @@
     "LOADING": "Chargement...",
     "LOGIN_MENU": {
       "PROFILE": "Profil",
-      "SCHOOL_LEVEL": "Nivel scolaire : ",
+      "SCHOOL_LEVEL": "Niveau scolaire : ",
       "NOTIFICATIONS": "Notifications",
       "MY_RESUME": "Mes résumés",
       "MY_REVIEW": "Mes critiques",
       "LANGUAGE": "Langue : ",
       "HELP": "Aide",
       "SETTINGS": "Paramètres",
-      "ADMIN": "Panneau d'administration",
+      "ADMIN": "Panel Admin",
       "LOGOUT": "Déconnexion"
     },
     "LOGOUT_MENU": {
       "WELCOME": "Bienvenue",
       "LOGIN": "S'inscrire / Se connecter",
       "START": "Aller à l'accueil"
+    },
+    "LANGUAGE": {
+      "CANCEL": "Annuler",
+      "SELECT": "Choisir une langue"
     }
+  },
+  "REGISTER": {
+    "TITLE": "Créez un compte et accédez aux résumés de vos livres préférés !",
+    "CREATE": "Créer un nouveau compte",
+    "GOOGLE": "S'inscrire avec Google",
+    "EMAIL": "Adresse e-mail",
+    "EMAIL_PLACEHOLDER": "exemple@courrier.com",
+    "PASSWORD": "Mot de passe",
+    "SCHOOL_LEVEL": "Niveau scolaire",
+    "SCHOOL_PLACEHOLDER": "Sélectionnez votre niveau",
+    "ESO": "Collège / Lycée",
+    "UNI": "Étudiant (Licence)",
+    "POS": "Master / Doctorat",
+    "REGISTER_BTN": "S'inscrire",
+    "LOGIN": "Vous avez déjà un compte ? Se connecter",
+    "ACCOUNT_CREATED": "Compte créé. Veuillez vérifier vos e-mails pour le valider. Vérifiez également vos spams."
+  },
+  "REVIEW-D": {
+    "TITLE": "Critiques",
+    "CREATE": "Rédiger une critique",
+    "BACK": "Retour au livre",
+    "BEST": "Le meilleur",
+    "WORST": "Le pire",
+    "EMPTY": "Il n'y a pas encore de critiques pour cette œuvre",
+    "LOAD": "Chargement des critiques...",
+    "REVIEW_MODAL": {
+      "TITLE": "Rédiger une critique",
+      "RATING": "Note (1-5)",
+      "OPINION": "Votre avis",
+      "OPINION_PLACEHOLDER": "Qu'avez-vous pensé de l'œuvre ?",
+      "PROS": "Points forts",
+      "PROS_PLACEHOLDER": "Fluide, intrigant...",
+      "COS": "Points faibles",
+      "COS_PLACEHOLDER": "Fin prévisible..."
+    },
+    "LOGIN_COMMENT": "Vous devez être connecté pour commenter"
+  },
+  "FIRST_PAGE": {
+    "TITLE": "Trouvez les meilleurs résumés. Maîtrisez n'importe quel sujet dès aujourd'hui",
+    "NEW": "Nouveautés",
+    "RECOMMEND": "Recommandations",
+    "REVIEW": "Critiques à la une",
+    "EXAMS": "Pour les examens"
+  },
+  "SUMMARY-D": {
+    "TITLE": "Résumé complet",
+    "BUTTONS": {
+      "SAVE": "Enregistrer",
+      "REPORT": "Signaler",
+      "USEFUL": "Utile",
+      "USELESS": "Inutile"
+    },
+    "AUTHOR": "Auteur du résumé : ",
+    "YEAR": "Édition : ",
+    "TAGS": "Tags : ",
+    "LANGUAGE": "Langue : ",
+    "RATING": "Évaluation",
+    "SUMMARY": "Résumé",
+    "BACK": "Retour au livre",
+    "LOAD": "Ouverture du livre, cela puede prendre quelques secondes..."
   }
 }

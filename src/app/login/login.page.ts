@@ -108,7 +108,7 @@ export class LoginPage implements OnInit {
         this.router.navigate(['/first-page']);
       } else {
         await signOut(this.auth);
-        alert("Debes verificar primero tu cuenta.")
+        alert(this.translate.instant('LOGIN.VERIFY'))
       }
 
     } catch (error: any) {
@@ -129,7 +129,6 @@ export class LoginPage implements OnInit {
         const newUser: User = {
           uid: user.uid,
           email: user.email || '',
-          // Guardamos el nombre basado en el correo, no el de Google
           username: user.email ? user.email.split('@')[0] : 'User',
           role: 'reader',
           level: 'ESO',
