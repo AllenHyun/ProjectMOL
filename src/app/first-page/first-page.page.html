@@ -67,7 +67,12 @@
         @for (book of (recommendedBooks$ | async); track book.id) {
           <swiper-slide class="p-2">
 
+            <div [routerLink]="['/book-detail', book.id]" class="group cursor-pointer">
+
+
             <img [src]="book.coverUrl" (error)="book.coverUrl = 'assets/img/default-book.png'" class="aspect-[3/4] w-full object-cover border border-[#C5A059]/10">
+
+            </div>
 
           </swiper-slide>
         }
@@ -133,7 +138,11 @@
         @for (book of (examBooks$ | async); track book.id) {
           <swiper-slide class="p-2">
 
+            <div [routerLink]="['/book-detail', book.id]" class="group cursor-pointer">
+
             <img [src]="book.coverUrl" (error)="book.coverUrl = 'assets/img/default-book.png'" class="aspect-[3/4] w-full object-cover border border-[#C5A059]/10">
+
+            </div>
 
           </swiper-slide>
         }

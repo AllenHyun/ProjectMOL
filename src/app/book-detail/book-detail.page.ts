@@ -1,6 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {Component, OnInit, inject, NgZone} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {
   Firestore,
   doc,
@@ -12,7 +12,7 @@ import {
   addDoc,
   updateDoc, setDoc
 } from '@angular/fire/firestore';
-import {IonContent, IonIcon, IonModal} from '@ionic/angular/standalone';
+import {AlertController, IonContent, IonIcon, IonModal} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline } from 'ionicons/icons';
 import {HeaderComponent} from "../components/header/header.component";
@@ -21,7 +21,7 @@ import { FormsModule } from '@angular/forms';
 import {Summary} from '../models/summary';
 import {Auth} from "@angular/fire/auth";
 import { Review } from '../models/review';
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {Vote} from "../models/vote";
 
 @Component({
@@ -33,6 +33,10 @@ import {Vote} from "../models/vote";
 export class BookDetailPage implements OnInit {
   private route = inject(ActivatedRoute);
   private firestore = inject(Firestore);
+  private router = inject(Router);
+  private alertCtrl = inject(AlertController);
+  private translate = inject(TranslateService);
+  private zone = inject(NgZone);
 
   public book: any = null;
 
@@ -121,8 +125,27 @@ export class BookDetailPage implements OnInit {
 
   async saveSummaries(status: 'draft' | 'published'){
     const user = this.auth.currentUser;
-    if(!user){
-      console.error("Debes iniciar sesión para poder publicar un resumen");
+    if (!user) {
+      const alert = await this.alertCtrl.create({
+        header: 'Atención',
+        message: 'Inicia sesión para subir tu resumen',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel'
+          },
+          {
+            text: 'Login',
+            handler: () => {
+              this.zone.run(() => {
+                this.router.navigate(['/login']);
+              });
+            }
+          }
+        ]
+      });
+      await alert.present();
+      return;
     }
     if (!this.newSummary.content) {
       return;
@@ -161,7 +184,26 @@ export class BookDetailPage implements OnInit {
 
   async saveReview(){
     const user = this.auth.currentUser;
-    if(!user){
+    if (!user) {
+      const alert = await this.alertCtrl.create({
+        header: 'Atención',
+        message: 'Inicia sesión para subir tu reseña',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel'
+          },
+          {
+            text: 'Login',
+            handler: () => {
+              this.zone.run(() => {
+                this.router.navigate(['/login']);
+              });
+            }
+          }
+        ]
+      });
+      await alert.present();
       return;
     }
     try{

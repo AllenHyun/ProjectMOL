@@ -1,7 +1,15 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, NgZone, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToolbar} from '@ionic/angular/standalone';
+import {
+  AlertController,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonModal,
+  IonTitle,
+  IonToolbar
+} from '@ionic/angular/standalone';
 import {
   addDoc,
   collection,
@@ -18,9 +26,10 @@ import {Auth, onAuthStateChanged} from "@angular/fire/auth";
 import {Review} from "../models/review";
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {addIcons} from "ionicons";
 import {trashOutline, star, starOutline} from "ionicons/icons";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-my-reviews',
@@ -32,6 +41,10 @@ import {trashOutline, star, starOutline} from "ionicons/icons";
 export class MyReviewsPage implements OnInit {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
+  private router = inject(Router);
+  private alertCtrl = inject(AlertController);
+  private translate = inject(TranslateService);
+  private zone = inject(NgZone);
 
   myFullReviews : any[] = [];
 
@@ -71,7 +84,28 @@ export class MyReviewsPage implements OnInit {
 
   async saveReview() {
     const user = this.auth.currentUser;
-    if (!user || !this.newReview.bookId) return;
+    if (!user || !this.newReview.bookId) {
+      const alert = await this.alertCtrl.create({
+        header: 'Atención',
+        message: 'Inicia sesión para subir tu reseña',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel'
+          },
+          {
+            text: 'Login',
+            handler: () => {
+              this.zone.run(() => {
+                this.router.navigate(['/login']);
+              });
+            }
+          }
+        ]
+      });
+      await alert.present();
+      return;
+    }
 
     try {
       const reviewRef = collection(this.firestore, 'reviews');

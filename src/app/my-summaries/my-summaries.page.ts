@@ -1,7 +1,15 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, NgZone, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToolbar} from '@ionic/angular/standalone';
+import {
+  AlertController,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonModal,
+  IonTitle,
+  IonToolbar
+} from '@ionic/angular/standalone';
 import {
   addDoc,
   collection,
@@ -23,7 +31,7 @@ import {Summary} from "../models/summary";
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-my-summaries',
@@ -35,6 +43,9 @@ import {RouterLink} from "@angular/router";
 export class MySummariesPage implements OnInit {
   private firestore = inject(Firestore);
   public auth = inject(Auth);
+  private router = inject(Router);
+  private alertCtrl = inject(AlertController);
+  private zone = inject(NgZone);
 
   public activeTab: 'draft' | 'pending' | 'published' | 'rejected' = 'draft';
   public tabs: ('draft' | 'pending' | 'published' | 'rejected')[] = ['draft', 'pending', 'published', 'rejected'];
@@ -170,7 +181,28 @@ export class MySummariesPage implements OnInit {
 
   async saveNewSummary(status: 'draft' | 'published') {
     const user = this.auth.currentUser;
-    if (!user || !this.newSummary.bookId || !this.newSummary.content.trim()) return;
+    if (!user || !this.newSummary.bookId || !this.newSummary.content.trim()) {
+      const alert = await this.alertCtrl.create({
+        header: 'Atención',
+        message: 'Inicia sesión para subir tu resumen',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel'
+          },
+          {
+            text: 'Login',
+            handler: () => {
+              this.zone.run(() => {
+                this.router.navigate(['/login']);
+              });
+            }
+          }
+        ]
+      });
+      await alert.present();
+      return;
+    }
 
     try {
       const summaryRef = collection(this.firestore, 'summaries');
