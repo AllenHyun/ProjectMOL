@@ -1,0 +1,180 @@
+<ion-content>
+
+  <app-header></app-header>
+
+  <main class="flex-grow container mx-auto max-w-7xl p-6 lg:p-10">
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+      <aside class="lg:col-span-3 border border-[#C5A059]/30 bg-white p-6 shadow-sm h-fit sticky top-24">
+
+        <div class="flex justify-between items-center mb-6 cursor-pointer lg:cursor-default" (click)="showFiltersMobile = !showFiltersMobile">
+
+          <h2 class="text-4xl font-['Cormorant_Garamond'] text-[#1A1614]">Filtrar</h2>
+
+          <ion-icon [name]="showFiltersMobile ? 'chevron-up' : 'chevron-down'" class="lg:hidden text-2xl text-[#C5A059]"></ion-icon>
+
+        </div>
+
+        <div [class.hidden]="!showFiltersMobile" class="lg:block mb-8">
+
+          <select class="text-[10px] w-full uppercase tracking-widest border border-gray-200 p-1 outline-none font-bold">
+
+            <option>Ordenar por: Más recientes</option>
+            <option>Ordenar por: Puntuación</option>
+
+          </select>
+
+        </div>
+
+        <div [class.hidden]="!showFiltersMobile" class="hidden lg:block space-y-8 max-h-[calc(100vh-250px)] text-black overflow-y-auto pr-4 custom-scrollbar">
+
+          <section>
+
+            <h3 class="font-bold text-sm mb-3 uppercase tracking-widest text-black border-b border-gray-100 pb-2">Idioma</h3>
+
+            <div class="flex flex-col gap-2">
+
+              @for (lang of filters.languages; track lang) {
+                <label class="flex items-center gap-3 text-sm font-lato cursor-pointer hover:text-[#C5A059]">
+
+                  <input type="checkbox" (change)="toggleFilters('languages', lang)" class="w-4 h-4 accent-[#1A1614]"> {{lang}}
+
+                </label>
+              }
+
+            </div>
+
+          </section>
+
+          <section>
+
+            <h3 class="font-bold text-sm mb-3 uppercase tracking-widest text-black border-b border-gray-100 pb-2">Nivel escolar</h3>
+
+            <div class="flex flex-col gap-2">
+
+              @for (level of filters.levels; track level) {
+                <label class="flex items-center gap-3 text-sm font-lato cursor-pointer">
+
+                  <input type="checkbox" (change)="toggleFilters('levels', level)" class="w-4 h-4 accent-[#C5A059]"> {{level}}
+
+                </label>
+              }
+
+            </div>
+
+          </section>
+
+          <section>
+            <h3 class="font-bold text-sm mb-3 uppercase tracking-widest text-black border-b border-gray-100 pb-2">Categorías</h3>
+
+            <div class="flex flex-col gap-2">
+
+              @for (cat of filters.categories; track cat) {
+                <label class="flex items-center gap-3 text-sm font-lato cursor-pointer">
+
+                  <input type="checkbox" (change)="toggleFilters('categories', cat)" class="w-4 h-4 accent-black"> {{cat}}
+
+                </label>
+
+              }
+            </div>
+
+          </section>
+
+          <section>
+
+            <h3 class="font-bold text-sm mb-3 uppercase tracking-widest text-black border-b border-gray-100 pb-2">Año</h3>
+
+            <div class="flex flex-col gap-2">
+
+              @for (year of filters.years; track year) {
+                <label class="flex items-center gap-3 text-sm font-lato cursor-pointer">
+
+                  <input type="checkbox" (change)="toggleFilters('years', year)" class="w-4 h-4 accent-[#C5A059]"> {{year}}
+
+                </label>
+              }
+
+            </div>
+
+          </section>
+
+        </div>
+
+      </aside>
+
+      <section class="lg:col-span-9 space-y-6">
+
+        @for (book of filteredBooks; track book.id) {
+          <div [routerLink]="['/book-detail', book.id]" class="bg-white border border-[#C5A059]/40 p-6 shadow-sm hover:shadow-md transition-all group">
+
+            <div class="flex flex-col md:flex-row gap-8">
+
+              <div class="w-full md:w-1/4 flex justify-center items-start">
+
+                <img [src]="book.coverUrl" (error)="book.coverUrl = 'assets/img/default-book.png'" class="w-full max-w-[150px] shadow-lg border border-gray-100 group-hover:scale-105 transition-transform duration-300">
+
+              </div>
+
+              <div class="w-full md:w-3/4 space-y-4">
+
+                <h2 class="text-5xl font-['Cormorant_Garamond'] text-[#1A1614]">{{book.title}}</h2>
+
+                <div class="text-sm font-lato text-black space-y-1">
+
+                  <p>
+
+                    <span class="font-bold uppercase tracking-widest text-[10px] mr-4">Autor:</span> {{book.authors.join(', ')}}
+                    <span class="font-bold uppercase tracking-widest text-[10px] mr-4">Año:</span> {{book.year}}
+
+                  </p>
+
+                  <div class="flex items-center">
+
+                    <span class="font-bold uppercase tracking-widest text-[10px] mr-4">Valoración:</span>
+
+                    <div class="flex text-[#FFD700] text-lg">
+
+                      @for (i of [1,2,3,4,5]; track i) {
+                        <ion-icon [name]="i <= (book.ratingAvg || 0) ? 'star' : 'star-outline'"></ion-icon>
+                      }
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="bg-E5E8E8 p-5 border-l-4 border-[#1A1614] font-lato text-sm italic text-[#1A1614]">
+
+                  @if (book.latestSummary) {
+                    {{book.latestSummary.structure?.tldr}}
+                  } @else {
+                    {{'BOOK-D.RESUME.EMPTY' | translate}}
+                  }
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        } @empty {
+          <div class="text-center py-20">
+
+            <p class="font-['Cormorant_Garamond'] text-2xl italic text-gray-500">No hay ningún libro que coincida con la búsqueda.</p>
+
+          </div>
+        }
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <app-footer></app-footer>
+
+</ion-content>

@@ -125,7 +125,7 @@
     },
     "DELETE_CONFIRM": "¿Estás seguro de que quieres eliminar este libro? Se eliminarán también permanentemente las reseñas y resúmenes asociados",
     "ISBN_NOT_FOUND": "No se ha encontrado un libro con ese ISBN",
-    "ERROR_LOADING": "Hubo un error al intentar coenctarse con el servicio",
+    "ERROR_LOADING": "Hubo un error al intentar conectarse con el servicio",
     "IMPORT_ISBN": "Introduce el ISBN del libro (10 a 13 dígitos): "
   },
   "BOOK-D": {

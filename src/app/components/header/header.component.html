@@ -1,126 +1,179 @@
-<ion-header class="ion-no-border overflow-visible [contain:none]">
-  <ion-toolbar class="overflow-visible [contain:none] [&::part(container)]:overflow-visible" style="--background: #2C1E16CC; color: white;">
+<header class="sticky top-0 w-full h-16 z-[9999] bg-[#524842] flex items-center px-6 text-white font-lato shadow-lg">
 
-    <ion-buttons slot="start">
-      <span (click)="backHome()" class="ml-4 text-xl md:text-2xl font-serif tracking-tight cursor-default">
-        {{'HEADER.TITLE' | translate}}
-      </span>
-    </ion-buttons>
-    @if (!isAuthPage){
-    <ion-searchbar
-      class="menu-escritorio max-w-[400px] hidden md:block ml-9"
-      placeholder="{{'HEADER.PLACEHOLDER' | translate}}"
-      style="--placeholder-color: #555555; --background: white; --icon-color: black;">
-    </ion-searchbar>
+  <div class="flex items-center shrink-0">
 
+    <span (click)="backHome()" class="text-xl md:text-2xl font-serif tracking-tight cursor-pointer hover:opacity-80 transition-opacity">{{'HEADER.TITLE' | translate}}</span>
 
-    <ion-buttons slot="end" class="hidden md:flex gap-6">
-      <ion-button [routerLink]="['/first-page']" class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">{{'HEADER.START' | translate}}</ion-button>
-      <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">{{'HEADER.RESUME' | translate}}</ion-button>
-      <ion-button class="font-lato text-sm normal-case hover:opacity-70 transition-opacity">{{'HEADER.REVIEW' | translate}}</ion-button>
-    </ion-buttons>
+  </div>
 
+  @if (!isAuthPage) {
+    <div class="relative hidden md:block ml-9 flex-1 max-w-[400px] z-[10001]">
 
-    <ion-buttons slot="end" class="hidden md:flex pl-6">
-      @if (!user){
-      <ion-button (click)="navigateRegister()" class="font-lato text-sm normal-case text-[#C5A059] font-medium hover:brightness-110">
-        {{'HEADER.REGISTER' | translate}}
-      </ion-button>
-      } @else {
-        <div (click)="toggleMenu()" class="relative z-50 flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity pr-4">
-          <div class="w-10 h-10 rounded-full bg-[#F5F5F0] flex items-center justify-center overflow-hidden border-2 border-white/20">
-            @if (user?.photoUrl){
-              <img [src]="user.photoUrl" class="w-full h-full object-cover">
-            } @else {
-              <ion-icon name="person" class="text-[#2E473B] text-xl"></ion-icon>
-            }
+      <div class="relative group">
+
+        <ion-icon name="search-outline" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></ion-icon>
+
+        <input [(ngModel)]="searchTerms" (input)="onInputChange()" (keyup.enter)="onSearch()" (blur)="hideSuggestions()" type="text" placeholder="{{'HEADER.PLACEHOLDER' | translate}}"
+          class="w-full bg-white text-black pl-10 pr-4 py-2 rounded-sm outline-none border border-transparent focus:border-[#C5A059] transition-all text-sm shadow-inner">
+
+      </div>
+
+      @if (showSuggestion) {
+        <div class="absolute top-full left-0 w-full mt-1 bg-white shadow-2xl border border-[#C5A059]/30 z-[10002] rounded-sm overflow-hidden">
+
+          @for (book of suggestions; track book.id) {
+            <div (click)="selectSuggestion(book)" class="p-3 hover:bg-[#F5F5F0] cursor-pointer flex items-center gap-3 border-b border-gray-100 last:border-none transition-colors">
+
+              <img [src]="book.coverUrl" class="w-8 h-11 object-cover shadow-sm border border-gray-100">
+
+              <div class="flex flex-col overflow-hidden text-black text-left">
+
+                <span class="text-sm font-bold truncate">{{book.title}}</span>
+                <span class="text-[10px] text-gray-400 uppercase tracking-wider truncate">{{book.authors[0]}}</span>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+      }
+
+    </div>
+
+    <div class="flex items-center ml-auto gap-6">
+
+      <div class="hidden md:flex gap-6 items-center">
+
+        <button [routerLink]="['/first-page']" class="text-sm tracking-widest font-medium hover:text-[#C5A059] transition-colors border-none bg-transparent font-lato">{{'HEADER.START' | translate}}</button>
+        <button class="text-sm  tracking-widest font-medium hover:text-[#C5A059] transition-colors border-none bg-transparent font-lato">{{'HEADER.RESUME' | translate}}</button>
+        <button class="text-sm  tracking-widest font-medium hover:text-[#C5A059] transition-colors border-none bg-transparent font-lato">{{'HEADER.REVIEW' | translate}}</button>
+
+      </div>
+
+      <div class="flex items-center pl-6 border-l border-white/10 h-8">
+
+        @if (!user) {
+          <button (click)="navigateRegister()" class="text-sm font-bold text-[#2E473B] uppercase tracking-widest hover:brightness-110 border-none bg-transparent">{{'HEADER.REGISTER' | translate}}</button>
+
+        } @else {
+          <div (click)="toggleMenu()" class="relative flex items-center gap-3 cursor-pointer group">
+
+            <div class="w-10 h-10 rounded-full bg-[#F5F5F0] flex items-center justify-center overflow-hidden border-2 border-white/20 group-hover:border-[#2E473B] transition-all shadow-sm">
+
+              @if (user?.photoUrl) {
+                <img [src]="user.photoUrl" class="w-full h-full object-cover">
+              } @else {
+                <ion-icon name="person" class="text-[#2E473B] text-xl"></ion-icon>
+              }
+
+            </div>
+
+            <span class="hidden lg:block text-white font-medium uppercase tracking-wide text-sm">{{user?.username || 'HEADER.LOADING' | translate }}</span>
+            <ion-icon name="chevron-down-outline" class="text-[#2E473B] text-lg transition-transform" [class.rotate-180]="menuOpen"></ion-icon>
+
           </div>
 
-          <span class="text-white font-lato font-medium uppercase tracking-wide text-sm">
-            {{user?.username || 'HEADER.LOADING' | translate }}
-          </span>
-          <ion-icon name="chevron-down-outline" class="text-[#4A6356] text-lg transition-transform" [class.rotate-180]="menuOpen">
-          </ion-icon>
+        }
 
-        </div>
-      }
-    </ion-buttons>
-
-      <ion-buttons slot="end" class="md:hidden">
-        <ion-button (click)="toggleMenu()">
-          <ion-icon name="menu" class="text-white text-3xl"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    }
-
-  </ion-toolbar>
-
-  @if (menuOpen){
-    <div class="fixed inset-0 z-[998]" (click)="menuOpen = false"></div>
-    <div (click)="$event.stopPropagation()" class="fixed top-[60px] right-4 w-64 bg-[#F5F5F0] rounded-sm shadow-2xl z-[999] border border-[#2E473B22] overflow-hidden text-[#2E473B]">
-
-      @if (user){
-
-      <div class="p-4 flex flex-col gap-1">
-        <span class="font-lato text-lg font-bold">{{'HEADER.LOGIN_MENU.PROFILE' | translate}}</span>
-        <span class="text-xs border-b border-[#2E473B] pb-1"> {{'HEADER.LOGIN_MENU.SCHOOL_LEVEL' | translate}} {{user?.level}} </span>
       </div>
-      <button class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="notifications-outline"></ion-icon>{{'HEADER.LOGIN_MENU.NOTIFICATIONS' | translate}}
-      </button>
 
-      <button routerLink="/me/summaries" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="book-outline"></ion-icon>{{'HEADER.LOGIN_MENU.MY_RESUME' | translate}}
-      </button>
+      <button (click)="toggleMenu()" class="md:hidden text-white text-3xl flex items-center border-none bg-transparent"><ion-icon name="menu"></ion-icon></button>
 
-      <button routerLink="/me/reviews" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="chatbox-ellipses-outline"></ion-icon>{{'HEADER.LOGIN_MENU.MY_REVIEW' | translate}}
-      </button>
-
-      <hr class="border-[#2E473B44] my-2">
-
-      <button (click)="openLanguageSelector()" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="language-outline"></ion-icon>{{'HEADER.LOGIN_MENU.LANGUAGE' | translate}} {{currentLanguage}}
-      </button>
-
-      <button class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="help-circle-outline"></ion-icon>{{'HEADER.LOGIN_MENU.HELP' | translate}}
-      </button>
-
-      <button class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="settings-outline"></ion-icon>{{'HEADER.LOGIN_MENU.SETTINGS' | translate}}
-      </button>
-
-      @if (user.role === "admin"){
-
-      <button (click)="panelAdmin()" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-        <ion-icon name="lock-closed-outline"></ion-icon>{{'HEADER.LOGIN_MENU.ADMIN' | translate}}
-      </button>
-      }
-
-      <button (click)="onLogout()" class="flex items-center gap-3 p-3 py-2 mt-2 font-bold hover: text-red-600 transition-colors text-sm">
-        <ion-icon name="log-out-outline"></ion-icon>{{'HEADER.LOGIN_MENU.LOGOUT' | translate}}
-      </button>
-
-      } @else {
-        <div class="p-4 border-b border-[#2E47B11] bg-[#2E47B08]">
-
-          <span class="font-lato text-sm font-bold uppercase tracking-wider">{{'HEADER.LOGOUT_MENU.WELCOME' | translate}}</span>
-
-          <button (click)="navigateRegister(); menuOpen = false" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-
-            <ion-icon name="person-add-outline"></ion-icon> {{'HEADER.LOGOUT_MENU.LOGIN' | translate}}
-
-          </button>
-
-          <button (click)="backHome(); menuOpen = false" class="flex items-center gap-3 p-3 py-2 hover:bg-[#2E473B11] transition-colors text-sm">
-
-            <ion-icon name="home-outline"></ion-icon> {{'HEADER.LOGOUT_MENU.START' | translate}}
-
-          </button>
-
-        </div>
-      }
     </div>
   }
-</ion-header>
+
+</header>
+
+@if (menuOpen) {
+  <div class="fixed inset-0 z-[10003] bg-black/5" (click)="menuOpen = false"></div>
+
+  <div (click)="$event.stopPropagation()" class="fixed top-16 right-4 w-64 bg-[#F5F5F0] rounded-sm shadow-2xl z-[10004] border border-[#2E473B22] overflow-hidden text-[#2E473B] animate-fade-in">
+
+    <div class="md:hidden p-4 border-b border-gray-200 bg-white">
+
+      <div class="relative mb-4">
+
+        <ion-icon name="search-outline" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></ion-icon>
+        <input [(ngModel)]="searchTerms" (input)="onInputChange()" (keyup.enter)="onSearch(); menuOpen=false" type="text" placeholder="{{'HEADER.PLACEHOLDER' | translate}}" class="w-full bg-gray-50 text-black pl-10 pr-4 py-2 rounded-sm border border-gray-200 outline-none text-sm">
+
+      </div>
+
+      <div class="flex flex-col gap-2">
+
+        <button [routerLink]="['/first-page']" (click)="menuOpen=false" class="text-left py-2 px-2 text-sm font-bold uppercase tracking-widest text-[#524842] border-none bg-transparent">{{'HEADER.START' | translate}}</button>
+        <button (click)="menuOpen=false" class="text-left py-2 px-2 text-sm font-bold uppercase tracking-widest text-[#524842] border-none bg-transparent">{{'HEADER.RESUME' | translate}}</button>
+        <button (click)="menuOpen=false" class="text-left py-2 px-2 text-sm font-bold uppercase tracking-widest text-[#524842] border-none bg-transparent">{{'HEADER.REVIEW' | translate}}</button>
+
+      </div>
+
+    </div>
+
+    @if (user) {
+      <div class="p-4 flex flex-col gap-1 bg-gray-50 border-b border-gray-200">
+
+        <span class="font-lato text-lg font-bold leading-none">{{'HEADER.LOGIN_MENU.PROFILE' | translate}}</span>
+        <span class="text-[10px] uppercase tracking-widest opacity-60"> {{'HEADER.LOGIN_MENU.SCHOOL_LEVEL' | translate}} {{user?.level}} </span>
+
+      </div>
+
+      <div class="flex flex-col">
+
+        <button class="w-full flex items-center gap-3 p-4 py-3 hover:bg-[#2E473B11] transition-colors text-sm border-none bg-transparent text-left">
+          <ion-icon name="notifications-outline"></ion-icon>{{'HEADER.LOGIN_MENU.NOTIFICATIONS' | translate}}
+
+        </button>
+
+        <button routerLink="/me/summaries" (click)="menuOpen = false" class="w-full flex items-center gap-3 p-4 py-3 hover:bg-[#2E473B11] transition-colors text-sm border-none bg-transparent text-left">
+
+          <ion-icon name="book-outline"></ion-icon>{{'HEADER.LOGIN_MENU.MY_RESUME' | translate}}
+
+        </button>
+
+        <button routerLink="/me/reviews" (click)="menuOpen = false" class="w-full flex items-center gap-3 p-4 py-3 hover:bg-[#2E473B11] transition-colors text-sm border-none bg-transparent text-left">
+
+          <ion-icon name="chatbox-ellipses-outline"></ion-icon>{{'HEADER.LOGIN_MENU.MY_REVIEW' | translate}}
+
+        </button>
+
+        <div class="h-[1px] bg-gray-200 my-1 mx-4"></div>
+
+        <button (click)="openLanguageSelector()" class="w-full flex items-center gap-3 p-4 py-3 hover:bg-[#2E473B11] transition-colors text-sm border-none bg-transparent text-left">
+
+          <ion-icon name="language-outline"></ion-icon>{{'HEADER.LOGIN_MENU.LANGUAGE' | translate}} {{currentLanguage}}
+
+        </button>
+
+        <button class="w-full flex items-center gap-3 p-4 py-3 hover:bg-[#2E473B11] transition-colors text-sm border-none bg-transparent text-left text-[#2E473B]">
+
+          <ion-icon name="settings-outline"></ion-icon>{{'HEADER.LOGIN_MENU.SETTINGS' | translate}}
+
+        </button>
+
+        @if (user.role === "admin") {
+          <button (click)="panelAdmin()" class="w-full flex items-center gap-3 p-4 py-3 hover:bg-[#2E473B11] transition-colors text-sm border-none bg-transparent text-left text-[#2E473B]"><ion-icon name="lock-closed-outline"></ion-icon>{{'HEADER.LOGIN_MENU.ADMIN' | translate}}</button>
+        }
+
+        <button (click)="onLogout()" class="w-full flex items-center gap-3 p-4 py-4 mt-2 font-bold text-red-600 hover:bg-red-50 transition-colors text-sm border-t border-gray-100 bg-transparent text-left"><ion-icon name="log-out-outline"></ion-icon>{{'HEADER.LOGIN_MENU.LOGOUT' | translate}}</button>
+
+      </div>
+
+    } @else {
+      <div class="p-4 border-b border-gray-100 bg-gray-50">
+
+        <span class="font-lato text-xs font-bold uppercase tracking-wider opacity-50">{{'HEADER.LOGOUT_MENU.WELCOME' | translate}}</span>
+
+      </div>
+
+      <div class="flex flex-col">
+
+        <button (click)="navigateRegister(); menuOpen = false" class="w-full flex items-center gap-3 p-4 py-3 hover:bg-[#2E473B11] transition-colors text-sm border-none bg-transparent text-left text-[#2E473B]"><ion-icon name="person-add-outline"></ion-icon> {{'HEADER.LOGOUT_MENU.LOGIN' | translate}}</button>
+        <button (click)="backHome(); menuOpen = false" class="w-full flex items-center gap-3 p-4 py-3 hover:bg-[#2E473B11] transition-colors text-sm border-none bg-transparent text-left text-[#2E473B]"><ion-icon name="home-outline"></ion-icon> {{'HEADER.LOGOUT_MENU.START' | translate}}</button>
+
+      </div>
+    }
+
+  </div>
+}

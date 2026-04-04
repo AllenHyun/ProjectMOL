@@ -3,16 +3,17 @@ import {ActionSheetController, IonicModule} from "@ionic/angular";
 import {
   menu, chevronDownOutline, personOutline,
   notificationsOutline, bookOutline, languageOutline, helpCircleOutline,
-  settingsOutline, logOutOutline, person, lockClosedOutline, chatboxEllipsesOutline, homeOutline, documentTextOutline, personAddOutline,
+  settingsOutline, logOutOutline, person, lockClosedOutline, chatboxEllipsesOutline, homeOutline, documentTextOutline, personAddOutline, searchOutline
 } from "ionicons/icons";
 import {addIcons} from "ionicons";
 import {Router, RouterLink} from "@angular/router";
 import {Auth, onAuthStateChanged, authState} from "@angular/fire/auth";
 import {User} from "../../models/user";
-import {doc, docData, Firestore} from "@angular/fire/firestore";
+import {collection, collectionData, doc, docData, Firestore} from "@angular/fire/firestore";
 import {CommonModule} from "@angular/common";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {of, switchMap} from "rxjs";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-header',
@@ -24,6 +25,7 @@ import {of, switchMap} from "rxjs";
     CommonModule,
     RouterLink,
     TranslatePipe,
+    FormsModule,
   ]
 })
 export class HeaderComponent  implements OnInit {
@@ -42,6 +44,11 @@ export class HeaderComponent  implements OnInit {
     {code: 'fr', name: 'Français'},
   ]
 
+  public searchTerms: string = '';
+  public allBooks: any[] = [];
+  public suggestions: any[] = [];
+  public showSuggestion: boolean = false;
+
   constructor() {
     addIcons({menu,
       chevronDownOutline,
@@ -57,7 +64,8 @@ export class HeaderComponent  implements OnInit {
       chatboxEllipsesOutline,
       homeOutline,
       documentTextOutline,
-      personAddOutline
+      personAddOutline,
+      searchOutline
     });
   }
 
@@ -76,6 +84,11 @@ export class HeaderComponent  implements OnInit {
       if (!data) {
         this.menuOpen = false;
       }
+    });
+
+    const booksRef = collection(this.firestore, 'books');
+    collectionData(booksRef, {idField: 'id'}).subscribe(data => {
+      this.allBooks = data;
     });
   }
 
@@ -138,5 +151,39 @@ export class HeaderComponent  implements OnInit {
     return language ? language.name : 'Español';
   }
 
+  onInputChange() {
+    if (this.searchTerms.length > 1) {
+      const term = this.searchTerms.toLowerCase();
+      this.suggestions = this.allBooks.filter(book =>
+        book.title.toLowerCase().includes(term) ||
+        book.authors.some((a: string) => a.toLowerCase().includes(term))
+      ).slice(0, 5);
+      this.showSuggestion = this.suggestions.length > 0;
+    } else {
+      this.showSuggestion = false;
+    }
+  }
 
+  selectSuggestion(book: any){
+    this.searchTerms = book.title;
+    this.showSuggestion = false;
+    this.router.navigate(['/explore'], {queryParams: {q: book.title}});
+  }
+
+  onSearch() {
+    this.showSuggestion = false;
+    if(this.searchTerms.trim()){
+      this.router.navigate(['/explore'], {
+        queryParams: {q: this.searchTerms}
+      });
+    } else {
+      this.router.navigate(['/explore']);
+    }
+  }
+
+  protected readonly setTimeout = setTimeout;
+
+  hideSuggestions() {
+    setTimeout(() => {this.showSuggestion = false;}, 200);
+  }
 }

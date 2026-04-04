@@ -86,38 +86,38 @@ export class BookManagementPage implements OnInit {
 
     try{
 
-    const finalBook: Book = {
-      title: this.emptyBook.title,
-      isbn: this.emptyBook.isbn || '',
-      language: this.emptyBook.language,
-      year: Number(this.emptyBook.year),
-      coverUrl: this.emptyBook.coverUrl || 'https://via.placeholder.com/150',
-      authors: this.emptyBook.authors ? this.emptyBook.authors.split(',').map((e: any) => e.trim()) : [],
-      categories: this.emptyBook.categories ? this.emptyBook.categories.split(',').map((e: any) => e.trim()) : [],
-      tags: this.emptyBook.tags ? this.emptyBook.tags.split(',').map((e: any) => e.trim()) : [],
-      id: Date.now().toString(),
-      createdAt: new  Date().toISOString(),
-      ratingAvg: 0,
-      ratingCount: 0,
-      sumaryCount: 0
-    };
-
-    if(this.emptyBook.id){
-      const  bookDocRef = doc(this.firestore, `books/${this.emptyBook.id}`);
-      await updateDoc(bookDocRef, {
-        ...finalBook,
-        updateAt: new Date().toISOString(),
-      });
-    } else{
-      const booksCollection = collection(this.firestore, 'books');
-      await addDoc(booksCollection, {
-        ...finalBook,
-        createdAt: new Date().toISOString(),
+      const finalBook: Book = {
+        title: this.emptyBook.title,
+        isbn: this.emptyBook.isbn || '',
+        language: this.emptyBook.language,
+        year: Number(this.emptyBook.year),
+        coverUrl: this.emptyBook.coverUrl || 'https://via.placeholder.com/150',
+        authors: this.emptyBook.authors ? this.emptyBook.authors.split(',').map((e: any) => e.trim()) : [],
+        categories: this.emptyBook.categories ? this.emptyBook.categories.split(',').map((e: any) => e.trim()) : [],
+        tags: this.emptyBook.tags ? this.emptyBook.tags.split(',').map((e: any) => e.trim()) : [],
+        id: Date.now().toString(),
+        createdAt: new  Date().toISOString(),
         ratingAvg: 0,
         ratingCount: 0,
         sumaryCount: 0
-      });
-    }
+      };
+
+      if(this.emptyBook.id){
+        const  bookDocRef = doc(this.firestore, `books/${this.emptyBook.id}`);
+        await updateDoc(bookDocRef, {
+          ...finalBook,
+          updateAt: new Date().toISOString(),
+        });
+      } else{
+        const booksCollection = collection(this.firestore, 'books');
+        await addDoc(booksCollection, {
+          ...finalBook,
+          createdAt: new Date().toISOString(),
+          ratingAvg: 0,
+          ratingCount: 0,
+          sumaryCount: 0
+        });
+      }
       this.cancelForm();
     } catch(error) {
       console.log("Error al guardar en Firebase: ", error);
@@ -191,12 +191,23 @@ export class BookManagementPage implements OnInit {
     }
 
     const cleanIsbn = isbn.replace(/[- ]/g, "");
-    this.http.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${cleanIsbn}`).subscribe((res:any) => {
+    const apiKey = 'AIzaSyB4WKEytrTiePH69M3Vu-vNTdDYX6XxlpQ';
+    const url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${cleanIsbn}&key=${apiKey}`;
+    this.http.get(url).subscribe((res:any) => {
       if(res.totalItems === 0){
         alert(this.translate.instant('BOOK-M.ISBN_NOT_FOUND'));
         return;
       }
       const info = res.items[0].volumeInfo;
+
+      let cover = info.imageLinks?.thumbnail || '';
+
+      if(cover){
+        cover = cover.replace('http:', 'https:');
+        cover = cover.replace('&edge=curl', '');
+        const width = 400;
+        cover = `https://wsrv.nl/?url=${encodeURIComponent(cover)}&w=${width}&output=jpg`;
+      }
 
       this.emptyBook = {
         title: info.title || '',
@@ -206,7 +217,7 @@ export class BookManagementPage implements OnInit {
         categories: info.categories ? info.categories.join(', ') : '',
         tags: '',
         year: info.publishedDate ? new Date(info.publishedDate).getFullYear() : new Date().getFullYear(),
-        coverUrl: info.imageLinks?.thumbnail ? info.imageLinks.thumbnail.replace('http:', 'https:') : ''
+        coverUrl: cover
       };
 
       this.showForm = true;
