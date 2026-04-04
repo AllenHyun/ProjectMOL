@@ -6,6 +6,7 @@ export interface Book {
   language: string;
   categories: string[];
   tags: string[];
+  level: string;
   year?: number;
   coverUrl?: string;
   ratingAvg?: number;

@@ -16,7 +16,6 @@ import {
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {addIcons} from "ionicons";
 import {star, starOutline, chevronDown, chevronUp} from "ionicons/icons";
-import {async} from "rxjs";
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -36,6 +35,7 @@ export class ExplorePage implements OnInit {
   public filteredBooks: any[] = [];
   public searchTerm: string = "";
   public showFiltersMobile: boolean = false;
+  public sortBy: string = 'recent';
 
   public filters = {
     languages: ['Español', 'Inglés', 'Francés'],
@@ -107,14 +107,22 @@ export class ExplorePage implements OnInit {
   }
 
   applyFilters() {
-    this.filteredBooks = this.books.filter(book => {
+    let results = this.books.filter(book => {
       const langMatch = this.selectedFilters.languages.length === 0 || this.selectedFilters.languages.includes(book.language);
       const yearMatch = this.selectedFilters.years.length === 0 || (book.year && this.selectedFilters.years.includes(Number(book.year)));
       const catMatch = this.selectedFilters.categories.length === 0 || ((book.categories || []).some((c:string) => this.selectedFilters.categories.includes(c)));
-      const levelMatch = this.selectedFilters.levels.length === 0 || ((book.tags || []).some((t:string) => this.selectedFilters.levels.includes(t)));
+      const levelMatch = this.selectedFilters.levels.length === 0 || this.selectedFilters.levels.includes(book.level);
 
       return langMatch && yearMatch && catMatch && levelMatch;
     });
+
+    if(this.sortBy === 'recent'){
+      results.sort((a,b) => (b.year || 0) - (a.year || 0));
+    } else if(this.sortBy === 'rating'){
+      results.sort((a,b) => (b.ratingAvg || 0) - (a.ratingAvg || 0));
+    }
+
+    this.filteredBooks = results;
   }
 
 }

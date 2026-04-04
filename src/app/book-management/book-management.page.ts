@@ -47,6 +47,7 @@ export class BookManagementPage implements OnInit {
   public searchTerms: string = '';
   private http = inject(HttpClient);
   private translate = inject(TranslateService);
+  public availableCategories = ['Acción', 'Romance', 'Thriller', 'Educativo', 'Aventura', 'Ciencia Ficción'];
 
   constructor() {
     addIcons({
@@ -73,8 +74,9 @@ export class BookManagementPage implements OnInit {
       authors: '',
       isbn: '',
       language: 'Español',
-      categories: '',
+      categories: [],
       tags: '',
+      level: 'ESO/Bachiller',
       year: new Date().getFullYear(),
       coverUrl: ''
     };
@@ -93,8 +95,9 @@ export class BookManagementPage implements OnInit {
         year: Number(this.emptyBook.year),
         coverUrl: this.emptyBook.coverUrl || 'https://via.placeholder.com/150',
         authors: this.emptyBook.authors ? this.emptyBook.authors.split(',').map((e: any) => e.trim()) : [],
-        categories: this.emptyBook.categories ? this.emptyBook.categories.split(',').map((e: any) => e.trim()) : [],
+        categories: this.emptyBook.categories,
         tags: this.emptyBook.tags ? this.emptyBook.tags.split(',').map((e: any) => e.trim()) : [],
+        level: this.emptyBook.level,
         id: Date.now().toString(),
         createdAt: new  Date().toISOString(),
         ratingAvg: 0,
@@ -205,16 +208,18 @@ export class BookManagementPage implements OnInit {
       if(cover){
         cover = cover.replace('http:', 'https:');
         cover = cover.replace('&edge=curl', '');
-        const width = 400;
-        cover = `https://wsrv.nl/?url=${encodeURIComponent(cover)}&w=${width}&output=jpg`;
+        if (cover.includes('zoom=1')) {
+          cover = cover.replace('zoom=1', 'zoom=2');
+        }
       }
 
       this.emptyBook = {
+        ...this.initBook(),
         title: info.title || '',
         authors: info.authors ? info.authors.join(', ') : '',
         isbn: cleanIsbn,
         language: info.language === 'es' ? 'Español' : (info.language === 'en' ? 'Inglés' : info.language),
-        categories: info.categories ? info.categories.join(', ') : '',
+        categories: info.categories,
         tags: '',
         year: info.publishedDate ? new Date(info.publishedDate).getFullYear() : new Date().getFullYear(),
         coverUrl: cover
@@ -228,4 +233,12 @@ export class BookManagementPage implements OnInit {
     });
   }
 
+  toggleCategory(cat: string){
+    const index = this.emptyBook.categories.indexOf(cat);
+    if (index > -1) {
+      this.emptyBook.categories.splice(index, 1);
+    } else {
+      this.emptyBook.categories.push(cat);
+    }
+  }
 }

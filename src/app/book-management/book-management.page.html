@@ -116,12 +116,38 @@
 
               <div class="flex flex-col gap-1">
                 <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.CATEGORY' | translate }}</label>
-                <input [(ngModel)]="emptyBook.categories" type="text" placeholder="{{ 'BOOK-M.CREATE.CATEGORY_PLACEHOLDER' | translate }}" class="p-3 border border-[#C5A059] bg-white outline-none text-black font-lato">
+
+                <div class="flex flex-wrap gap-2 p-3 border border-[#C5A059] bg-white min-h-[100px]">
+
+                  @for (cat of availableCategories; track cat) {
+
+                    <button type="button" (click)="toggleCategory(cat)" [class]="emptyBook.categories.includes(cat) ? 'bg-[#2E473B] text-white border-[#2E473B]' : 'bg-gray-50 text-gray-400 border-gray-200'"
+                      class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all duration-200 hover:scale-105 active:scale-95">{{ cat }}</button>
+
+                  }
+
+                </div>
+
+                <p class="text-[9px] text-gray-500 italic ml-1">· Selecciona uno o varias categorías</p>
+
               </div>
 
               <div class="flex flex-col gap-1">
                 <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.TAGS' | translate }}</label>
                 <input [(ngModel)]="emptyBook.tags" type="text" placeholder="{{ 'BOOK-M.CREATE.TAGS_PLACEHOLDER' | translate }}" class="p-3 border border-[#C5A059] bg-white outline-none text-black font-lato">
+              </div>
+
+              <div class="flex flex-col gap-1">
+
+                <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">Nivel Escolar</label>
+                <select [(ngModel)]="emptyBook.level" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
+
+                  <option value="ESO/Bachiller">ESO/Bachiller</option>
+                  <option value="Universidad">Universidad</option>
+                  <option value="Posgrado">Posgrado</option>
+
+                </select>
+
               </div>
 
               <div class="flex flex-col gap-1">

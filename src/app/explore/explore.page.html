@@ -18,10 +18,10 @@
 
         <div [class.hidden]="!showFiltersMobile" class="lg:block mb-8">
 
-          <select class="text-[10px] w-full uppercase tracking-widest border border-gray-200 p-1 outline-none font-bold">
+          <select [(ngModel)]="sortBy" (change)="applyFilters()" class="text-[10px] w-full uppercase tracking-widest border border-gray-200 p-1 outline-none font-bold">
 
-            <option>Ordenar por: Más recientes</option>
-            <option>Ordenar por: Puntuación</option>
+            <option value="recent">Ordenar por: Más recientes</option>
+            <option value="rating">Ordenar por: Puntuación</option>
 
           </select>
 
