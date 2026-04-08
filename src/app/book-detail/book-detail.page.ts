@@ -23,6 +23,7 @@ import {Auth} from "@angular/fire/auth";
 import { Review } from '../models/review';
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {Vote} from "../models/vote";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-book-detail',
@@ -37,6 +38,7 @@ export class BookDetailPage implements OnInit {
   private alertCtrl = inject(AlertController);
   private translate = inject(TranslateService);
   private zone = inject(NgZone);
+  private http = inject(HttpClient);
 
   public book: any = null;
 
@@ -62,6 +64,14 @@ export class BookDetailPage implements OnInit {
   public showAllReviews = false;
 
   public userVote: number | null = null;
+
+  private currentAudio: HTMLAudioElement | null = null;
+  private readonly langMap: {[key: string]: string} = {
+    'Español': 'es-ES',
+    'Inglés': 'en-US',
+    'Francés': 'fr-FR',
+  };
+
 
   get visibleReviews(): Review[] {
     const sortedReviews = [...this.reviews].sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -333,6 +343,56 @@ export class BookDetailPage implements OnInit {
       const data = voteSnap.data() as Vote;
       this.userVote = data.value;
     }
+  }
+
+
+  async speakSummary(text: string, langName: string = 'Español') {
+    if (this.currentAudio || window.speechSynthesis.speaking) {
+      this.currentAudio?.pause();
+      this.currentAudio = null;
+      window.speechSynthesis.cancel();
+      return;
+    }
+
+    const voiceId = 'pNInz6obpgDQGcFmaJgB';
+    const apiKey = 'sk_bb2a3b445d40574eef916254807491c163e478862cac2b36';
+    const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`;
+
+    const body = {
+      text: text,
+      model_id: "eleven_turbo_v2_5",
+      voice_settings: {
+        stability: 0.5,
+        similarity_boost: 0.8
+      }
+    };
+
+    const headers = {
+      'xi-api-key': apiKey,
+      'Content-Type': 'application/json'
+    };
+
+    this.http.post(url, body, { headers: headers, responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const audioUrl = URL.createObjectURL(blob);
+        this.currentAudio = new Audio(audioUrl);
+        this.currentAudio.play();
+        this.currentAudio.onended = () => {
+          this.currentAudio = null;
+        };
+      },
+      error: (error) => {
+        this.currentAudio = null;
+        this.useSystemSpeechFallback(text, langName);
+      }
+    });
+  }
+
+  private useSystemSpeechFallback(text: string, langName: string) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = this.langMap[langName] || 'es-ES';
+    utterance.rate = 0.9;
+    window.speechSynthesis.speak(utterance);
   }
 
 }

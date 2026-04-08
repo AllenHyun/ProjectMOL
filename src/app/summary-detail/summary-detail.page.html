@@ -59,6 +59,12 @@
 
                 <h2 class="text-[#1A1614] text-4xl font-['Cormorant_Garamond']">{{'SUMMARY-D.SUMMARY'|translate}}</h2>
 
+                <button (click)="speakSummary(summary?.structure?.tldr || '', book.language)" class="flex items-center gap-2 text-[#C5A059] text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform">
+
+                  <ion-icon [name]="currentAudio ? 'pause-outline' : 'play-outline'" class="text-xl"></ion-icon>{{'BOOK-D.RESUME.LISTEN' | translate}}
+
+                </button>
+
               </div>
 
               <div class="space-y-6">

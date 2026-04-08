@@ -93,7 +93,7 @@
                     <div class="flex justify-between items-center">
 
                       <span class="font-bold text-[#1A1614] font-lato text-base">{{ res.authorId }}</span>
-                      <button class="flex items-center gap-2 text-[#C5A059] text-xs font-bold uppercase tracking-widest">
+                      <button (click)="$event.stopPropagation(); speakSummary(res.structure?.tldr || '', book.language)" class="flex items-center gap-2 text-[#C5A059] text-xs font-bold uppercase tracking-widest">
 
                         <ion-icon name="play-outline" class="text-xl"></ion-icon> {{'BOOK-D.RESUME.LISTEN' | translate}}
 
