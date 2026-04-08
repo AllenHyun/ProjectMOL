@@ -31,6 +31,7 @@ import {
 import {RouterLink} from "@angular/router";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-book-management',
@@ -194,7 +195,7 @@ export class BookManagementPage implements OnInit {
     }
 
     const cleanIsbn = isbn.replace(/[- ]/g, "");
-    const apiKey = 'AIzaSyB4WKEytrTiePH69M3Vu-vNTdDYX6XxlpQ';
+    const apiKey = environment.googleBookKey;
     const url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${cleanIsbn}&key=${apiKey}`;
     this.http.get(url).subscribe((res:any) => {
       if(res.totalItems === 0){

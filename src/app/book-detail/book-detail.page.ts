@@ -24,6 +24,7 @@ import { Review } from '../models/review';
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {Vote} from "../models/vote";
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-book-detail',
@@ -355,7 +356,7 @@ export class BookDetailPage implements OnInit {
     }
 
     const voiceId = 'pNInz6obpgDQGcFmaJgB';
-    const apiKey = 'sk_bb2a3b445d40574eef916254807491c163e478862cac2b36';
+    const apiKey = environment.elevenLabsKey;
     const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`;
 
     const body = {
