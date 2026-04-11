@@ -1,0 +1,152 @@
+<ion-content>
+
+  <div class="flex flex-col min-h-full">
+
+    <app-header></app-header>
+
+    <main class="flex-grow container mx-auto max-w-6xl p-8">
+
+      <div class="flex flex-wrap items-end gap-6 mb-12">
+
+        <div class="relative w-full md:w-80">
+
+          <div class="flex items-center border border-[#C5A059] bg-white px-3 py-2 shadow-sm">
+
+            <ion-icon name="search-outline" class="text-[#C5A059] mr-2"></ion-icon>
+            <input type="text" [(ngModel)]="searchTerms" (input)="onInputChange()" placeholder="Busca un libro..." class=" bg-white text-black w-full outline-none text-xs font-lato">
+
+          </div>
+
+          @if (showSuggestion) {
+            <div class="absolute z-50 w-full bg-white border border-gray-300 shadow-xl mt-1">
+
+              @for (book of suggestions; track book.id) {
+                <div (click)="selectSuggestion(book)" class="p-3 hover:bg-[#FDFBF7] cursor-pointer text-black border-b border-gray-50 flex items-center gap-3">
+
+                  <img [src]="book.coverUrl" class="w-8 h-10 object-cover shadow-sm">
+                  <span class="text-xs font-bold">{{book.title}}</span>
+
+                </div>
+              }
+
+            </div>
+          }
+
+        </div>
+
+        <div class="flex flex-wrap gap-4">
+
+          @for (filterKey of ['language', 'level', 'category', 'year']; track filterKey) {
+            <div class="flex flex-col gap-1 relative">
+
+              <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest ml-1">{{filterKey === 'language' ? 'Idioma' : filterKey === 'level' ? 'Nivel' : filterKey === 'category' ? 'Categoría': 'Año'}}</label>
+
+              <div (click)="toggleDropdown(filterKey)" class="border border-[#C5A059] bg-white p-2 text-[11px] font-bold text-[#1A1614] flex justify-between items-center min-w-[150px] cursor-pointer shadow-sm">
+
+                <span class="truncate">{{selectedFilters[filterKey].length === 0 ? 'Todos' : selectedFilters[filterKey].join(', ')}}</span>
+                <ion-icon [name]="openFilter === filterKey ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+
+              </div>
+
+              @if (openFilter === filterKey) {
+                <div class="absolute top-[100%] left-0 z-[60] w-full bg-white border border-[#C5A059] shadow-xl mt-1">
+
+                  @for (opt of filters[filterKey === 'language' ? 'languages' : filterKey === 'level' ? 'levels' : filterKey === 'category' ? 'categories' : 'years']; track opt) {
+                    <div (click)="toggleFilter(filterKey, opt)" class="p-3 text-[11px] text-[#1A1614] hover:bg-[#FDFBF7] flex justify-between items-center" [class.bg-gray-100]="selectedFilters[filterKey].includes(opt)">
+
+                      {{opt}}
+                      <ion-icon *ngIf="selectedFilters[filterKey].includes(opt)" name="close-outline" class="text-[#C5A059]"></ion-icon>
+
+                    </div>
+                  }
+
+                </div>
+              }
+
+            </div>
+          }
+
+        </div>
+
+      </div>
+
+      <div class="flex flex-col gap-8">
+
+        @for (sum of filteredSummaries; track sum.id) {
+          <div class="bg-white border border-[#C5A059]/20 shadow-sm p-8 flex flex-col md:flex-row gap-8 relative hover:shadow-md transition-all">
+
+            <p class="absolute top-4 right-6 text-[9px] text-gray-500 uppercase font-bold">{{sum.createdAt | date:'dd/MM/yyyy'}}</p>
+
+            <div class="w-40 flex-shrink-0 cursor-pointer" [routerLink]="['/summary-detail', sum.id]">
+
+              <img [src]="sum.coverUrl" class="w-full shadow-lg border border-gray-100">
+
+            </div>
+
+            <div class="flex-grow flex flex-col">
+
+              <h3 [routerLink]="['/summary-detail', sum.id]" class="text-4xl font-['Cormorant_Garamond'] font-bold text-[#1A1614] mb-4">{{sum.bookTitle}}</h3>
+              <p [routerLink]="['/summary-detail', sum.id]" class="text-sm text-gray-500 font-lato leading-relaxed line-clamp-3 italic mb-8">{{sum['structure']?.tldr}}</p>
+
+              <div class="mt-auto flex items-center justify-between pt-4 border-t border-gray-50">
+
+                <div class="flex items-center gap-3">
+
+                  <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-500">
+
+                    @if (sum.authorPhotoUrl) {
+
+                      <img [src]="sum.authorPhotoUrl" class="w-full h-full object-cover">
+
+                    } @else {
+                      <ion-icon name="person-outline" class="text-3xl text-gray-500"></ion-icon>
+                    }
+
+                  </div>
+
+                  <span class="text-sm font-bold text-[#1A1614] font-lato">{{sum.authorId}}</span>
+
+                </div>
+
+                <div class="flex items-center gap-4">
+
+                  <div class="flex gap-3">
+
+                    <button class="flex items-center gap-2 border border-gray-100 text-black px-3 py-1 text-[11px] font-bold uppercase hover:bg-green-50">
+
+                      <ion-icon name="thumbs-up-outline" class="text-green-600"></ion-icon> Útil
+
+                    </button>
+
+                    <button class="flex items-center gap-1 border border-gray-100 text-black px-3 py-1 text-[11px] font-bold uppercase hover:bg-red-50">
+
+                      <ion-icon name="thumbs-down-outline" class="text-red-600"></ion-icon> No útil
+
+                    </button>
+
+                  </div>
+
+                  <button (click)="speakSummary(sum?.structure?.tldr || '', sum.bookLanguage)" class="flex items-center gap-2 text-[#C5A059] text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform">
+
+                    <ion-icon [name]="currentAudio ? 'pause-outline' : 'play-outline'" class="text-xl"></ion-icon>{{'BOOK-D.RESUME.LISTEN' | translate}}
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        }
+
+      </div>
+
+    </main>
+
+    <app-footer></app-footer>
+
+  </div>
+
+</ion-content>

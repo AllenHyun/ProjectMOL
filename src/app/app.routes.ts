@@ -50,4 +50,12 @@ export const routes: Routes = [
     path: 'explore',
     loadComponent: () => import('./explore/explore.page').then( m => m.ExplorePage)
   },
+  {
+    path: 'summary',
+    loadComponent: () => import('./summary/summary.page').then( m => m.SummaryPage)
+  },
+  {
+    path: 'review',
+    loadComponent: () => import('./review/review.page').then( m => m.ReviewPage)
+  },
 ];
