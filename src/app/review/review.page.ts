@@ -91,7 +91,7 @@ export class ReviewPage implements OnInit {
         bookCategory: book?.categories || [],
         bookLevel: book?.level,
         authorPhotoUrl: photo,
-        authorName: username,
+        userName: username,
         stars: Array(5).fill(0).map((_, i) => i < (rev.rating || 0))
       };
     }));

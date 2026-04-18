@@ -7,4 +7,5 @@ export interface User {
   level: 'ESO' | 'Uni' | 'Posgrado';
   photoUrl: string;
   createdAt: string;
+  bio?: string;
 }

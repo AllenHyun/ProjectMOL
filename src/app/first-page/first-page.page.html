@@ -26,35 +26,60 @@
 
       </div>
 
-      <swiper-container #swiperNovedades init="false" class="pb-8 [--swiper-navigation-color:white] [--swiper-navigation-size:12px] [&::part(button-prev)]:bg-[#2E473B] [&::part(button-next)]:bg-[#2E473B] [&::part(button-prev)]:rounded-full [&::part(button-next)]:rounded-full [&::part(button-prev)]:p-4 [&::part(button-next)]:p-4">
+      @if (newBooks$ | async; as books) {
 
-        @for (book of (newBooks$ | async); track book.id) {
-          <swiper-slide class="p-2">
+        @if (books.length > 0) {
+          <swiper-container #swiperNovedades init="false" class="pb-8 [--swiper-navigation-color:white] [--swiper-navigation-size:12px] [&::part(button-prev)]:bg-[#2E473B] [&::part(button-next)]:bg-[#2E473B] [&::part(button-prev)]:rounded-full [&::part(button-next)]:rounded-full [&::part(button-prev)]:p-4 [&::part(button-next)]:p-4">
 
-            <div [routerLink]="['/book-detail', book.id]" class="group cursor-pointer">
+            @for (book of books; track book.id) {
 
-              <div class="relative overflow-hidden rounded-sm shadow-xl transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl">
+              <swiper-slide class="p-2">
 
-                <img [src]="book.coverUrl" (error)="book.coverUrl = 'assets/img/default-book.png'" class="aspect-[3/4] w-full object-cover border border-[#C5A059]/10">
+                <div [routerLink]="['/book-detail', book.id]" class="group cursor-pointer">
 
-                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+                  <div class="relative overflow-hidden rounded-sm shadow-xl transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl">
 
-              </div>
+                    <img [src]="book.coverUrl" (error)="book.coverUrl = 'assets/img/default-book.png'" class="aspect-[3/4] w-full object-cover border border-[#C5A059]/10">
 
-            </div>
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+                  </div>
 
-          </swiper-slide>
-        } @empty {
-          <div class="flex gap-4 overflow-hidden">
+                </div>
 
-            @for (i of [1,2,3,4]; track i) {
-              <div class="aspect-[3/4] w-64 bg-gray-300 animate-pulse rounded-sm"></div>
+              </swiper-slide>
+
             }
+
+          </swiper-container>
+
+        } @else {
+          <div class="py-12 px-6 border border-dashed border-[#C5A059]/40 bg-[#FDFBF7]/50 rounded-sm text-center">
+
+            <p class="font-['Cormorant_Garamond'] italic text-2xl text-gray-500">
+
+              No hay novedades esta semana, pero pronto llegarán nuevos títulos.
+
+            </p>
+
+            <p class="text-[10px] uppercase tracking-[0.2em] text-[#C5A059] mt-2 font-bold">
+
+              Sigue explorando nuestro catálogo
+
+            </p>
 
           </div>
         }
 
-      </swiper-container>
+      } @else {
+        <div class="flex gap-4 overflow-hidden">
+
+          @for (i of [1,2,3,4]; track i) {
+            <div class="aspect-[3/4] w-64 bg-gray-200 animate-pulse rounded-sm"></div>
+          }
+
+        </div>
+
+      }
 
     </section>
 

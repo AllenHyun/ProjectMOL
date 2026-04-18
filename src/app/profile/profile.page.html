@@ -1,0 +1,150 @@
+<ion-content>
+
+  <div class="min-h-full bg-[#F4F1EA] pb-20">
+
+    <app-header></app-header>
+
+    <main class="container mx-auto max-w-4xl px-6 mt-20 relative">
+
+      <input type="file" #fileInput style="display: none" accept="image/*" (change)="onFileSelected($event)">
+
+      <div class="absolute left-1/2 -top-16 -translate-x-1/2 z-10">
+
+        <div class="relative group">
+
+          <img [src]="user.photoUrl || 'assets/icon/default-avatar.png'"
+
+               class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-white shadow-lg">
+
+          <button *ngIf="!isReadOnly && isEditing" (click)="fileInput.click()" class="absolute bottom-2 right-2 bg-[#2E473B] text-white p-2 rounded-full shadow-md hover:bg-[#1A1614] transition-colors">
+
+            <ion-icon name="camera-outline"></ion-icon>
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <section class="bg-white rounded-[40px] shadow-sm p-12 pt-24 text-center">
+
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 px-4">
+
+          <div *ngIf="!isReadOnly" class="text-[10px] uppercase font-bold text-gray-500">
+
+            {{ user.email }}
+
+          </div>
+
+          <div class="text-sm font-lato text-gray-600 mt-4 md:mt-0">
+
+            <span class="font-bold uppercase tracking-widest text-[10px]">Nivel educativo:</span>
+
+            <select *ngIf="isEditing" [(ngModel)]="user.level" class="ml-2 border-b border-[#C5A059] bg-transparent outline-none cursor-pointer">
+
+              <option value="ESO">ESO/Bachiller</option>
+              <option value="Uni">Universidad</option>
+              <option value="Posgrado">Posgrado</option>
+
+            </select>
+
+            <span *ngIf="!isEditing" class="ml-2 font-medium">{{ user.level }}</span>
+
+          </div>
+
+        </div>
+
+        <h1 class="text-5xl md:text-7xl font-['Cormorant_Garamond'] uppercase tracking-tight text-[#1A1614] mb-4">
+
+          <input *ngIf="isEditing" [(ngModel)]="user.username" class="text-center border-b border-[#C5A059] bg-transparent outline-none w-full max-w-md">
+          <span *ngIf="!isEditing">{{ user.username }}</span>
+
+        </h1>
+
+        <button *ngIf="!isReadOnly" (click)="toggleEdit()" class="mt-4 px-8 py-2 border border-[#C5A059] text-[#C5A059] text-[10px] uppercase font-bold tracking-[0.2em] hover:bg-[#C5A059] hover:text-white transition-all">
+          {{ isEditing ? 'Guardar' : 'Editar Perfil' }}
+        </button>
+
+      </section>
+
+      <section class="bg-white rounded-[40px] shadow-sm p-10 mt-8">
+
+        <div class="flex items-center gap-4 mb-6">
+
+          <div class="h-[1px] flex-grow bg-[#C5A059]"></div>
+
+          <h2 class="font-['Playfair_Display'] text-lg text-gray-400 italic px-4">Sobre mi</h2>
+
+          <div class="h-[1px] flex-grow bg-[#C5A059]"></div>
+
+        </div>
+
+        <textarea *ngIf="isEditing" [(ngModel)]="user.bio" rows="4" class="w-full text-white p-4 border border-[#C5A059] rounded-xl outline-none font-lato leading-relaxed resize-none"></textarea>
+
+        <p *ngIf="!isEditing" class="text-[#1A1614] font-lato leading-relaxed text-justify px-4 italic opacity-80">{{ user.bio || 'Sin descripción todavía...' }}</p>
+
+      </section>
+
+      <section class="bg-white rounded-[40px] shadow-sm p-10 mt-8">
+
+        <div class="flex items-center gap-4 mb-8 justify-end">
+
+          <div class="h-[1px] w-20 bg-[#C5A059]"></div>
+
+          <h2 class="font-['Playfair_Display'] text-lg text-gray-400 italic px-4">Mis intereses</h2>
+
+          <div class="h-[1px] flex-grow bg-[#C5A059]"></div>
+
+        </div>
+
+        <div class="flex flex-wrap gap-3 justify-center">
+
+          @for (item of user.interests; track item) {
+            <span class="px-6 py-2 border border-gray-100 text-[#1A1614] font-lato text-sm rounded-sm bg-white shadow-sm flex items-center gap-3">
+
+              {{ item }}
+
+              <ion-icon *ngIf="!isReadOnly && isEditing" name="close-outline" (click)="removeInterest(item)"></ion-icon>
+
+            </span>
+          }
+
+          <div *ngIf="isEditing" class="flex border border-[#C5A059] rounded-sm bg-white">
+
+            <input #newInterest type="text" placeholder="Nuevo interés" class="p-2 text-xs outline-none w-32 font-lato" (keyup.enter)="addInterest(newInterest)">
+
+            <button (click)="addInterest(newInterest)" class="px-3 text-[#C5A059] hover:bg-[#FDFBF7]">
+
+              <ion-icon name="add-outline"></ion-icon>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="bg-white rounded-[40px] shadow-sm p-10 mt-8 mb-20">
+
+        <div class="flex items-center gap-4 mb-8 justify-end">
+
+          <div class="h-[1px] flex-grow bg-[#C5A059]"></div>
+
+          <h2 class="font-['Playfair_Display'] text-lg text-gray-400 italic px-4">Favoritos</h2>
+
+          <div class="h-[1px] w-12 bg-[#C5A059]"></div>
+
+        </div>
+
+        <p class="text-center text-gray-400 font-lato italic py-8">Próximamente: tus libros guardados aparecerán aquí.</p>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <app-footer></app-footer>
+
+</ion-content>
