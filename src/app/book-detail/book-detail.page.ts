@@ -10,11 +10,11 @@ import {
   where,
   collectionData,
   addDoc,
-  updateDoc, setDoc
+  updateDoc, setDoc, arrayUnion, arrayRemove, deleteDoc
 } from '@angular/fire/firestore';
 import {AlertController, IonContent, IonIcon, IonModal} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline } from 'ionicons/icons';
+import { star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline, addOutline, checkmarkCircle, trashOutline } from 'ionicons/icons';
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import { FormsModule } from '@angular/forms';
@@ -66,6 +66,10 @@ export class BookDetailPage implements OnInit {
 
   public userVote: number | null = null;
 
+  public showListModal = false;
+  public userLists: any[] = [];
+  public newListName = '';
+
   private currentAudio: HTMLAudioElement | null = null;
   private readonly langMap: {[key: string]: string} = {
     'Español': 'es-ES',
@@ -86,7 +90,7 @@ export class BookDetailPage implements OnInit {
 
   constructor() {
     addIcons( {
-      star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline });
+      star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline, addOutline, checkmarkCircle, trashOutline });
   }
 
   ngOnInit() {
@@ -394,6 +398,112 @@ export class BookDetailPage implements OnInit {
     utterance.lang = this.langMap[langName] || 'es-ES';
     utterance.rate = 0.9;
     window.speechSynthesis.speak(utterance);
+  }
+
+  async openAddToListModal(){
+    const user = this.auth.currentUser;
+    if (!user){
+      this.showLoginAlert();
+      return;
+    }
+    this.showListModal = true;
+    this.loadUserLists(user.uid);
+  }
+
+  loadUserLists(userId: string){
+    const listRef = collection(this.firestore, 'lists');
+    const q = query(listRef, where('userId', '==', userId));
+
+    collectionData(q, {idField: 'id'}).subscribe(data => {
+      if(data.length === 0){
+        this.createDefaultList(userId);
+      } else {
+        this.userLists = data;
+      }
+    });
+  }
+
+  private async createDefaultList(userId: string) {
+    const defaultNames = ['Por Leer', 'En Curso', 'Leídos', 'Favoritos'];
+
+    try {
+      const listRef = collection(this.firestore, 'lists');
+      const promises = defaultNames.map((name) =>
+        addDoc(listRef, {
+          name: name,
+          userId: userId,
+          bookIds: [],
+          createdAt: new Date().toISOString()
+        }));
+      await Promise.all(promises);
+      console.log('Listas por defecto creadas');
+    } catch (error) {
+      console.error('Error el crear las listas por defecto: ', error);
+    }
+  }
+
+  async toggleBookListModal(list: any){
+    const listRef = doc(this.firestore, 'lists', list.id);
+    const isInList = list.bookIds?.includes(this.book.id);
+
+    try {
+      await updateDoc(listRef, {
+        bookIds: isInList ? arrayRemove(this.book.id) : arrayUnion(this.book.id)
+      });
+      console.log(isInList ? 'Eliminado de la lista' : 'Añadido a la lista');
+    } catch (error) {
+      console.error("Error al actualizar la lista: ", error);
+    }
+  }
+
+  async createAndAddToList(){
+    const user = this.auth.currentUser;
+    if (!this.newListName.trim() || !user){
+      return;
+    }
+
+    try{
+      const listRef = collection(this.firestore, 'lists');
+      await addDoc(listRef, {
+        name: this.newListName.trim(),
+        userId: user.uid,
+        bookIds: [this.book.id],
+        createdAt: new Date().toISOString()
+      });
+      this.newListName = '';
+      console.log("Nueva lista creada con el libro");
+    }
+    catch (error) {
+      console.error("Error al actualizar la lista: ", error);
+    }
+  }
+
+  async showLoginAlert() {
+    const alert = await this.alertCtrl.create({
+      header: this.translate.instant('BOOK-D.SAVE_REVIEW.HEADER'),
+      message: this.translate.instant('BOOK-D.SAVE_REVIEW.MESSAGE'),
+      buttons: [
+        { text: this.translate.instant('BOOK-D.SAVE_REVIEW.CANCEL'), role: 'cancel' },
+        {
+          text: this.translate.instant('BOOK-D.SAVE_REVIEW.LOGIN'),
+          handler: () => this.router.navigate(['/login'])
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async deleteList(listId: string){
+    const confirmation = confirm('¿Estás seguro de que quiere eliminar esta lista?');
+    if (confirmation){
+      try{
+        const listRef = doc(this.firestore, 'lists', listId);
+        await deleteDoc(listRef);
+        console.log("Lista eliminada correctamente");
+      } catch (error) {
+        console.error("Error al eliminar la lista: ", error);
+      }
+    }
   }
 
 }

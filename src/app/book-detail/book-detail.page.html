@@ -22,7 +22,7 @@
 
               <div class="flex flex-wrap justify-end gap-4 mb-12">
 
-                <button class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.ADD_LIST'|translate}} </button>
+                <button (click)="openAddToListModal()" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.ADD_LIST'|translate}} </button>
                 <button (click)="showModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.WRITE_RESUME'|translate}} </button>
                 <button (click)="showReviewModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.WRITE_REVIEW'|translate}} </button>
 
@@ -318,6 +318,65 @@
           <button (click)="saveReview()" class="flex-1 py-3 bg-[#2E473B]  uppercase text-white text-[10px] font-bold shadow-md"> {{'COMMON.PUBLISH' | translate}} </button>
 
         </div>
+
+      </div>
+
+    </ng-template>
+
+  </ion-modal>
+
+  <ion-modal [isOpen]="showListModal" (didDismiss)="showListModal = false" [breakpoints]="[0, 0.5, 0.8]" [initialBreakpoint]="0.5">
+
+    <ng-template>
+
+      <div class="p-8 bg-white h-full flex flex-col gap-6 overflow-y-auto">
+
+        <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614] border-b border-[#C5A059]/20 pb-4">{{'Mis listas'}}</h2>
+
+        <div class="flex flex-col gap-2">
+
+          @for (list of userLists; track list.id) {
+            <div (click)="toggleBookListModal(list)" class="flex justify-between items-center p-4 border border-gray-500 rounded-sm hover:bg-[#FDFBF7] cursor-pointer transition-colors">
+
+              <div class="flex items-center gap-3">
+
+                <span class="font-lato text-sm text-[#1A1614] font-bold">{{list.name}}</span>
+
+              </div>
+
+              <div class="flex items-center gap-4">
+
+                <button (click)="$event.stopPropagation(); deleteList(list.id)" class="flex- items-center justify-center text-gray-500 hover:text-red-600 transition-colors">
+
+                  <ion-icon name="trash-outline" class="text-lg"></ion-icon>
+
+                </button>
+
+                <ion-icon [name]="list.bookIds?.includes(book.id) ? 'checkmark-circle' : 'add-outline'" [class.text-green-600]="list.bookIds?.includes(book.id)" class="text-xl text-[#C5A059]"></ion-icon>
+
+              </div>
+
+            </div>
+          } @empty {
+            <p class="text-gray-500 italic text-sm font-lato">No tienes listas creadas</p>
+          }
+
+        </div>
+
+        <div class="mt-4 pt-6 border-t border-[#C5A059]/10">
+
+          <label class="text-[10px] uppercase font-bol text-gray-500 tracking-widest mb-2 block">Crear nueva lista</label>
+
+          <div class="flex gap-2">
+
+            <input [(ngModel)]="newListName" type="text" placeholder="Ej: Novela negra" class="flex-grow p-3 border border-[#C5A059 outline-none text-sm font-lato]">
+            <button (click)="createAndAddToList()" class="bg-[#2E473B] text-white px-4 py-3 uppercase text-[10px] font-bold shadow-md">Crear</button>
+
+          </div>
+
+        </div>
+
+        <button (click)="showListModal = false" class="mt-6 w-full py-3 border border-gray-500 uppercase text-[10px] font-bold">{{'COOMON.CANCEL' | translate}}</button>
 
       </div>
 
