@@ -12,5 +12,5 @@ export interface Book {
   ratingAvg?: number;
   ratingCount?: number;
   sumaryCount?: number;
-  createdAt: string;
+  createdAt: any;
 }

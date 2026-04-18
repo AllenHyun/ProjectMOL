@@ -42,12 +42,13 @@ import {environment} from "../../environments/environment";
 })
 export class BookManagementPage implements OnInit {
   private firestore: Firestore = inject(Firestore);
+  private http = inject(HttpClient);
+  private translate = inject(TranslateService);
+
   public book: Book[] = [];
   public showForm = false;
   public emptyBook : any = this.initBook();
   public searchTerms: string = '';
-  private http = inject(HttpClient);
-  private translate = inject(TranslateService);
   public availableCategories = ['Acción', 'Romance', 'Thriller', 'Educativo', 'Aventura', 'Ciencia Ficción'];
 
   constructor() {
@@ -83,90 +84,90 @@ export class BookManagementPage implements OnInit {
     };
   }
 
-
   async addBook() {
     if (!this.emptyBook.title) return;
 
-    try{
+    try {
+      const processedAuthors = typeof this.emptyBook.authors === 'string'
+        ? this.emptyBook.authors.split(',').map((e: any) => e.trim()).filter((e: any) => e !== "")
+        : (Array.isArray(this.emptyBook.authors) ? this.emptyBook.authors : []);
 
-      const finalBook: Book = {
+      const processedCategories = Array.isArray(this.emptyBook.categories)
+        ? [...this.emptyBook.categories]
+        : [];
+
+      const processedTags = typeof this.emptyBook.tags === 'string'
+        ? this.emptyBook.tags.split(',').map((e: any) => e.trim()).filter((e: any) => e !== "")
+        : (Array.isArray(this.emptyBook.tags) ? this.emptyBook.tags : []);
+
+      const finalBook: any = {
         title: this.emptyBook.title,
         isbn: this.emptyBook.isbn || '',
         language: this.emptyBook.language,
         year: Number(this.emptyBook.year),
-        coverUrl: this.emptyBook.coverUrl || 'https://via.placeholder.com/150',
-        authors: this.emptyBook.authors ? this.emptyBook.authors.split(',').map((e: any) => e.trim()) : [],
-        categories: this.emptyBook.categories,
-        tags: this.emptyBook.tags ? this.emptyBook.tags.split(',').map((e: any) => e.trim()) : [],
+        coverUrl: this.emptyBook.coverUrl || 'assets/img/default-book.png',
+        authors: processedAuthors,
+        categories: processedCategories,
+        tags: processedTags,
         level: this.emptyBook.level,
-        id: Date.now().toString(),
-        createdAt: new  Date().toISOString(),
-        ratingAvg: 0,
-        ratingCount: 0,
-        sumaryCount: 0
+        ratingAvg: this.emptyBook.ratingAvg || 0,
+        ratingCount: this.emptyBook.ratingCount || 0,
+        sumaryCount: this.emptyBook.sumaryCount || 0
       };
 
-      if(this.emptyBook.id){
-        const  bookDocRef = doc(this.firestore, `books/${this.emptyBook.id}`);
+      if (this.emptyBook.id) {
+        const bookDocRef = doc(this.firestore, `books/${this.emptyBook.id}`);
         await updateDoc(bookDocRef, {
           ...finalBook,
-          updateAt: new Date().toISOString(),
+          updateAt: new Date()
         });
-      } else{
+      } else {
         const booksCollection = collection(this.firestore, 'books');
         await addDoc(booksCollection, {
           ...finalBook,
-          createdAt: new Date().toISOString(),
-          ratingAvg: 0,
-          ratingCount: 0,
-          sumaryCount: 0
+          createdAt: new Date()
         });
       }
       this.cancelForm();
-    } catch(error) {
-      console.log("Error al guardar en Firebase: ", error);
+    } catch (error) {
+      console.error(error);
     }
   }
 
   async deleteBook(id: string) {
     if (confirm(this.translate.instant('BOOK-M.DELETE_CONFIRM'))) {
-      try{
+      try {
         const summariesRef = collection(this.firestore, 'summaries');
         const qSummaries = query(summariesRef, where('bookId', '==', id));
         const sumSnapshot = await getDocs(qSummaries);
         const deleteSummaries = sumSnapshot.docs.map( d => deleteDoc(doc(this.firestore, 'summaries', d.id)));
         await Promise.all(deleteSummaries);
-        console.log(`${sumSnapshot.size} resúmenes eliminados`);
 
         const reviewsRef = collection(this.firestore, 'reviews');
         const qReviews = query(reviewsRef, where('bookId', '==', id));
         const revSnapshot = await getDocs(qReviews);
         const deleteReview = revSnapshot.docs.map( d => deleteDoc(doc(this.firestore, 'reviews', d.id)));
         await Promise.all(deleteReview);
-        console.log(`${revSnapshot.size} reseñas eliminadas`);
 
         const bookDocRef = doc(this.firestore, `books/${id}`);
         await deleteDoc(bookDocRef);
-        this.book = this.book.filter((book: Book) => book.id !== id);
-      } catch (error){
-        console.log("Error al borrar de Firebase: ", error);
+      } catch (error) {
+        console.error(error);
       }
     }
   }
 
-  async editBook(libro: Book){
-    try{
+  async editBook(libro: Book) {
+    try {
       this.emptyBook = {
         ...libro,
-        authors: libro.authors.join(', '),
-        categories: libro.categories.join(', '),
-        tags: libro.tags ? libro.tags.join(', ') : '',
+        authors: Array.isArray(libro.authors) ? libro.authors.join(', ') : libro.authors,
+        tags: Array.isArray(libro.tags) ? libro.tags.join(', ') : (libro.tags || ''),
+        categories: Array.isArray(libro.categories) ? [...libro.categories] : []
       };
-
       this.showForm = true;
-      console.log("Editando libro: ", libro.title);
-    } catch(error){
-      console.error("Error al cargar el libro a editar: ", error);
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -175,66 +176,70 @@ export class BookManagementPage implements OnInit {
     this.emptyBook = this.initBook();
   }
 
-  get filteredBooks(){
+  get filteredBooks() {
     const term = this.searchTerms.toLowerCase().trim();
-
-    if(!term){
-      return this.book;
-    }
-    return this.book.filter(book => {
-      const titleMatch = book.title.toLowerCase().includes(term);
-      const authorMatch = book.authors.some(author => author.toLowerCase().includes(term));
-      return titleMatch || authorMatch;
-    });
+    if (!term) return this.book;
+    return this.book.filter(book =>
+      book.title.toLowerCase().includes(term) ||
+      book.authors.some(author => author.toLowerCase().includes(term))
+    );
   }
 
-  async importIsbn(){
+  async importIsbn() {
     const isbn = prompt(this.translate.instant('BOOK-M.IMPORT_ISBN'));
-    if(!isbn){
-      return;
-    }
+    if (!isbn) return;
 
     const cleanIsbn = isbn.replace(/[- ]/g, "");
     const apiKey = environment.googleBookKey;
     const url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${cleanIsbn}&key=${apiKey}`;
-    this.http.get(url).subscribe((res:any) => {
-      if(res.totalItems === 0){
-        alert(this.translate.instant('BOOK-M.ISBN_NOT_FOUND'));
-        return;
-      }
-      const info = res.items[0].volumeInfo;
 
-      let cover = info.imageLinks?.thumbnail || '';
-
-      if(cover){
-        cover = cover.replace('http:', 'https:');
-        cover = cover.replace('&edge=curl', '');
-        if (cover.includes('zoom=1')) {
-          cover = cover.replace('zoom=1', 'zoom=2');
+    this.http.get(url).subscribe({
+      next: (res: any) => {
+        if (res.totalItems === 0) {
+          alert(this.translate.instant('BOOK-M.ISBN_NOT_FOUND'));
+          return;
         }
+
+        const info = res.items[0].volumeInfo;
+        let cover = info.imageLinks?.thumbnail || '';
+
+        if (cover) {
+          cover = cover.replace('http:', 'https:').replace('&edge=curl', '');
+        }
+
+        const langMap: { [key: string]: string } = {
+          'es': 'Español',
+          'en': 'Inglés',
+          'fr': 'Francés',
+          'ru': 'Ruso'
+        };
+
+        this.emptyBook = {
+          ...this.initBook(),
+          title: info.title || '',
+          authors: info.authors ? info.authors.join(', ') : '',
+          isbn: cleanIsbn,
+          language: langMap[info.language] || info.language,
+          categories: [],
+          tags: '',
+          year: info.publishedDate ? new Date(info.publishedDate).getFullYear() : new Date().getFullYear(),
+          coverUrl: cover
+        };
+
+        this.showForm = true;
+      },
+      error: (err) => {
+        if (err.status === 503) {
+          alert("Aviso: El servicio de Google Books no responde (Error 503). Por favor, introduce los datos a mano.");
+        } else {
+          alert(this.translate.instant('BOOK-M.ERROR_LOADING'));
+        }
+        this.showForm = false;
       }
-
-      this.emptyBook = {
-        ...this.initBook(),
-        title: info.title || '',
-        authors: info.authors ? info.authors.join(', ') : '',
-        isbn: cleanIsbn,
-        language: info.language === 'es' ? 'Español' : (info.language === 'en' ? 'Inglés' : info.language),
-        categories: info.categories,
-        tags: '',
-        year: info.publishedDate ? new Date(info.publishedDate).getFullYear() : new Date().getFullYear(),
-        coverUrl: cover
-      };
-
-      this.showForm = true;
-      console.log("Datos importados de Google Books: ", info);
-    }, error => {
-      console.error("Error al cargar el libro: ", error);
-      alert(this.translate.instant('BOOK-M.ERROR_LOADING'));
     });
   }
 
-  toggleCategory(cat: string){
+  toggleCategory(cat: string) {
     const index = this.emptyBook.categories.indexOf(cat);
     if (index > -1) {
       this.emptyBook.categories.splice(index, 1);

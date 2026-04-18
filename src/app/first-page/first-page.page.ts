@@ -105,19 +105,22 @@ export class FirstPagePage implements OnInit, AfterViewInit {
 
     const weekAgo = new Date();
     weekAgo.setDate(weekAgo.getDate() - 7);
-    const weekLimit = weekAgo.toISOString();
 
-    const qNew = query(bookRef, where("createdAt", ">=", weekLimit), orderBy('createdAt', 'desc'), limit(10));
-    this.newBooks$ = collectionData(qNew, {idField: 'id'});
+    const qNew = query(
+      bookRef,
+      where("createdAt", ">=", weekAgo),
+      orderBy('createdAt', 'desc'),
+      limit(10)
+    );
+    this.newBooks$ = collectionData(qNew, { idField: 'id' });
 
     const qRec = query(bookRef, where('ratingAvg', '>', 4), orderBy('ratingAvg', 'desc'), limit(10));
-    this.recommendedBooks$ = collectionData(qRec, {idField: 'id'});
+    this.recommendedBooks$ = collectionData(qRec, { idField: 'id' });
 
     const qExam = query(bookRef, where('tags', 'array-contains-any', ['exámenes', 'exams']), limit(10));
-    this.examBooks$ = collectionData(qExam, {idField: 'id'});
+    this.examBooks$ = collectionData(qExam, { idField: 'id' });
 
     const qRev = query(reviewRef, where('rating', '==', 5), orderBy('rating', 'desc'), limit(10));
     this.featuredReviews$ = collectionData(qRev, { idField: 'id' });
-
   }
 }

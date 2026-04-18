@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   elevenLabsKey: 'sk_bb2a3b445d40574eef916254807491c163e478862cac2b36',
-  googleBookKey: 'AIzaSyB4WKEytrTiePH69M3Vu-vNTdDYX6XxlpQ'
+  googleBookKey: 'AIzaSyACZFxc7iTHF4R9oxLQxhRSSAVGHWgcEuA'
 };
 
 /*
