@@ -1,21 +1,38 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {IonContent, IonHeader, IonIcon, IonTitle, IonToolbar} from '@ionic/angular/standalone';
+import {IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToolbar} from '@ionic/angular/standalone';
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
-import {doc, Firestore, getDoc, updateDoc} from "@angular/fire/firestore";
+import {
+  addDoc,
+  collection,
+  collectionData,
+  doc,
+  docData,
+  Firestore,
+  getDoc,
+  query,
+  updateDoc,
+  where
+} from "@angular/fire/firestore";
 import {Auth, authState} from "@angular/fire/auth";
 import {User} from "../models/user";
-import {ActivatedRoute} from "@angular/router";
-import {combineLatest, filter} from "rxjs";
+import {ActivatedRoute, RouterLink} from "@angular/router";
+import {combineLatest, filter, map, Observable, of, switchMap} from "rxjs";
+import {shareOutline, downloadOutline, cameraOutline, closeOutline, addOutline} from "ionicons/icons";
+import {addIcons} from "ionicons";
+import {register} from "swiper/element/bundle";
+
+register();
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, IonIcon]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, IonIcon, RouterLink, IonModal],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ProfilePage implements OnInit {
   private firestore = inject(Firestore);
@@ -37,7 +54,28 @@ export class ProfilePage implements OnInit {
     bio: ''
   };
 
-  constructor() { }
+  public publicList$!: Observable<any[]>;
+  public JSON = JSON;
+
+  public showShareModal = false;
+  public shareCode = '';
+  public listToShare: any = null;
+
+  public swiperConfig = {
+    slidesPerView: 3.5,
+    spaceBetween: 16,
+    navigation: true,
+    breakpoints: {
+      640: { slidesPerView: 3.2 },
+      1024: { slidesPerView: 4.5 }
+    }
+  };
+
+  constructor() {
+    addIcons({
+      shareOutline, downloadOutline, cameraOutline, closeOutline, addOutline
+    });
+  }
 
   ngOnInit() {
     combineLatest([
@@ -58,20 +96,34 @@ export class ProfilePage implements OnInit {
       const userDoc = await getDoc(doc(this.firestore, 'users', uidToFetch));
       if (userDoc.exists()) {
         const data = userDoc.data() as User;
+        this.user = { ...this.user, ...data, uid: uidToFetch };
 
-        this.user = {
-          ...this.user,
-          ...data,
-          uid: uidToFetch
-        };
+        const listsRef = collection(this.firestore, 'lists');
+        const q = query(
+          listsRef,
+          where('userId', '==', uidToFetch),
+          where('isPublic', '==', true)
+        );
 
-        if (uidToFetch === currentUser?.uid) {
-          this.user.email = currentUser.email;
-          this.isReadOnly = false;
-        } else {
-          this.isReadOnly = true;
-        }
+        this.publicList$ = collectionData(q, { idField: 'id' }).pipe(
+          switchMap((lists: any[]) => {
+            if (lists.length === 0) return of([]);
 
+            const listsObservables = lists.map(list => {
+              if (!list.bookIds || list.bookIds.length === 0) {
+                return of({ ...list, books: [] });
+              }
+              const bookRefs = list.bookIds.map((id: string) =>
+                docData(doc(this.firestore, 'books', id), { idField: 'id' })
+              );
+              return combineLatest(bookRefs).pipe(
+                map(books => ({ ...list, books }))
+              );
+            });
+            return combineLatest(listsObservables);
+          })
+        );
+        this.isReadOnly = uidToFetch !== currentUser?.uid;
         this.isEditing = false;
       }
     } catch (error) {
@@ -127,6 +179,33 @@ export class ProfilePage implements OnInit {
         this.user.photoUrl = reader.result as string;
       };
       reader.readAsDataURL(file);
+    }
+  }
+
+  openShare(list: any) {
+    this.listToShare = list;
+    this.shareCode = list.id;
+    this.showShareModal = true;
+  }
+
+  async saveToMyLists(list: any) {
+    const user = this.auth.currentUser;
+    if (!user) {
+      alert("Debes iniciar sesión para guardar listas");
+      return;
+    }
+    try {
+      const listsRef = collection(this.firestore, 'lists');
+      await addDoc(listsRef, {
+        name: `${list.name} (de ${this.user.username})`,
+        userId: user.uid,
+        bookIds: list.bookIds || [],
+        isPublic: false,
+        createdAt: new Date().toISOString(),
+      });
+      alert("Lista guardada en tu biblioteca");
+    } catch (error) {
+      console.error("Error al guardar lista: ", error);
     }
   }
 }

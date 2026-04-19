@@ -199,6 +199,25 @@
 
         <div class="flex flex-col gap-4">
 
+          <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Privacidad</label>
+
+          <div class="flex items-center justify-between p-4 border border-[#C5A059]/20 rounded-sm bg-[#FDFBF7]">
+
+            <div class=" flex flex-col">
+
+              <span class="text-xs font-bold text-[#1A1614]">Hacer lista pública</span>
+              <span class="text-[10px] text-gray-500 italic">Se mostrará en tu perfil de usuario</span>
+
+            </div>
+
+            <ion-toggle [(ngModel)]="selectedList.isPublic" (ionChange)="togglePublicStatus(selectedList)" mode="ios" class="[--handle-background:white] [--background-checked:#2E473B]"></ion-toggle>
+
+          </div>
+
+        </div>
+
+        <div class="flex flex-col gap-4">
+
           <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Libros en lista ({{selectedList?.books.length}})</label>
 
           <div class="flex flex-col gap-3">

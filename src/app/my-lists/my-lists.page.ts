@@ -1,7 +1,7 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToolbar} from '@ionic/angular/standalone';
+import {IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToggle, IonToolbar} from '@ionic/angular/standalone';
 import {
   addDoc, arrayRemove,
   collection,
@@ -30,7 +30,7 @@ register();
   templateUrl: './my-lists.page.html',
   styleUrls: ['./my-lists.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, RouterLink, IonModal, TranslatePipe, IonIcon],
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, RouterLink, IonModal, TranslatePipe, IonIcon, IonToggle],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class MyListsPage implements OnInit {
@@ -123,6 +123,7 @@ export class MyListsPage implements OnInit {
         name: this.newListName.trim(),
         userId: user.uid,
         bookIds: [],
+        isPublic: false,
         createdAt: new Date().toISOString()
       });
       this.newListName = '';
@@ -227,12 +228,23 @@ export class MyListsPage implements OnInit {
           name: name,
           userId: userId,
           bookIds: [],
+          isPublic: false,
           createdAt: new Date().toISOString()
         }));
       await Promise.all(promises);
       console.log('Listas por defecto creadas');
     } catch (error) {
       console.error('Error el crear las listas por defecto: ', error);
+    }
+  }
+
+  async togglePublicStatus(list: any){
+    try {
+      const listRef = doc(this.firestore, 'lists', list.id);
+      await updateDoc(listRef, {isPublic: list.isPublic});
+      console.log('Privacidad actualizada');
+    } catch (error) {
+      console.error("Error al cambiar la privacidad: ", error);
     }
   }
 
