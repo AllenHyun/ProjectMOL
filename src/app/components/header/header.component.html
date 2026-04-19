@@ -138,6 +138,12 @@
 
         </button>
 
+        <button routerLink="/my-lists" (click)="menuOpen = false" class="w-full flex items-center gap-3 p-4 py-3 hover:bg-[#2E473B11] transition-colors text-sm border-none bg-transparent text-left">
+
+          <ion-icon name="list-outline"></ion-icon>Mis listas
+
+        </button>
+
         <div class="h-[1px] bg-gray-200 my-1 mx-4"></div>
 
         <button (click)="openLanguageSelector()" class="w-full flex items-center gap-3 p-4 py-3 hover:bg-[#2E473B11] transition-colors text-sm border-none bg-transparent text-left">
@@ -146,7 +152,7 @@
 
         </button>
 
-        <button class="w-full flex items-center gap-3 p-4 py-3 hover:bg-[#2E473B11] transition-colors text-sm border-none bg-transparent text-left text-[#2E473B]">
+        <button [routerLink]="['/settings']" class="w-full flex items-center gap-3 p-4 py-3 hover:bg-[#2E473B11] cursor-pointer transition-colors text-sm border-none bg-transparent text-left text-[#2E473B]">
 
           <ion-icon name="settings-outline"></ion-icon>{{'HEADER.LOGIN_MENU.SETTINGS' | translate}}
 

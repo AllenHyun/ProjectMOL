@@ -1,0 +1,291 @@
+<ion-content>
+
+  <app-header></app-header>
+
+  <div class="max-w-7xl mx-auto px-6 md:px-12 py-10">
+
+    <div class="flex justify-between items-end mb-12 border-b border-[#C5A059]/20 pb-4">
+
+      <div class="flex items-center gap-4">
+
+        <h1 class="text-5xl font-['Cormorant_Garamond'] text-[#1A1614]">Mis listas</h1>
+
+        <button (click)="showCreateModal = true" class="flex items-center justify-center w-8 h-8 rounded-full border border-[#C5A059] text-[#C5A059] hover:bg-[#C5A059] hover:text-white transition-all">
+
+          <ion-icon name="add-outline"></ion-icon>
+
+        </button>
+
+        <button (click)="showImportModal = true" class="flex items-center justify-center w-8 h-8 rounded-full border border-[#C5A059] text-[#C5A059] hover:bg-[#C5A059] hover:text-white transition-all">
+
+          <ion-icon name="download-outline"></ion-icon>
+
+        </button>
+
+      </div>
+
+      <button class="text-[10px] uppercase tracking-widest font-bold text-[#C5A059] hover:underline">Recordatorios</button>
+
+    </div>
+
+    @if (listWithBooks$ | async; as lists) {
+
+      <div class="space-y-16">
+
+        @for (list of lists; track list.id) {
+
+          <section>
+
+            <div class="flex justify-between items-center mb-6">
+
+              <div class="flex items-center gap-4">
+
+                <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614]">{{list.name}}</h2>
+
+                <button (click)="openEditModal(list)" class="text-[#C5A059] hover:text-[#1A1614] transition-colors">
+
+                  <ion-icon name="pencil-outline" class="text-lg"></ion-icon>
+
+                </button>
+
+                <button (click)="openShare(list)" class="text-gray-500 hover:text-[#C5A059] transition-colors">
+
+                  <ion-icon name="share-outline" class="text-lg"></ion-icon>
+
+                </button>
+
+              </div>
+
+              <span class="text-[10px] uppercase tracking-tighter text-gray-500">{{list.books.length}} libros</span>
+
+            </div>
+
+            @if (list.books.length > 0) {
+
+              <swiper-container
+                navigation="true"
+                [attr.slides-per-view]="swiperConfig.slidesPerView"
+                [attr.space-between]="swiperConfig.spaceBetween"
+                [attr.breakpoints]="JSON.stringify(swiperConfig.breakpoints)"
+                [attr.observer]="true"
+                [attr.observe-parents]="true"
+                class="pb-8 [--swiper-navigation-color:white] [--swiper-navigation-size:12px] [&::part(button-prev)]:bg-[#2E473B] [&::part(button-next)]:bg-[#2E473B] [&::part(button-prev)]:rounded-full [&::part(button-next)]:rounded-full [&::part(button-prev)]:p-4 [&::part(button-next)]:p-4">
+
+                @for (book of list.books; track book.id) {
+
+                  <swiper-slide>
+
+                    <div [routerLink]="['/book-detail', book.id]" class="group cursor-pointer">
+
+                      <div class="relative overflow-hidden shadow-md transition-all duration-500 group-hover:scale-105 w-full max-w-[140px] md:max-w-[180px]">
+
+                        <img [src]="book.coverUrl" (error)="book.coverUrl = 'assets/img/default-book.png'" class="w-full aspect-[2/3] object-cover">
+
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+
+                      </div>
+
+                      <h3 class="mt-3 text-xs font-bold uppercase tracking-widest text-[#1A1614] truncate">{{book.title}}</h3>
+
+                    </div>
+
+                  </swiper-slide>
+
+                }
+
+              </swiper-container>
+
+            } @else {
+
+              <div class="py-10 border border-dashed border-[#C5A059]/30 text-center">
+
+                <p class="text-sm italic text-gray-500 font-lato">Esta lista está vacía</p>
+
+              </div>
+
+            }
+
+          </section>
+
+        }
+
+      </div>
+
+    } @else {
+
+      <div class="space-y-12">
+
+        <div class="h-8 w-48 bg-gray-500 animate-pulse"></div>
+
+        <div class="flex gap-4">
+
+          <div class="h-64 w-40 bg-gray-500 animate-pulse"></div>
+          <div class="h-64 w-40 bg-gray-500 animate-pulse"></div>
+          <div class="h-64 w-40 bg-gray-500 animate-pulse"></div>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+  <app-footer></app-footer>
+
+  <ion-modal [isOpen]="showCreateModal" (didDismiss)="showCreateModal = false" class="floating-modal">
+
+    <ng-template>
+
+      <div class="p-8 bg-white flex flex-col gap-6">
+
+        <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614] border-b border-[#C5A059]/20 pb-4">Crear nueva lista</h2>
+
+        <div class="flex flex-col gap-4">
+
+          <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Nombre de la lista</label>
+          <input [(ngModel)]="newListName" type="text" placeholder="Ej: Lecturas de verano" class="w-full p-3 border border-[#C5A059] outline-none text-sm font-lato text-black">
+
+        </div>
+
+        <div class="flex gap-4 pt-4">
+
+          <button (click)="showCreateModal = false" class="flex-1 py-3 border border-gray-300 uppercase text-[10px] font-bold text-gray-600 transition-colors hover:bg-gray-50">{{'COMMON.CANCEL' | translate}}</button>
+
+          <button (click)="createList()" class="flex-1 py-3 bg-[#2E473B] text-white uppercase text-[10px] font-bold shadow-md transition-transform active:scale-95">Crear</button>
+
+        </div>
+
+      </div>
+
+    </ng-template>
+
+  </ion-modal>
+
+  <ion-modal [isOpen]="showEditModal" (didDismiss)="showEditModal = false" class="floating-modal">
+
+    <ng-template>
+
+      <div class="p-8 bg-white flex flex-col gap-6 overflow-y-auto max-h-[80vh]">
+
+        <div class="flex justify-between items-center border-b border-[#C5A059]/20 pb-4">
+
+          <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614]">Gestionar Lista</h2>
+
+          <button (click)="deleteList(selectedList?.id)" class="text-red-600 flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.2em]">
+
+            <ion-icon name="trash-outline"></ion-icon> Eliminar
+
+          </button>
+
+        </div>
+
+        <div class="flex flex-col gap-4">
+
+          <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Cambiar nombre</label>
+
+          <div class="flex gap-2">
+
+            <input [(ngModel)]="editListName" type="text" class="flex-grow p-3 border border-[#C5A059] outline-none text-sm font-lato text-white">
+            <button (click)="updateListName()" class="bg-[#C5A059] text-white px-4 py-3 active:scale-95 transition-transform">
+
+              <ion-icon name="checkmark-outline"></ion-icon>
+
+            </button>
+
+          </div>
+
+        </div>
+
+        <div class="flex flex-col gap-4">
+
+          <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Libros en lista ({{selectedList?.books.length}})</label>
+
+          <div class="flex flex-col gap-3">
+
+            @for (book of selectedList?.books; track book.id) {
+
+              <div class="flex items-center justify-between p-2 border border-gray-100 rounded-sm bg-[#FDFBF7]/50">
+
+                <div class="flex items-center gap-3 truncate">
+
+                  <img [src]="book.coverUrl" class="w-8 h-12 object-cover shadow-sm border border-gray-100">
+
+                  <span class="text-xs font-bold truncate text-[#1A1614]">{{book.title}}</span>
+
+                </div>
+
+                <button (click)="removeBookFromlist(book.id)" class="text-red-400 hover:text-red-600 transition-colors p-2">
+
+                  <ion-icon name="close-circle-outline" class="text-xl"></ion-icon>
+
+                </button>
+
+              </div>
+
+            }
+
+          </div>
+
+        </div>
+
+        <button (click)="showEditModal = false" class="w-full py-3 mt-4 border border-gray-300 uppercase text-[10px] font-bold text-gray-600">Cerrar</button>
+
+      </div>
+
+    </ng-template>
+
+  </ion-modal>
+
+  <ion-modal [isOpen]="showShareModal" (didDismiss)="showShareModal = false" class="floating-modal">
+
+    <ng-template>
+
+      <div class="p-8 bg-white flex flex-col items-center gap-6 text-center">
+
+        <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614] border-b border-[#C5A059]/20 w-full pb-4"> Compartir Lista</h2>
+        <p class="text-sm font-lato text-gray-500 italic">Usa este código para añadir los libros a tu colección</p>
+
+        <div class="w-full bg-[#FDFBF7] text-black p-3 border border-[#C5A059]/20 rounded text-xs font-mono break-all select-all">
+
+          {{shareCode}}
+
+        </div>
+
+        <button (click)="showShareModal = false" class="w-full py-3 bg-[#2E473B] text-white uppercase text-[10px] font-bold shadow-md">Cerrar</button>
+
+      </div>
+
+    </ng-template>
+
+  </ion-modal>
+
+  <ion-modal [isOpen]="showImportModal" (didDismiss)="showImportModal = false" class="floating-modal">
+
+    <ng-template>
+
+      <div class="p-8 bg-white flex flex-col gap-6">
+
+        <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614] border-b border-[#C5A059]/20 pb-4">Importar Lista</h2>
+
+        <div class="flex flex-col gap-4">
+
+          <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Pega el código de la lista</label>
+          <input [(ngModel)]="importCode" type="text" placeholder="ID de la lista compartida" class="w-full border border-[#C5A059] outline-none text-sm font-lato text-white">
+
+        </div>
+
+        <div class="flex gap-4 pt-4">
+
+          <button (click)="showImportModal = false" class="flex-1 py-3 border border-gray-500 uppercase text-[10px] font-bold text-gray-500">Cancelar</button>
+          <button (click)="importListByCode()" class="flex-1 py-3 bg-[#C5A059] text-white uppercase text-[10px] font-bold shadow-md">Importar</button>
+
+        </div>
+
+      </div>
+
+    </ng-template>
+
+  </ion-modal>
+
+</ion-content>

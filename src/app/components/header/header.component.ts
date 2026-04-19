@@ -3,7 +3,8 @@ import {ActionSheetController, IonicModule} from "@ionic/angular";
 import {
   menu, chevronDownOutline, personOutline,
   notificationsOutline, bookOutline, languageOutline, helpCircleOutline,
-  settingsOutline, logOutOutline, person, lockClosedOutline, chatboxEllipsesOutline, homeOutline, documentTextOutline, personAddOutline, searchOutline
+  settingsOutline, logOutOutline, person, lockClosedOutline, chatboxEllipsesOutline, homeOutline, documentTextOutline, personAddOutline, searchOutline,
+  listOutline
 } from "ionicons/icons";
 import {addIcons} from "ionicons";
 import {Router, RouterLink} from "@angular/router";
@@ -65,7 +66,8 @@ export class HeaderComponent  implements OnInit {
       homeOutline,
       documentTextOutline,
       personAddOutline,
-      searchOutline
+      searchOutline,
+      listOutline
     });
   }
 

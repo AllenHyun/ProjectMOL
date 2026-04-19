@@ -8,7 +8,7 @@ import {doc, Firestore, getDoc, getDocs, updateDoc} from "@angular/fire/firestor
 import {Auth, authState} from "@angular/fire/auth";
 import {User} from "../models/user";
 import {ActivatedRoute} from "@angular/router";
-import {filter, take} from "rxjs";
+import {combineLatest, filter, take} from "rxjs";
 
 @Component({
   selector: 'app-profile',
@@ -40,30 +40,16 @@ export class ProfilePage implements OnInit {
 
   constructor() { }
 
-  async ngOnInit() {
-    const profileIdFromUrl = this.route.snapshot.paramMap.get('id');
-
-    authState(this.auth).pipe(
-      filter(res => res !== undefined),
-      take(1)
-    ).subscribe(async (currentUser) => {
-
-      if (!profileIdFromUrl && !currentUser) {
-        console.log("No hay usuario ni ID, redirigiendo...");
-        return;
-      }
-
+  ngOnInit() {
+    combineLatest([
+      this.route.paramMap,
+      authState(this.auth).pipe(filter(res => res !== undefined))
+    ]).subscribe(async ([params, currentUser]) => {
+      const profileIdFromUrl = params.get('id');
       const uidToFetch = profileIdFromUrl || currentUser?.uid;
 
       if (uidToFetch) {
-        const userDoc = await getDoc(doc(this.firestore, 'users', uidToFetch));
-        if (userDoc.exists()) {
-          this.user = userDoc.data() as User;
-
-          this.isReadOnly = uidToFetch !== currentUser?.uid;
-
-          console.log("¿Es solo lectura?:", this.isReadOnly);
-        }
+        await this.fetchProfileData(uidToFetch, currentUser?.uid);
       }
     });
   }
@@ -78,16 +64,21 @@ export class ProfilePage implements OnInit {
   async updateProfile() {
     try {
       const userRef = doc(this.firestore, 'users', this.user.uid);
-      await updateDoc(userRef, {
-        username: this.user.username,
-        level: this.user.level,
-        bio: this.user.bio,
-        interests: this.user.interests,
-        photoUrl: this.user.photoUrl,
-      });
-      console.log("Perfil actualizado con éxito");
+
+      const dataToSave = {
+        username: this.user.username ?? '',
+        level: this.user.level ?? 'Uni',
+        bio: this.user.bio || '',
+        interests: this.user.interests || [],
+        photoUrl: this.user.photoUrl || ''
+      };
+
+      await updateDoc(userRef, dataToSave);
+
+      this.isEditing = false;
+      console.log("Perfil actualizado con éxito en Firestore");
     } catch (error) {
-      console.log("Error al actualizar: ", error);
+      console.error("Error al actualizar: ", error);
     }
   }
 
@@ -111,6 +102,24 @@ export class ProfilePage implements OnInit {
         this.user.photoUrl = reader.result as string;
       };
       reader.readAsDataURL(file);
+    }
+  }
+
+  async fetchProfileData(uidToFetch: string, currentUid: string | undefined) {
+    try {
+      const userDoc = await getDoc(doc(this.firestore, 'users', uidToFetch));
+      if (userDoc.exists()) {
+        const data = userDoc.data() as User;
+        this.user = {
+          ...this.user,
+          ...data,
+          uid: uidToFetch
+        };
+        this.isReadOnly = uidToFetch !== currentUid;
+        this.isEditing = false;
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 }
