@@ -32,13 +32,15 @@
 
         <div class="flex items-center">
 
-          <label class="w-1/3 text-sm font-lato text-gray-600">Nueva Contraseña</label>
+          <label class="w-1/3 text-sm font-lato text-gray-600">Contraseña</label>
 
           <div class="w-2/3 flex items-center border-b border-gray-500">
 
-            <input [(ngModel)]="newPassword" type="password" placeholder="********" class="w-full py-2 outline-none bg-transparent text-black">
+            <span class="w-full py-2 text-black opacity-50">••••••••</span>
 
-            <button (click)="saveSettings()" class="text-[10px] uppercase text-[#C5A059] font-bold ml-2 hover:underline cursor-pointer">Cambiar</button>
+            <button (click)="sendResetPassword()" class="text-[10px] uppercase text-[#C5A059] font-bold ml-2 hover:underline cursor-pointer whitespace-nowrap">
+              Enviar correo de restablecimiento
+            </button>
 
           </div>
 
@@ -53,34 +55,6 @@
             <input [(ngModel)]="user.email" type="email" class="w-full py-2 text-black outline-none bg-transparent">
 
             <button (click)="saveSettings()" class="text-[10px] uppercase text-[#C5A059] font-bold ml-2 hover:underline cursor-pointer">Cambiar</button>
-
-          </div>
-
-        </div>
-
-        <div class="flex items-center">
-
-          <label class="w-1/3 text-sm font-lato text-gray-600">Cumpleaños</label>
-
-          <div class="w-2/3 flex gap-4">
-
-            <div class="flex-1 border-b border-gray-500">
-              <select [(ngModel)]="user.birthday.day" class="w-full py-2 bg-transparent text-black outline-none appearance-none cursor-pointer">
-                <option [value]="null" disabled selected>Día</option>
-                @for (day of days; track day) {
-                  <option [value]="day">{{day}}</option>
-                }
-              </select>
-            </div>
-
-            <div class="flex-[2] border-b border-gray-500">
-              <select [(ngModel)]="user.birthday.month" class="w-full py-2 bg-transparent text-black outline-none appearance-none cursor-pointer">
-                <option [value]="null" disabled selected>Mes</option>
-                @for (month of months; track month) {
-                  <option [value]="month">{{month}}</option>
-                }
-              </select>
-            </div>
 
           </div>
 

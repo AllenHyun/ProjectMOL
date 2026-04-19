@@ -4,11 +4,11 @@ import { FormsModule } from '@angular/forms';
 import {IonContent, IonHeader, IonIcon, IonTitle, IonToolbar} from '@ionic/angular/standalone';
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
-import {doc, Firestore, getDoc, getDocs, updateDoc} from "@angular/fire/firestore";
+import {doc, Firestore, getDoc, updateDoc} from "@angular/fire/firestore";
 import {Auth, authState} from "@angular/fire/auth";
 import {User} from "../models/user";
 import {ActivatedRoute} from "@angular/router";
-import {combineLatest, filter, take} from "rxjs";
+import {combineLatest, filter} from "rxjs";
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +23,6 @@ export class ProfilePage implements OnInit {
   private route = inject(ActivatedRoute);
 
   public isReadOnly = true;
-
   public isEditing = false;
 
   public user: User = {
@@ -49,9 +48,35 @@ export class ProfilePage implements OnInit {
       const uidToFetch = profileIdFromUrl || currentUser?.uid;
 
       if (uidToFetch) {
-        await this.fetchProfileData(uidToFetch, currentUser?.uid);
+        await this.fetchProfileData(uidToFetch, currentUser);
       }
     });
+  }
+
+  async fetchProfileData(uidToFetch: string, currentUser: any) {
+    try {
+      const userDoc = await getDoc(doc(this.firestore, 'users', uidToFetch));
+      if (userDoc.exists()) {
+        const data = userDoc.data() as User;
+
+        this.user = {
+          ...this.user,
+          ...data,
+          uid: uidToFetch
+        };
+
+        if (uidToFetch === currentUser?.uid) {
+          this.user.email = currentUser.email;
+          this.isReadOnly = false;
+        } else {
+          this.isReadOnly = true;
+        }
+
+        this.isEditing = false;
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   toggleEdit(){
@@ -70,15 +95,15 @@ export class ProfilePage implements OnInit {
         level: this.user.level ?? 'Uni',
         bio: this.user.bio || '',
         interests: this.user.interests || [],
-        photoUrl: this.user.photoUrl || ''
+        photoUrl: this.user.photoUrl || '',
+        email: this.user.email
       };
 
       await updateDoc(userRef, dataToSave);
 
       this.isEditing = false;
-      console.log("Perfil actualizado con éxito en Firestore");
     } catch (error) {
-      console.error("Error al actualizar: ", error);
+      console.error(error);
     }
   }
 
@@ -102,24 +127,6 @@ export class ProfilePage implements OnInit {
         this.user.photoUrl = reader.result as string;
       };
       reader.readAsDataURL(file);
-    }
-  }
-
-  async fetchProfileData(uidToFetch: string, currentUid: string | undefined) {
-    try {
-      const userDoc = await getDoc(doc(this.firestore, 'users', uidToFetch));
-      if (userDoc.exists()) {
-        const data = userDoc.data() as User;
-        this.user = {
-          ...this.user,
-          ...data,
-          uid: uidToFetch
-        };
-        this.isReadOnly = uidToFetch !== currentUid;
-        this.isEditing = false;
-      }
-    } catch (error) {
-      console.error(error);
     }
   }
 }
