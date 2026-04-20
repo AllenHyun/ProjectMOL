@@ -6,6 +6,16 @@
 
     <main class="container mx-auto max-w-4xl px-6 mt-20 relative">
 
+      <div *ngIf="isReadOnly" class="flex justify-end mb-4">
+
+        <button (click)="haveIBlocked ? unblockUser() : blockUser()" [class]="haveIBlocked ? 'text-[#2E473B]' : 'text-red-600'" class="flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest transition-all">
+
+          <ion-icon [name]="haveIBlocked ? 'checkmark-circle-outline' : 'ban-outline'"></ion-icon>
+
+        </button>
+
+      </div>
+
       <input type="file" #fileInput style="display: none" accept="image/*" (change)="onFileSelected($event)">
 
       <div class="absolute left-1/2 -top-16 -translate-x-1/2 z-10">
@@ -61,11 +71,20 @@
 
         </h1>
 
+        <div *ngIf="haveIBlocked || amIBlocked" class=" mt-8 p-8 border border-dashed border-gray-500 rounded-2xl bg-gray-50/50">
+
+          <ion-icon name="lock-closed-outline" class="text-3xl text-gray-500 mb-2"></ion-icon>
+          <p class="text-sm font-lato italic text-gray-500">{{haveIBlocked ? 'Has bloqueado a este usuario' : 'Este perfil no está disponible'}}</p>
+
+        </div>
+
         <button *ngIf="!isReadOnly" (click)="toggleEdit()" class="mt-4 px-8 py-2 border border-[#C5A059] text-[#C5A059] text-[10px] uppercase font-bold tracking-[0.2em] hover:bg-[#C5A059] hover:text-white transition-all">
           {{ isEditing ? 'Guardar' : 'Editar Perfil' }}
         </button>
 
       </section>
+
+      <ng-container *ngIf="!haveIBlocked && !amIBlocked">
 
       <section class="bg-white rounded-[40px] shadow-sm p-10 mt-8">
 
@@ -241,6 +260,8 @@
         }
 
       </section>
+
+      </ng-container>
 
     </main>
 

@@ -5,7 +5,7 @@ import {IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToolbar} from '@i
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import {
-  addDoc,
+  addDoc, arrayRemove, arrayUnion,
   collection,
   collectionData,
   doc,
@@ -20,7 +20,7 @@ import {Auth, authState} from "@angular/fire/auth";
 import {User} from "../models/user";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {combineLatest, filter, map, Observable, of, switchMap} from "rxjs";
-import {shareOutline, downloadOutline, cameraOutline, closeOutline, addOutline} from "ionicons/icons";
+import {shareOutline, downloadOutline, cameraOutline, closeOutline, addOutline, banOutline, checkmarkCircleOutline, lockClosedOutline} from "ionicons/icons";
 import {addIcons} from "ionicons";
 import {register} from "swiper/element/bundle";
 
@@ -71,9 +71,12 @@ export class ProfilePage implements OnInit {
     }
   };
 
+  public haveIBlocked: boolean = false;
+  public amIBlocked: boolean = false;
+
   constructor() {
     addIcons({
-      shareOutline, downloadOutline, cameraOutline, closeOutline, addOutline
+      shareOutline, downloadOutline, cameraOutline, closeOutline, addOutline, banOutline, checkmarkCircleOutline, lockClosedOutline
     });
   }
 
@@ -94,40 +97,50 @@ export class ProfilePage implements OnInit {
   async fetchProfileData(uidToFetch: string, currentUser: any) {
     try {
       const userDoc = await getDoc(doc(this.firestore, 'users', uidToFetch));
-      if (userDoc.exists()) {
-        const data = userDoc.data() as User;
+      const myDoc = await getDoc(doc(this.firestore, 'users', currentUser.uid));
+
+      if (userDoc.exists() && myDoc.exists()) {
+        const data = userDoc.data() as any;
+        const myData = myDoc.data() as any;
+
+        const myBlockedList = myData['blockedUsers'] || [];
+        const theirBlockedList = data['blockedUsers'] || [];
+
+        this.haveIBlocked = myBlockedList.includes(uidToFetch);
+        this.amIBlocked = theirBlockedList.includes(currentUser.uid);
+
         this.user = { ...this.user, ...data, uid: uidToFetch };
 
-        const listsRef = collection(this.firestore, 'lists');
-        const q = query(
-          listsRef,
-          where('userId', '==', uidToFetch),
-          where('isPublic', '==', true)
-        );
+        if (!this.haveIBlocked && !this.amIBlocked) {
+          const listsRef = collection(this.firestore, 'lists');
+          const q = query(listsRef, where('userId', '==', uidToFetch), where('isPublic', '==', true));
 
-        this.publicList$ = collectionData(q, { idField: 'id' }).pipe(
-          switchMap((lists: any[]) => {
-            if (lists.length === 0) return of([]);
+          this.publicList$ = collectionData(q, { idField: 'id' }).pipe(
+            switchMap((lists: any[]) => {
+              if (lists.length === 0) return of([]);
 
-            const listsObservables = lists.map(list => {
-              if (!list.bookIds || list.bookIds.length === 0) {
-                return of({ ...list, books: [] });
-              }
-              const bookRefs = list.bookIds.map((id: string) =>
-                docData(doc(this.firestore, 'books', id), { idField: 'id' })
-              );
-              return combineLatest(bookRefs).pipe(
-                map(books => ({ ...list, books }))
-              );
-            });
-            return combineLatest(listsObservables);
-          })
-        );
+              const listsObservables = lists.map(list => {
+                if (!list.bookIds || list.bookIds.length === 0) {
+                  return of({ ...list, books: [] });
+                }
+
+                const bookRefs = list.bookIds.map((id: string) => docData(doc(this.firestore, 'books', id), { idField: 'id' }));
+
+                return combineLatest(bookRefs).pipe(map(books => ({ ...list, books })));
+              });
+
+              return combineLatest(listsObservables);
+            })
+          );
+        } else {
+          this.publicList$ = of([]);
+        }
+
         this.isReadOnly = uidToFetch !== currentUser?.uid;
         this.isEditing = false;
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error al cargar perfil y listas:", error);
     }
   }
 
@@ -206,6 +219,39 @@ export class ProfilePage implements OnInit {
       alert("Lista guardada en tu biblioteca");
     } catch (error) {
       console.error("Error al guardar lista: ", error);
+    }
+  }
+
+  async blockUser(){
+    const currentUser = this.auth.currentUser;
+
+    if(!currentUser) {
+      return;
+    }
+    try {
+      await updateDoc(doc(this.firestore, 'users', currentUser.uid), {
+        blockedUsers: arrayUnion(this.user.uid)
+      });
+      this.haveIBlocked = true;
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
+  async unblockUser(){
+    const currentUser = this.auth.currentUser;
+    if(!currentUser) {
+      return;
+    }
+    try {
+      await updateDoc(doc(this.firestore, 'users', currentUser.uid), {
+        blockedUsers: arrayRemove(this.user.uid)
+      });
+      this.haveIBlocked = false;
+      await this.fetchProfileData(this.user.uid, currentUser);
+    } catch (error) {
+      console.error(error);
     }
   }
 }
