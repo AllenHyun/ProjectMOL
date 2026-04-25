@@ -109,12 +109,12 @@
     },
     "EMPTY": "Aucun livre ne correspond à votre recherche",
     "CATEGORIES": {
-      "Action": "Action",
+      "Acción": "Action",
       "Romance": "Romance",
       "Thriller": "Thriller",
-      "Educational": "Éducatif",
-      "Adventure": "Aventure",
-      "SciFi": "Science-fiction"
+      "Educativo": "Éducatif",
+      "Aventura": "Aventure",
+      "Ciencia Ficción": "Science-fiction"
     },
     "CREATE": {
       "TITLE": "Titre de l'œuvre",
@@ -223,14 +223,22 @@
     "YEAR": "Année",
     "EMPTY": "Aucun livre ne correspond à votre recherche.",
     "LANGS": {
-      "Spanish": "Espagnol",
-      "English": "Anglais",
-      "French": "Français"
+      "Español": "Espagnol",
+      "Inglés": "Anglais",
+      "Francés": "Français"
     },
     "LEVELS": {
-      "ESO": "Secondaire",
-      "Uni": "Université",
-      "Pos": "Master/Doctorat"
+      "ESO/Bachiller": "Collège / Lycée",
+      "Universidad": "Université",
+      "Posgrado": "Master / Doctorat"
+    },
+    "CATEGORIES": {
+      "Acción": "Action",
+      "Romance": "Romance",
+      "Thriller": "Thriller",
+      "Educativo": "Éducatif",
+      "Aventura": "Aventure",
+      "Ciencia Ficción": "Science-fiction"
     }
   },
   "SUMMARY_EXPLORE": {
@@ -340,7 +348,7 @@
     "UNBLOCK_SUCCESS": "Utilisateur débloqué avec succès.",
     "UPDATE_SUCCESS": "Paramètres du profil mis à jour.",
     "ERROR_UPDATE": "Une erreur est survenue lors de la mise à jour des données.",
-    "ERROR_RECENT_LOGIN": "Pour des raisons de sécurité, vous devez vous être connecté récemment pour effectuer cette action.",
+    "ERROR_RECENT_LOGIN": "Pour des raisons de sécurité, vous devez vous être connecté récemment pour effectuer cette action. Veuillez vous déconnecter et vous reconnecter.",
     "EMAIL_VERIFY_NOTICE": "ATTENTION : Un lien de confirmation a été envoyé à",
     "RESET_SENT": "Un e-mail de réinitialisation de mot de passe a été envoyé à",
     "ERROR_RESET": "Erreur lors de l'envoi de l'e-mail de réinitialisation.",
@@ -425,7 +433,7 @@
     "RECOMMEND": "Recommandations",
     "REVIEW": "Critiques à la une",
     "EXAMS": "Pour les examens",
-    "EMPTY_NEW": "Pas de nouveautés cette semaine, mais de nouveaux titres arrivent bientôt.",
+    "EMPTY_NEW": "Pas de nouveautés cette semaine, pero de nouveaux titres arrivent bientôt.",
     "EXPLORE_CATALOG": "Continuer à explorer notre catalogue"
   },
   "SUMMARY-D": {

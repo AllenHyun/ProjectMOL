@@ -107,14 +107,14 @@
       "CATEGORY": "Category",
       "ACTIONS": "Actions"
     },
-    "EMPTY": "No books in the catalog match your search",
+    "EMPTY": "No books match your search",
     "CATEGORIES": {
-      "Action": "Action",
+      "Acción": "Action",
       "Romance": "Romance",
       "Thriller": "Thriller",
-      "Educational": "Educational",
-      "Adventure": "Adventure",
-      "SciFi": "Sci-Fi"
+      "Educativo": "Educational",
+      "Aventura": "Adventure",
+      "Ciencia Ficción": "Sci-Fi"
     },
     "CREATE": {
       "TITLE": "Book Title",
@@ -223,14 +223,22 @@
     "YEAR": "Year",
     "EMPTY": "No books match your search.",
     "LANGS": {
-      "Spanish": "Spanish",
-      "English": "English",
-      "French": "French"
+      "Español": "Spanish",
+      "Inglés": "English",
+      "Francés": "French"
     },
     "LEVELS": {
-      "ESO": "Secondary",
-      "Uni": "University",
-      "Pos": "Postgraduate"
+      "ESO/Bachiller": "Secondary / High School",
+      "Universidad": "University",
+      "Posgrado": "Postgraduate"
+    },
+    "CATEGORIES": {
+      "Acción": "Action",
+      "Romance": "Romance",
+      "Thriller": "Thriller",
+      "Educativo": "Educational",
+      "Aventura": "Adventure",
+      "Ciencia Ficción": "Sci-Fi"
     }
   },
   "SUMMARY_EXPLORE": {
@@ -340,7 +348,7 @@
     "UNBLOCK_SUCCESS": "User successfully unblocked.",
     "UPDATE_SUCCESS": "Profile settings updated.",
     "ERROR_UPDATE": "An error occurred while updating data.",
-    "ERROR_RECENT_LOGIN": "For security reasons, you must have logged in recently to perform this action.",
+    "ERROR_RECENT_LOGIN": "For security reasons, you must have logged in recently to perform this action. Please log out and log back in.",
     "EMAIL_VERIFY_NOTICE": "ATTENTION: A confirmation link has been sent to",
     "RESET_SENT": "A password reset email has been sent to",
     "ERROR_RESET": "Error sending the reset email.",
