@@ -14,22 +14,20 @@ import { inject } from "@angular/core";
 import { addIcons } from "ionicons";
 import { logoGoogle } from "ionicons/icons";
 import {
-  IonButton,
   IonCard,
   IonCardContent,
   IonCardTitle,
   IonContent,
-  IonHeader, IonInput,
-  IonTitle,
-  IonToolbar, IonIcon, AlertController
+  IonInput,
+  IonIcon, AlertController
 } from '@ionic/angular/standalone';
 import { HeaderComponent } from "../components/header/header.component";
 import { FooterComponent } from "../components/footer/footer.component";
-import {Router, RouterLink} from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { doc, docData, Firestore, getDoc, setDoc } from "@angular/fire/firestore";
 import { User } from "../models/user";
-import {AuthError} from "../services/auth-error";
-import {TranslatePipe, TranslateService} from "@ngx-translate/core";
+import { AuthError } from "../services/auth-error";
+import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-login',
@@ -58,7 +56,7 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     authState(this.auth).subscribe((authUser) => {
       if (authUser) {
-        const emailName = authUser.email ? authUser.email.split('@')[0] : 'User';
+        const emailName = authUser.email ? authUser.email.split('@')[0] : this.translate.instant('COMMON.ANONYMOUS');
         this.user = { username: emailName, email: authUser.email || '' } as User;
 
         const userDocRef = doc(this.firestore, `users/${authUser.uid}`);
@@ -78,9 +76,6 @@ export class LoginPage implements OnInit {
     });
   }
 
-  // Si el usuario inicia sesión con Google, directamente le creará la cuenta si no existe
-  // SI el usuario añade directamente el correo y la contraseña, el sistema mirará si tiene cuenta o no
-
   async onLogin() {
     try {
       const userCredential = await signInWithEmailAndPassword(this.auth, this.email, this.password);
@@ -94,7 +89,7 @@ export class LoginPage implements OnInit {
           const newUser: User = {
             uid: user.uid,
             email: user.email || '',
-            username: user.email ? user.email.split('@')[0] : 'User',
+            username: user.email ? user.email.split('@')[0] : this.translate.instant('COMMON.ANONYMOUS'),
             role: 'reader',
             level: 'ESO',
             interests: [],
@@ -104,7 +99,6 @@ export class LoginPage implements OnInit {
           await setDoc(userDocRef, newUser, { merge: true });
         }
 
-        console.log("Bienvenid@ de nuevo! ", user.email);
         this.router.navigate(['/first-page']);
       } else {
         await signOut(this.auth);
@@ -129,7 +123,7 @@ export class LoginPage implements OnInit {
         const newUser: User = {
           uid: user.uid,
           email: user.email || '',
-          username: user.email ? user.email.split('@')[0] : 'User',
+          username: user.email ? user.email.split('@')[0] : this.translate.instant('COMMON.ANONYMOUS'),
           role: 'reader',
           level: 'ESO',
           interests: [],
@@ -138,7 +132,6 @@ export class LoginPage implements OnInit {
         }
         await setDoc(userDocRef, newUser, { merge: true });
       }
-      console.log("Bienvenid@ de nuevo! ", user.email);
       this.router.navigate(['/first-page']);
     }
     catch (error: any) {

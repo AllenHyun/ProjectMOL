@@ -21,16 +21,25 @@
     },
     "MESSAGES": {
       "INVALID_EMAIL": "Veuillez saisir un e-mail valide",
-      "RESET_MAIL_SENT": "E-mail envoyé. Veuillez vérifier votre boîte de réception (et vos spams)."
+      "RESET_MAIL_SENT": "E-mail envoyé. Veuillez vérifier votre boîte de réception (et vos spams).",
+      "ERROR": "Un problème est survenu lors de la connexion. Veuillez réessayer."
     },
     "VERIFY": "Vous devez d'abord vérifier votre compte."
   },
-
   "REVIEWS": {
     "MY_REVIEWS": "Mes critiques",
     "PUBLISHED": "Publiées",
     "LAST_MOD": "Dernière modification",
     "REVIEW": "Critique : ",
+    "WRITE_REVIEW": "Rédiger une critique",
+    "SAVE": {
+      "HEADER": "Attention",
+      "MESSAGE": "Veuillez vous connecter pour publier votre critique",
+      "CANCEL": "Annuler",
+      "LOGIN": "Connexion",
+      "NOT_FOUND": "Livre non trouvé",
+      "CONFIRM": "Êtes-vous sûr de vouloir supprimer cette critique ?"
+    },
     "REVIEW_MODAL": {
       "TITLE": "Rédiger une critique",
       "RATING": "Note (1-5)",
@@ -40,18 +49,8 @@
       "PROS_PLACEHOLDER": "Fluide, intrigant...",
       "COS": "Points faibles",
       "COS_PLACEHOLDER": "Fin prévisible..."
-    },
-    "WRITE_REVIEW": "Rédiger une critique",
-    "SAVE": {
-      "HEADER": "Attention",
-      "MESSAGE": "Veuillez vous connecter pour publier votre critique",
-      "CANCEL": "Annuler",
-      "LOGIN": "Connexion",
-      "NOT_FOUND": "Livre non trouvé",
-      "CONFIRM": "Êtes-vous sûr de vouloir supprimer cette critique ?"
     }
   },
-
   "SUMMARIES": {
     "MY_SUMMARIES": "Mes résumés",
     "CREATE_BTN": "Créer un nouveau résumé",
@@ -67,32 +66,33 @@
       "PUBLISHED": "Publiés",
       "REJECTED": "Refusés"
     },
-
     "CREATE": {
       "TITLE": "Nouveau résumé",
       "SELECT_LABEL": "Sélectionner le livre",
       "SELECT_PLACEHOLDER": "Choisissez un livre dans la bibliothèque...",
       "CONTENT_PLACEHOLDER": "Écrivez votre résumé ici..."
     },
-
     "EDIT": {
       "TITLE": "Modifier le résumé",
-      "EDITING": "Modification de :"
+      "EDITING": "Modification de :",
+      "PLACEHOLDER": "Modifiez votre résumé ici..."
     },
-
     "CONFIRM": {
       "DELETE": "Êtes-vous sûr de vouloir supprimer ce résumé ?",
       "EXIT_DRAFT": "Voulez-vous enregistrer ce résumé comme brouillon avant de quitter ?",
       "SAVE_CHANGES": "Voulez-vous enregistrer les modifications comme brouillon ?"
     }
   },
-
   "COMMON": {
     "CANCEL": "Annuler",
     "PUBLISH": "Publier",
     "CONFIRM": "Confirmer l'enregistrement",
     "SELECT": "Sélectionner le livre",
-    "SELECTED": "Choisissez un livre dans la bibliothèque..."
+    "SELECTED": "Choisissez un livre dans la bibliothèque...",
+    "DELETE": "Supprimer",
+    "SEND": "Envoyer",
+    "ALL": "Tous",
+    "ANONYMOUS": "Anonyme"
   },
   "BOOK-M": {
     "TITLE": "Catalogue de livres",
@@ -108,6 +108,14 @@
       "ACTIONS": "Actions"
     },
     "EMPTY": "Aucun livre ne correspond à votre recherche",
+    "CATEGORIES": {
+      "Action": "Action",
+      "Romance": "Romance",
+      "Thriller": "Thriller",
+      "Educational": "Éducatif",
+      "Adventure": "Aventure",
+      "SciFi": "Science-fiction"
+    },
     "CREATE": {
       "TITLE": "Titre de l'œuvre",
       "TITLE_PLACEHOLDER": "Titre complet",
@@ -118,14 +126,19 @@
       "YEAR": "Année d'édition",
       "LANGUAGE": "Langue",
       "CATEGORY": "Catégories",
-      "CATEGORY_PLACEHOLDER": "Fiction, Histoire...",
+      "CATEGORY_HINT": "Sélectionnez une ou plusieurs catégories",
       "TAGS": "Étiquettes",
       "TAGS_PLACEHOLDER": "Classique, Recommandé...",
-      "URL_FRONT": "URL Couverture"
+      "URL_FRONT": "URL Couverture",
+      "LEVEL": "Niveau scolaire",
+      "LEVEL_ESO": "Collège / Lycée",
+      "LEVEL_UNI": "Université",
+      "LEVEL_POS": "Master / Doctorat"
     },
-    "DELETE_CONFIRM": "Êtes-vous sûr de vouloir supprimer ce livre ? Les critiques et résumés associés seront également supprimés définitivement.",
+    "DELETE_CONFIRM": "Êtes-vous sûr de vouloir supprimer ce livre ?",
     "ISBN_NOT_FOUND": "Aucun livre trouvé avec cet ISBN",
     "ERROR_LOADING": "Une erreur est survenue lors de la connexion au service",
+    "ERROR_503": "Avis : Le service Google Books ne répond pas. Veuillez saisir les données manuellement.",
     "IMPORT_ISBN": "Entrez l'ISBN du livre (10 à 13 chiffres) : "
   },
   "BOOK-D": {
@@ -137,6 +150,9 @@
     "TAGS": "Tags : ",
     "LANGUAGE": "Langue : ",
     "RATING": "Note : ",
+    "BACK": "Retour",
+    "LOAD": "Ouverture du livre, cela peut prendre quelques secondes...",
+    "CANCEL_MESSAGE": "Voulez-vous enregistrer ce résumé comme brouillon avant de quitter ?",
     "RESUME": {
       "TITLE": "Résumés",
       "LISTEN": "Écouter",
@@ -150,10 +166,13 @@
       "TITLE": "Critiques des lecteurs",
       "BEST": "Le meilleur",
       "WORST": "Le pire",
-      "EMPTY": "Ce livre n'a pas encore de critiques. Donnez votre avis !",
-      "SEE_MORE": "Voir toutes les critiques"
+      "EMPTY": "Ce livre n'a pas encore de critiques. Soyez le premier à donner votre avis !",
+      "SEE_MORE": "Voir toutes les critiques",
+      "REPLY": "Répondre",
+      "COMMENT": "commentaire",
+      "COMMENTS": "commentaires",
+      "REPLY_PLACEHOLDER": "Écrire une réponse..."
     },
-    "LOAD": "Ouverture du livre, cela peut prendre quelques secondes...",
     "RESUME_MODAL": {
       "TITLE": "Nouveau Résumé",
       "PLACEHOLDER": "Écrivez votre résumé ici..."
@@ -168,7 +187,13 @@
       "COS": "Points faibles",
       "COS_PLACEHOLDER": "Fin prévisible..."
     },
-    "BACK": "Retour",
+    "LIST_MODAL": {
+      "TITLE": "Mes listes",
+      "EMPTY": "Vous n'avez aucune liste créée",
+      "CREATE_LABEL": "Créer une nouvelle liste",
+      "PLACEHOLDER": "Ex : Roman noir",
+      "CREATE_BTN": "Créer"
+    },
     "SAVE_SUMMARY": {
       "HEADER": "Attention",
       "MESSAGE": "Veuillez vous connecter pour publier votre résumé",
@@ -181,12 +206,132 @@
       "CANCEL": "Annuler",
       "LOGIN": "Connexion"
     },
-    "CANCEL_MESSAGE": "Voulez-vous enregistrer ce résumé comme brouillon avant de quitter ?",
     "VOTE": {
       "HEADER": "Attention",
-      "MESSAGE": "Veuillez vous connecter pour voter",
+      "MESSAGE": "Veuillez vous connecter pour noter cette œuvre",
       "CANCEL": "Annuler",
       "LOGIN": "Connexion"
+    }
+  },
+  "EXPLORE": {
+    "FILTER_TITLE": "Filtrer",
+    "SORT_RECENT": "Trier par : Les plus récents",
+    "SORT_RATING": "Trier par : Note",
+    "LANG": "Langue",
+    "LEVEL": "Niveau scolaire",
+    "CATS": "Catégories",
+    "YEAR": "Année",
+    "EMPTY": "Aucun livre ne correspond à votre recherche.",
+    "LANGS": {
+      "Spanish": "Espagnol",
+      "English": "Anglais",
+      "French": "Français"
+    },
+    "LEVELS": {
+      "ESO": "Secondaire",
+      "Uni": "Université",
+      "Pos": "Master/Doctorat"
+    }
+  },
+  "SUMMARY_EXPLORE": {
+    "SEARCH_PLACEHOLDER": "Rechercher un livre...",
+    "USEFUL": "Utile",
+    "NOT_USEFUL": "Inutile",
+    "FILTERS": {
+      "language": "Langue",
+      "level": "Niveau",
+      "category": "Catégorie",
+      "year": "Année"
+    }
+  },
+  "REVIEWS_EXPLORE": {
+    "SEARCH_PLACEHOLDER": "Rechercher un livre...",
+    "USEFUL": "Utile",
+    "NOT_USEFUL": "Inutile",
+    "FILTERS": {
+      "language": "Langue",
+      "level": "Niveau",
+      "category": "Catégorie",
+      "year": "Année"
+    }
+  },
+  "MY_LISTS": {
+    "TITLE": "Mes listes",
+    "REMINDERS": "Rappels",
+    "BOOKS_COUNT": "livres",
+    "EMPTY": "Cette liste est vide",
+    "CONFIRM_DELETE": "Êtes-vous sûr de vouloir supprimer cette liste et tout son contenu ?",
+    "INVALID_CODE": "Le code de la liste n'est pas valide",
+    "IMPORTED_SUFFIX": "(Importée)",
+    "DEFAULTS": {
+      "TO_READ": "À lire",
+      "IN_PROGRESS": "En cours",
+      "READ": "Lus",
+      "FAVORITES": "Favoris"
+    },
+    "CREATE_MODAL": {
+      "TITLE": "Créer une nouvelle liste",
+      "LABEL": "Nom de la liste",
+      "PLACEHOLDER": "Ex : Lectures d'été",
+      "BTN": "Créer"
+    },
+    "EDIT_MODAL": {
+      "TITLE": "Gérer la liste",
+      "DELETE": "Supprimer",
+      "NAME_LABEL": "Changer le nom",
+      "PRIVACY": "Confidentialité",
+      "PUBLIC_LABEL": "Rendre la liste publique",
+      "PUBLIC_HINT": "Elle sera affichée sur votre profil utilisateur",
+      "BOOKS_IN_LIST": "Livres dans la liste",
+      "CLOSE": "Fermer"
+    },
+    "SHARE_MODAL": {
+      "TITLE": "Partager la liste",
+      "HINT": "Utilisez ce code pour ajouter les livres à votre collection"
+    },
+    "IMPORT_MODAL": {
+      "TITLE": "Importer une liste",
+      "LABEL": "Collez le code de la liste",
+      "PLACEHOLDER": "ID de la liste partagée",
+      "IMPORT_BTN": "Importer"
+    }
+  },
+  "PROFILE": {
+    "LEVEL_LABEL": "Niveau d'études :",
+    "SAVE": "Enregistrer",
+    "EDIT": "Modifier le profil",
+    "ABOUT": "À propos de moi",
+    "BIO_EMPTY": "Aucune description pour le moment...",
+    "INTERESTS": "Mes intérêts",
+    "NEW_INTEREST": "Nouvel intérêt",
+    "PUBLIC_LISTS": "Listas publiques",
+    "LIST_EMPTY": "Cette étagère n'a pas encore de livres sélectionnés.",
+    "USER_LISTS_EMPTY": "Cet utilisateur n'a pas encore partagé d'étagère.",
+    "LOADING_LISTS": "Chargement des étagères...",
+    "CODE": "Code",
+    "SAVE_LIST": "Enregistrer",
+    "BLOCK": "Bloquer l'utilisateur",
+    "BLOCKED_LABEL": "Utilisateur bloqué",
+    "BLOCKED_BY_ME": "Vous avez bloqué cet utilisateur",
+    "UNAVAILABLE": "Ce profil n'est pas disponible"
+  },
+  "SETTINGS": {
+    "TAB_ACCOUNT": "Compte",
+    "TAB_BLOCKED": "Profils bloqués",
+    "USER_LABEL": "Nom d'utilisateur",
+    "PASS_LABEL": "Mot de passe",
+    "EMAIL_LABEL": "Adresse e-mail",
+    "DATA_LABEL": "Télécharger mes données",
+    "LANG_LABEL": "Langue",
+    "CHANGE": "Changer",
+    "RESET_BTN": "Envoyer un e-mail de réinitialisation",
+    "DOWNLOAD_BTN": "Télécharger",
+    "SUBMIT": "Envoyer",
+    "LOGOUT": "Déconnexion",
+    "LANGUAGES": {
+      "ES": "Espagnol",
+      "EN": "Anglais",
+      "FR": "Français"
     }
   },
   "ADMIN": {
@@ -217,6 +362,7 @@
       "PROFILE": "Profil",
       "SCHOOL_LEVEL": "Niveau scolaire : ",
       "NOTIFICATIONS": "Notifications",
+      "MY_LISTS": "Mes listes",
       "MY_RESUME": "Mes résumés",
       "MY_REVIEW": "Mes critiques",
       "LANGUAGE": "Langue : ",
@@ -236,7 +382,7 @@
     }
   },
   "REGISTER": {
-    "TITLE": "Créez un compte et accédez aux résumés de vos livres préférés !",
+    "TITLE": "Créez un compte !",
     "CREATE": "Créer un nouveau compte",
     "GOOGLE": "S'inscrire avec Google",
     "EMAIL": "Adresse e-mail",
@@ -245,11 +391,11 @@
     "SCHOOL_LEVEL": "Niveau scolaire",
     "SCHOOL_PLACEHOLDER": "Sélectionnez votre niveau",
     "ESO": "Collège / Lycée",
-    "UNI": "Étudiant (Licence)",
+    "UNI": "Université",
     "POS": "Master / Doctorat",
     "REGISTER_BTN": "S'inscrire",
     "LOGIN": "Vous avez déjà un compte ? Se connecter",
-    "ACCOUNT_CREATED": "Compte créé. Veuillez vérifier vos e-mails pour le valider. Vérifiez également vos spams."
+    "ACCOUNT_CREATED": "Compte créé. Veuillez vérifier vos e-mails pour le valider."
   },
   "REVIEW-D": {
     "TITLE": "Critiques",
@@ -257,18 +403,8 @@
     "BACK": "Retour au livre",
     "BEST": "Le meilleur",
     "WORST": "Le pire",
-    "EMPTY": "Il n'y a pas encore de critiques pour cette œuvre",
+    "EMPTY": "Aucune critique n'a encore été publiée pour cette œuvre",
     "LOAD": "Chargement des critiques...",
-    "REVIEW_MODAL": {
-      "TITLE": "Rédiger une critique",
-      "RATING": "Note (1-5)",
-      "OPINION": "Votre avis",
-      "OPINION_PLACEHOLDER": "Qu'avez-vous pensé de l'œuvre ?",
-      "PROS": "Points forts",
-      "PROS_PLACEHOLDER": "Fluide, intrigant...",
-      "COS": "Points faibles",
-      "COS_PLACEHOLDER": "Fin prévisible..."
-    },
     "LOGIN_COMMENT": "Vous devez être connecté pour commenter"
   },
   "FIRST_PAGE": {
@@ -276,7 +412,9 @@
     "NEW": "Nouveautés",
     "RECOMMEND": "Recommandations",
     "REVIEW": "Critiques à la une",
-    "EXAMS": "Pour les examens"
+    "EXAMS": "Pour les examens",
+    "EMPTY_NEW": "Pas de nouveautés cette semaine, mais de nouveaux titres arrivent bientôt.",
+    "EXPLORE_CATALOG": "Continuer à explorer notre catalogue"
   },
   "SUMMARY-D": {
     "TITLE": "Résumé complet",
@@ -293,6 +431,7 @@
     "RATING": "Évaluation",
     "SUMMARY": "Résumé",
     "BACK": "Retour au livre",
-    "LOAD": "Ouverture du livre, cela puede prendre quelques secondes..."
+    "LOAD": "Ouverture du livre requis...",
+    "NOT_FOUND": "Résumé non trouvé ou supprimé"
   }
 }

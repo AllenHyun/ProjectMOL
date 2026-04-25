@@ -8,13 +8,14 @@ import { Router } from "@angular/router";
 import { filter } from "rxjs";
 import { HeaderComponent } from "../components/header/header.component";
 import { FooterComponent } from "../components/footer/footer.component";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, TranslatePipe]
 })
 export class SettingsPage implements OnInit {
   private firestore = inject(Firestore);

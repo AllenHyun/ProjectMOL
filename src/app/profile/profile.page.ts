@@ -23,6 +23,7 @@ import {combineLatest, filter, map, Observable, of, switchMap} from "rxjs";
 import {shareOutline, downloadOutline, cameraOutline, closeOutline, addOutline, banOutline, checkmarkCircleOutline, lockClosedOutline} from "ionicons/icons";
 import {addIcons} from "ionicons";
 import {register} from "swiper/element/bundle";
+import {TranslatePipe} from "@ngx-translate/core";
 
 register();
 
@@ -31,7 +32,7 @@ register();
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, IonIcon, RouterLink, IonModal],
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, IonIcon, RouterLink, IonModal, TranslatePipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ProfilePage implements OnInit {

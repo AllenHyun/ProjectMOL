@@ -57,13 +57,13 @@
 
             <p class="font-['Cormorant_Garamond'] italic text-2xl text-gray-500">
 
-              No hay novedades esta semana, pero pronto llegarán nuevos títulos.
+              {{ "FIRST_PAGE.EMPTY_NEW" | translate }}
 
             </p>
 
             <p class="text-[10px] uppercase tracking-[0.2em] text-[#C5A059] mt-2 font-bold">
 
-              Sigue explorando nuestro catálogo
+              {{ "FIRST_PAGE.EXPLORE_CATALOG" | translate }}
 
             </p>
 
@@ -95,7 +95,7 @@
             <div [routerLink]="['/book-detail', book.id]" class="group cursor-pointer">
 
 
-            <img [src]="book.coverUrl" (error)="book.coverUrl = 'assets/img/default-book.png'" class="aspect-[3/4] w-full object-cover border border-[#C5A059]/10">
+              <img [src]="book.coverUrl" (error)="book.coverUrl = 'assets/img/default-book.png'" class="aspect-[3/4] w-full object-cover border border-[#C5A059]/10">
 
             </div>
 
@@ -123,7 +123,7 @@
 
                 <div class="h-12 w-12 rounded-full bg-[#F1EFE9] flex items-center justify-center border border-[#C5A059]/20">
 
-                    <ion-icon name="person-outline" class="text-[#C5A059] text-xl"></ion-icon>
+                  <ion-icon name="person-outline" class="text-[#C5A059] text-xl"></ion-icon>
 
                 </div>
 
@@ -165,7 +165,7 @@
 
             <div [routerLink]="['/book-detail', book.id]" class="group cursor-pointer">
 
-            <img [src]="book.coverUrl" (error)="book.coverUrl = 'assets/img/default-book.png'" class="aspect-[3/4] w-full object-cover border border-[#C5A059]/10">
+              <img [src]="book.coverUrl" (error)="book.coverUrl = 'assets/img/default-book.png'" class="aspect-[3/4] w-full object-cover border border-[#C5A059]/10">
 
             </div>
 

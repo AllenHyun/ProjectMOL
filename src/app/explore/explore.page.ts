@@ -6,14 +6,13 @@ import {
   collection,
   collectionData,
   Firestore,
-  getDoc,
   getDocs,
   limit,
   orderBy,
   query,
   where
 } from "@angular/fire/firestore";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {addIcons} from "ionicons";
 import {star, starOutline, chevronDown, chevronUp} from "ionicons/icons";
 import {HeaderComponent} from "../components/header/header.component";
@@ -38,9 +37,9 @@ export class ExplorePage implements OnInit {
   public sortBy: string = 'recent';
 
   public filters = {
-    languages: ['Español', 'Inglés', 'Francés'],
-    levels: ['ESO/Bachiller', 'Universidad', 'Posgrado'],
-    categories: ['Acción', 'Romance', 'Thriller', 'Educativo', 'Aventura', 'Ciencia Ficción'],
+    languages: ['Spanish', 'English', 'French'],
+    levels: ['ESO', 'Uni', 'Pos'],
+    categories: ['Action', 'Romance', 'Thriller', 'Educational', 'Adventure', 'SciFi'],
     years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018]
   };
 
@@ -52,9 +51,7 @@ export class ExplorePage implements OnInit {
   }
 
   constructor() {
-    addIcons({
-      star, starOutline, chevronDown, chevronUp
-    });
+    addIcons({ star, starOutline, chevronDown, chevronUp });
   }
 
   ngOnInit() {
@@ -69,13 +66,10 @@ export class ExplorePage implements OnInit {
     collectionData(booksRef, { idField: 'id' }).subscribe(async (allBooks: any[]) => {
       const term = this.searchTerm.toLowerCase().trim();
       const matches = allBooks.filter(b => {
-        if (!term){
-          return true;
-        }
+        if (!term) return true;
         const titleMatch = b.title?.toLowerCase().includes(term);
-        const authorMatch = b.author?.some((author:string) => author.toLowerCase().includes(term));
+        const authorMatch = b.authors?.some((author:string) => author.toLowerCase().includes(term));
         return titleMatch || authorMatch;
-
       });
 
       this.books = await Promise.all(matches.map(async (book) => {
@@ -124,5 +118,4 @@ export class ExplorePage implements OnInit {
 
     this.filteredBooks = results;
   }
-
 }

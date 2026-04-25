@@ -1,13 +1,13 @@
 import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToolbar} from '@ionic/angular/standalone';
+import {IonContent, IonIcon} from '@ionic/angular/standalone';
 import {FooterComponent} from "../components/footer/footer.component";
 import {HeaderComponent} from "../components/header/header.component";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {doc, Firestore, getDoc} from "@angular/fire/firestore";
 import {Summary} from "../models/summary";
-import { star, starOutline, playOutline, bookmarkOutline, shareOutline, flagOutline, thumbsUpOutline, thumbsDownOutline, arrowBackOutline } from 'ionicons/icons';
+import { star, starOutline, playOutline, pauseOutline, bookmarkOutline, shareOutline, flagOutline, thumbsUpOutline, thumbsDownOutline, arrowBackOutline } from 'ionicons/icons';
 import {addIcons} from "ionicons";
 import {TranslatePipe} from "@ngx-translate/core";
 import {HttpClient} from "@angular/common/http";
@@ -30,9 +30,13 @@ export class SummaryDetailPage implements OnInit {
   public summary: Summary | null = null;
 
   public currentAudio: HTMLAudioElement | null = null;
+
   private readonly langMap: {[key: string]: string} = {
+    'Spanish': 'es-ES',
     'Español': 'es-ES',
+    'English': 'en-US',
     'Inglés': 'en-US',
+    'French': 'fr-FR',
     'Francés': 'fr-FR',
   };
 
@@ -41,6 +45,7 @@ export class SummaryDetailPage implements OnInit {
       star,
       starOutline,
       playOutline,
+      pauseOutline,
       bookmarkOutline,
       shareOutline,
       flagOutline,
@@ -60,16 +65,9 @@ export class SummaryDetailPage implements OnInit {
 
         if (summarySnap.exists()) {
           this.summary = {id: summarySnap.id, ...summarySnap.data()} as Summary;
-
           await this.loadBookInfo(this.summary.bookId);
-
-          console.log("Resumen y libros cargados: ", this.summary, this.book);
-        } else{
-          console.error("No se encontró el resumen");
         }
-      } catch (error) {
-        console.error("Error al cargar el detalle: ", error);
-      }
+      } catch (error) {}
     }
   }
 
@@ -81,12 +79,10 @@ export class SummaryDetailPage implements OnInit {
       if (bookSnap.exists()) {
         this.book = {...bookSnap.data(), id: bookSnap.id};
       }
-    } catch (error) {
-      console.error("Error al cargar libro: ", error);
-    }
+    } catch (error) {}
   }
 
-  async speakSummary(text: string, langName: string = 'Español') {
+  async speakSummary(text: string, langName: string = 'Spanish') {
     if (this.currentAudio || window.speechSynthesis.speaking) {
       this.currentAudio?.pause();
       this.currentAudio = null;
@@ -121,7 +117,7 @@ export class SummaryDetailPage implements OnInit {
           this.currentAudio = null;
         };
       },
-      error: (error) => {
+      error: () => {
         this.currentAudio = null;
         this.useSystemSpeechFallback(text, langName);
       }
@@ -134,7 +130,4 @@ export class SummaryDetailPage implements OnInit {
     utterance.rate = 0.9;
     window.speechSynthesis.speak(utterance);
   }
-
-
-
 }

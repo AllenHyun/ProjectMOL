@@ -120,13 +120,13 @@
 
           </div>
 
-          <textarea [(ngModel)]="editContent" rows="10" placeholder="Escribe aquí tu resumen..." class="p-3 border border-[#C5A059] outline-none font-lato text-white w-full"></textarea>
+          <textarea [(ngModel)]="editContent" rows="10" [placeholder]="'SUMMARIES.EDIT.PLACEHOLDER' | translate" class="p-3 border border-[#C5A059] outline-none font-lato text-black w-full"></textarea>
 
         </div>
 
         <div class="flex gap-4 mt-auto">
 
-          <button (click)="cancelEdit()" class="flex-1 py-3 bg-[#2E473B] border border-[#2E473B] text-white uppercase text-[10px] font-bold hover:bg-gray-50 transition-colors">{{ 'COMMON.CANCEL' | translate }}</button>
+          <button (click)="cancelEdit()" class="flex-1 py-3 bg-white border border-[#2E473B] text-[#2E473B] uppercase text-[10px] font-bold hover:bg-gray-50 transition-colors">{{ 'COMMON.CANCEL' | translate }}</button>
           <button (click)="updateSummary('draft')" class="flex-1 py-3 border border-[#2E473B] bg-[#2E473B] text-white uppercase text-[10px] font-bold shadow-sm">{{ 'SUMMARIES.SAVE_DRAFT' | translate }}</button>
           <button (click)="updateSummary('published')" class="flex-1 py-3 bg-[#2E473B] text-white uppercase text-[10px] font-bold shadow-md">{{ 'COMMON.PUBLISH' | translate }}</button>
 
@@ -165,8 +165,8 @@
 
           <div>
 
-          <p class="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-2">{{auth.currentUser?.displayName}}</p>
-          <textarea [(ngModel)]="newSummary.content" rows="8" placeholder="{{ 'SUMMARIES.CREATE.CONTENT_PLACEHOLDER' | translate }}" class="p-3 w-full border border-[#C5A059] outline-none font-lato"></textarea>
+            <p class="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-2">{{auth.currentUser?.displayName}}</p>
+            <textarea [(ngModel)]="newSummary.content" rows="8" placeholder="{{ 'SUMMARIES.CREATE.CONTENT_PLACEHOLDER' | translate }}" class="p-3 w-full border border-[#C5A059] outline-none font-lato"></textarea>
 
           </div>
 
@@ -174,8 +174,8 @@
 
         <div class="flex gap-4">
 
-          <button (click)="cancelNewSummary()" class="flex-1 py-3 bg-[#2E473B] uppercase text-[10px] font-bold"> {{ 'COMMON.CANCEL' | translate }} </button>
-          <button (click)="saveNewSummary('published')" class="flex-1 py-3 bg-[#2E473B] uppercase text-[10px] font-bold"> {{ 'COMMON.PUBLISH' | translate }} </button>
+          <button (click)="cancelNewSummary()" class="flex-1 py-3 bg-white border border-[#2E473B] text-[#2E473B] uppercase text-[10px] font-bold"> {{ 'COMMON.CANCEL' | translate }} </button>
+          <button (click)="saveNewSummary('published')" class="flex-1 py-3 bg-[#2E473B] text-white uppercase text-[10px] font-bold"> {{ 'COMMON.PUBLISH' | translate }} </button>
 
         </div>
 

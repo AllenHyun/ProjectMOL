@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToolbar} from '@ionic/angular/standalone';
+import {IonContent, IonIcon} from '@ionic/angular/standalone';
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import {AdminPanelComponent} from "../components/admin-panel/admin-panel.component";
@@ -12,7 +12,7 @@ import {
   collectionData,
   deleteDoc,
   doc,
-  Firestore, getDoc,
+  Firestore,
   query,
   updateDoc,
   where,
@@ -49,7 +49,8 @@ export class BookManagementPage implements OnInit {
   public showForm = false;
   public emptyBook : any = this.initBook();
   public searchTerms: string = '';
-  public availableCategories = ['Acción', 'Romance', 'Thriller', 'Educativo', 'Aventura', 'Ciencia Ficción'];
+
+  public availableCategories = ['Action', 'Romance', 'Thriller', 'Educational', 'Adventure', 'SciFi'];
 
   constructor() {
     addIcons({
@@ -129,9 +130,7 @@ export class BookManagementPage implements OnInit {
         });
       }
       this.cancelForm();
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }
 
   async deleteBook(id: string) {
@@ -151,9 +150,7 @@ export class BookManagementPage implements OnInit {
 
         const bookDocRef = doc(this.firestore, `books/${id}`);
         await deleteDoc(bookDocRef);
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     }
   }
 
@@ -166,9 +163,7 @@ export class BookManagementPage implements OnInit {
         categories: Array.isArray(libro.categories) ? [...libro.categories] : []
       };
       this.showForm = true;
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }
 
   cancelForm() {
@@ -230,7 +225,7 @@ export class BookManagementPage implements OnInit {
       },
       error: (err) => {
         if (err.status === 503) {
-          alert("Aviso: El servicio de Google Books no responde (Error 503). Por favor, introduce los datos a mano.");
+          alert(this.translate.instant('BOOK-M.ERROR_503'));
         } else {
           alert(this.translate.instant('BOOK-M.ERROR_LOADING'));
         }

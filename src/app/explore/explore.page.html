@@ -10,7 +10,7 @@
 
         <div class="flex justify-between items-center mb-6 cursor-pointer lg:cursor-default" (click)="showFiltersMobile = !showFiltersMobile">
 
-          <h2 class="text-4xl font-['Cormorant_Garamond'] text-[#1A1614]">Filtrar</h2>
+          <h2 class="text-4xl font-['Cormorant_Garamond'] text-[#1A1614]">{{ 'EXPLORE.FILTER_TITLE' | translate }}</h2>
 
           <ion-icon [name]="showFiltersMobile ? 'chevron-up' : 'chevron-down'" class="lg:hidden text-2xl text-[#C5A059]"></ion-icon>
 
@@ -20,8 +20,8 @@
 
           <select [(ngModel)]="sortBy" (change)="applyFilters()" class="text-[10px] w-full uppercase tracking-widest border border-gray-200 p-1 outline-none font-bold">
 
-            <option value="recent">Ordenar por: Más recientes</option>
-            <option value="rating">Ordenar por: Puntuación</option>
+            <option value="recent">{{ 'EXPLORE.SORT_RECENT' | translate }}</option>
+            <option value="rating">{{ 'EXPLORE.SORT_RATING' | translate }}</option>
 
           </select>
 
@@ -31,14 +31,15 @@
 
           <section>
 
-            <h3 class="font-bold text-sm mb-3 uppercase tracking-widest text-black border-b border-gray-100 pb-2">Idioma</h3>
+            <h3 class="font-bold text-sm mb-3 uppercase tracking-widest text-black border-b border-gray-100 pb-2">{{ 'EXPLORE.LANG' | translate }}</h3>
 
             <div class="flex flex-col gap-2">
 
               @for (lang of filters.languages; track lang) {
                 <label class="flex items-center gap-3 text-sm font-lato cursor-pointer hover:text-[#C5A059]">
 
-                  <input type="checkbox" (change)="toggleFilters('languages', lang)" class="w-4 h-4 accent-[#1A1614]"> {{lang}}
+                  <input type="checkbox" (change)="toggleFilters('languages', lang)" class="w-4 h-4 accent-[#1A1614]">
+                  {{ 'EXPLORE.LANGS.' + lang | translate }}
 
                 </label>
               }
@@ -49,14 +50,15 @@
 
           <section>
 
-            <h3 class="font-bold text-sm mb-3 uppercase tracking-widest text-black border-b border-gray-100 pb-2">Nivel escolar</h3>
+            <h3 class="font-bold text-sm mb-3 uppercase tracking-widest text-black border-b border-gray-100 pb-2">{{ 'EXPLORE.LEVEL' | translate }}</h3>
 
             <div class="flex flex-col gap-2">
 
               @for (level of filters.levels; track level) {
                 <label class="flex items-center gap-3 text-sm font-lato cursor-pointer">
 
-                  <input type="checkbox" (change)="toggleFilters('levels', level)" class="w-4 h-4 accent-[#C5A059]"> {{level}}
+                  <input type="checkbox" (change)="toggleFilters('levels', level)" class="w-4 h-4 accent-[#C5A059]">
+                  {{ 'EXPLORE.LEVELS.' + level | translate }}
 
                 </label>
               }
@@ -66,14 +68,15 @@
           </section>
 
           <section>
-            <h3 class="font-bold text-sm mb-3 uppercase tracking-widest text-black border-b border-gray-100 pb-2">Categorías</h3>
+            <h3 class="font-bold text-sm mb-3 uppercase tracking-widest text-black border-b border-gray-100 pb-2">{{ 'EXPLORE.CATS' | translate }}</h3>
 
             <div class="flex flex-col gap-2">
 
               @for (cat of filters.categories; track cat) {
                 <label class="flex items-center gap-3 text-sm font-lato cursor-pointer">
 
-                  <input type="checkbox" (change)="toggleFilters('categories', cat)" class="w-4 h-4 accent-black"> {{cat}}
+                  <input type="checkbox" (change)="toggleFilters('categories', cat)" class="w-4 h-4 accent-black">
+                  {{ 'BOOK-M.CATEGORIES.' + cat | translate }}
 
                 </label>
 
@@ -84,7 +87,7 @@
 
           <section>
 
-            <h3 class="font-bold text-sm mb-3 uppercase tracking-widest text-black border-b border-gray-100 pb-2">Año</h3>
+            <h3 class="font-bold text-sm mb-3 uppercase tracking-widest text-black border-b border-gray-100 pb-2">{{ 'EXPLORE.YEAR' | translate }}</h3>
 
             <div class="flex flex-col gap-2">
 
@@ -125,14 +128,14 @@
 
                   <p>
 
-                    <span class="font-bold uppercase tracking-widest text-[10px] mr-4">Autor:</span> {{book.authors.join(', ')}}
-                    <span class="font-bold uppercase tracking-widest text-[10px] mr-4">Año:</span> {{book.year}}
+                    <span class="font-bold uppercase tracking-widest text-[10px] mr-4">{{ 'BOOK-D.AUTHOR' | translate }}</span> {{book.authors.join(', ')}}
+                    <span class="font-bold uppercase tracking-widest text-[10px] mr-4">{{ 'EXPLORE.YEAR' | translate }}:</span> {{book.year}}
 
                   </p>
 
                   <div class="flex items-center">
 
-                    <span class="font-bold uppercase tracking-widest text-[10px] mr-4">Valoración:</span>
+                    <span class="font-bold uppercase tracking-widest text-[10px] mr-4">{{ 'BOOK-D.RATING' | translate }}</span>
 
                     <div class="flex text-[#FFD700] text-lg">
 
@@ -164,7 +167,7 @@
         } @empty {
           <div class="text-center py-20">
 
-            <p class="font-['Cormorant_Garamond'] text-2xl italic text-gray-500">No hay ningún libro que coincida con la búsqueda.</p>
+            <p class="font-['Cormorant_Garamond'] text-2xl italic text-gray-500">{{ 'EXPLORE.EMPTY' | translate }}</p>
 
           </div>
         }

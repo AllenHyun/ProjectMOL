@@ -19,7 +19,7 @@ import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import {RouterLink} from "@angular/router";
 import {register} from "swiper/element/bundle";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {addIcons} from "ionicons";
 import {addOutline, pencilOutline, trashOutline, closeCircleOutline, checkmarkOutline, shareOutline, downloadOutline} from "ionicons/icons";
 
@@ -30,17 +30,16 @@ register();
   templateUrl: './my-lists.page.html',
   styleUrls: ['./my-lists.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, RouterLink, IonModal, TranslatePipe, IonIcon, IonToggle],
+  imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, RouterLink, IonModal, TranslatePipe, IonIcon, IonToggle],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class MyListsPage implements OnInit {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
+  private translate = inject(TranslateService);
 
   public listWithBooks$!: Observable<any[]>;
-
   public JSON = JSON;
-
   public showCreateModal = false;
   public newListName = '';
 
@@ -60,7 +59,6 @@ export class MyListsPage implements OnInit {
   public showEditModal = false;
   public selectedList: any = null;
   public editListName = '';
-
   public showShareModal = false;
   public showImportModal = false;
   public shareCode = '';
@@ -128,10 +126,7 @@ export class MyListsPage implements OnInit {
       });
       this.newListName = '';
       this.showCreateModal = false;
-      console.log("Nueva lista creada");
-    } catch (error) {
-      console.error("Error al crear la lista: ", error);
-    }
+    } catch (error) {}
   }
 
   openEditModal(list: any){
@@ -149,9 +144,7 @@ export class MyListsPage implements OnInit {
       const listRef = doc(this.firestore, 'lists', this.selectedList.id);
       await updateDoc(listRef, {name: this.editListName.trim()});
       this.showEditModal = false;
-    } catch (error) {
-      console.error("Error al editar la lista: ", error);
-    }
+    } catch (error) {}
   }
 
   async removeBookFromlist(bookId: string){
@@ -163,21 +156,17 @@ export class MyListsPage implements OnInit {
       const listRef = doc(this.firestore, 'lists', this.selectedList.id);
       await updateDoc(listRef, {bookIds: arrayRemove(bookId)});
       this.selectedList.books = this.selectedList.books.filter((b: any) => b.id !== bookId);
-    } catch (error){
-      console.error("Error al eliminar la lista: ", error);
-    }
+    } catch (error){}
   }
 
   async deleteList(listId: string) {
-    if (!confirm('¿Seguro que quieres eliminar esta lista y todo su contenido?')) return;
+    if (!confirm(this.translate.instant('MY_LISTS.CONFIRM_DELETE'))) return;
 
     try {
       const listRef = doc(this.firestore, 'lists', listId);
       await deleteDoc(listRef);
       this.showEditModal = false;
-    } catch (error) {
-      console.error("Error al eliminar lista:", error);
-    }
+    } catch (error) {}
   }
 
   openShare(list: any){
@@ -199,27 +188,30 @@ export class MyListsPage implements OnInit {
 
       if(snap.exists()){
         const data = snap.data();
-
         const listRef = collection(this.firestore, 'lists');
+        const importedSuffix = this.translate.instant('MY_LISTS.IMPORTED_SUFFIX');
+
         await addDoc(listRef, {
-          name: `${data['name']} (Importada)`,
+          name: `${data['name']} ${importedSuffix}`,
           userId: user.uid,
           bookIds: data['bookIds'] || [],
           createdAt: new Date().toISOString()
         });
-        console.log('Importada');
         this.showImportModal = false;
         this.importCode = '';
       } else{
-        alert("El código de la lista no es válido");
+        alert(this.translate.instant('MY_LISTS.INVALID_CODE'));
       }
-    } catch (error) {
-      console.error("Error al importar la lista: ", error);
-    }
+    } catch (error) {}
   }
 
   private async createDefaultLists(userId: string) {
-    const defaultNames = ['Por Leer', 'En Curso', 'Leídos', 'Favoritos'];
+    const defaultNames = [
+      this.translate.instant('MY_LISTS.DEFAULTS.TO_READ'),
+      this.translate.instant('MY_LISTS.DEFAULTS.IN_PROGRESS'),
+      this.translate.instant('MY_LISTS.DEFAULTS.READ'),
+      this.translate.instant('MY_LISTS.DEFAULTS.FAVORITES')
+    ];
 
     try {
       const listRef = collection(this.firestore, 'lists');
@@ -232,20 +224,14 @@ export class MyListsPage implements OnInit {
           createdAt: new Date().toISOString()
         }));
       await Promise.all(promises);
-      console.log('Listas por defecto creadas');
-    } catch (error) {
-      console.error('Error el crear las listas por defecto: ', error);
-    }
+    } catch (error) {}
   }
 
   async togglePublicStatus(list: any){
     try {
       const listRef = doc(this.firestore, 'lists', list.id);
       await updateDoc(listRef, {isPublic: list.isPublic});
-      console.log('Privacidad actualizada');
-    } catch (error) {
-      console.error("Error al cambiar la privacidad: ", error);
-    }
+    } catch (error) {}
   }
 
 }

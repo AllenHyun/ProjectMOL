@@ -12,23 +12,25 @@ import {
   playOutline,
   searchOutline,
   thumbsDownOutline,
-  thumbsUpOutline
+  thumbsUpOutline,
+  pauseOutline
 } from "ionicons/icons";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {RouterLink} from "@angular/router";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-summary',
   templateUrl: './summary.page.html',
   styleUrls: ['./summary.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonIcon, RouterLink, TranslatePipe]
+  imports: [IonContent, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonIcon, RouterLink, TranslatePipe]
 })
 export class SummaryPage implements OnInit {
   private firestore = inject(Firestore);
   private http = inject(HttpClient);
+  private translate = inject(TranslateService);
 
   public searchTerms: string = '';
   public allBooks: any[] = [];
@@ -38,9 +40,9 @@ export class SummaryPage implements OnInit {
   public filteredSummaries: any[] = [];
 
   public filters = {
-    languages: ['Español', 'Inglés', 'Francés'],
-    levels: ['ESO/Bachiller', 'Universidad', 'Posgrado'],
-    categories: ['Acción', 'Romance', 'Thriller', 'Educativo', 'Aventura', 'Ciencia Ficción'],
+    languages: ['Spanish', 'English', 'French'],
+    levels: ['ESO', 'Uni', 'Pos'],
+    categories: ['Action', 'Romance', 'Thriller', 'Educational', 'Adventure', 'SciFi'],
     years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018]
   };
 
@@ -49,14 +51,17 @@ export class SummaryPage implements OnInit {
     level: [],
     category: [],
     year: []
-  }
+  };
 
   public openFilter: string | null = null;
-
   public currentAudio: HTMLAudioElement | null = null;
+
   private readonly langMap: {[key: string]: string} = {
+    'Spanish': 'es-ES',
     'Español': 'es-ES',
+    'English': 'en-US',
     'Inglés': 'en-US',
+    'French': 'fr-FR',
     'Francés': 'fr-FR',
   };
 
@@ -66,6 +71,7 @@ export class SummaryPage implements OnInit {
       thumbsUpOutline,
       thumbsDownOutline,
       playOutline,
+      pauseOutline,
       personOutline,
       chevronDownOutline,
       closeOutline
@@ -84,7 +90,6 @@ export class SummaryPage implements OnInit {
     });
   }
 
-
   async loadSummaries() {
     const resRef = collection(this.firestore, 'summaries');
     const q = query(resRef, where('status', '==', 'published'));
@@ -96,13 +101,14 @@ export class SummaryPage implements OnInit {
       const book = this.allBooks.find(b => b.id === sum['bookId']);
 
       let photo = '';
-      let name = 'Usuario';
+      let name = this.translate.instant('COMMON.ANONYMOUS');
+
       if (sum['userId']) {
         const userSnap = await getDoc(doc(this.firestore, 'users', sum['userId']));
         if (userSnap.exists()) {
           const userData = userSnap.data() as any;
           photo = userData.photoUrl || '';
-          name = userData.username || 'Usuario';
+          name = userData.username || name;
         }
       }
 
@@ -123,35 +129,35 @@ export class SummaryPage implements OnInit {
     this.applyFilters();
   }
 
-    onInputChange() {
-      const term = this.searchTerms.toLowerCase().trim();
-      if (term.length > 1) {
-        this.suggestions = this.allBooks.filter(book =>
-          book.title.toLowerCase().includes(term) ||
-          book.authors?.some((a: string) => a.toLowerCase().includes(term))
-        ).slice(0, 5);
-        this.showSuggestion = this.suggestions.length > 0;
-      } else {
-        this.showSuggestion = false;
-      }
-      this.applyFilters();
-    }
-
-    selectSuggestion(book: any) {
-      this.searchTerms = book.title;
+  onInputChange() {
+    const term = this.searchTerms.toLowerCase().trim();
+    if (term.length > 1) {
+      this.suggestions = this.allBooks.filter(book =>
+        book.title.toLowerCase().includes(term) ||
+        book.authors?.some((a: string) => a.toLowerCase().includes(term))
+      ).slice(0, 5);
+      this.showSuggestion = this.suggestions.length > 0;
+    } else {
       this.showSuggestion = false;
-      this.applyFilters();
     }
+    this.applyFilters();
+  }
 
-    toggleFilter(group: any, value: any) {
-      const index = this.selectedFilters[group].indexOf(value);
-      if (index > -1) {
-        this.selectedFilters[group].splice(index, 1);
-      } else {
-        this.selectedFilters[group].push(value);
-      }
-      this.applyFilters();
+  selectSuggestion(book: any) {
+    this.searchTerms = book.title;
+    this.showSuggestion = false;
+    this.applyFilters();
+  }
+
+  toggleFilter(group: any, value: any) {
+    const index = this.selectedFilters[group].indexOf(value);
+    if (index > -1) {
+      this.selectedFilters[group].splice(index, 1);
+    } else {
+      this.selectedFilters[group].push(value);
     }
+    this.applyFilters();
+  }
 
   applyFilters() {
     const term = this.searchTerms.toLowerCase().trim();
@@ -174,7 +180,7 @@ export class SummaryPage implements OnInit {
     this.openFilter = this.openFilter === filterName ? null : filterName;
   }
 
-  async speakSummary(text: string, langName: string = 'Español') {
+  async speakSummary(text: string, langName: string = 'Spanish') {
     if (this.currentAudio || window.speechSynthesis.speaking) {
       this.currentAudio?.pause();
       this.currentAudio = null;
@@ -209,7 +215,7 @@ export class SummaryPage implements OnInit {
           this.currentAudio = null;
         };
       },
-      error: (error) => {
+      error: () => {
         this.currentAudio = null;
         this.useSystemSpeechFallback(text, langName);
       }
@@ -222,6 +228,4 @@ export class SummaryPage implements OnInit {
     utterance.rate = 0.9;
     window.speechSynthesis.speak(utterance);
   }
-
-
 }

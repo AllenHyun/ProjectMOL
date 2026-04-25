@@ -14,7 +14,7 @@ import {
 } from '@angular/fire/firestore';
 import {AlertController, IonContent, IonIcon, IonModal} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline, addOutline, checkmarkCircle, trashOutline } from 'ionicons/icons';
+import { star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline, addOutline, checkmarkCircle, trashOutline, chatbubbleOutline } from 'ionicons/icons';
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import { FormsModule } from '@angular/forms';
@@ -77,6 +77,10 @@ export class BookDetailPage implements OnInit {
     'Francés': 'fr-FR',
   };
 
+  public commentsMap: {[key: string]: any[]} = {};
+  public showComments: {[key: string]: boolean} = {};
+  public nextComment: {[key: string]: string} = {};
+
 
   get visibleReviews(): Review[] {
     const sortedReviews = [...this.reviews].sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -90,7 +94,7 @@ export class BookDetailPage implements OnInit {
 
   constructor() {
     addIcons( {
-      star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline, addOutline, checkmarkCircle, trashOutline });
+      star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline, addOutline, checkmarkCircle, trashOutline, chatbubbleOutline });
   }
 
   ngOnInit() {
@@ -113,13 +117,8 @@ export class BookDetailPage implements OnInit {
         this.getSummaries(id);
         this.getReviews(id);
         this.checkUserVote(id);
-        console.log("Datos cargados correctamente:", this.book);
-      } else {
-        console.error("No se encontró el documento en Firebase con ID:", id);
       }
-    } catch (error) {
-      console.error("Error al obtener el libro:", error);
-    }
+    } catch (error) {}
   }
 
   getReviews(bookId: string) {
@@ -170,7 +169,7 @@ export class BookDetailPage implements OnInit {
       const summaryRef = collection(this.firestore, 'summaries');
       await addDoc(summaryRef, {
         bookId: this.book.id,
-        authorId: user?.displayName || user?.email || 'Anónimo',
+        authorId: user?.displayName || user?.email || this.translate.instant('COMMON.ANONYMOUS'),
         userId: user?.uid,
         structure: {
           tldr: this.newSummary.content,
@@ -185,12 +184,7 @@ export class BookDetailPage implements OnInit {
 
       this.showModal = false;
       this.newSummary.content = '';
-
-      console.log("Resumen guardado con éxito");
-
-    } catch (error) {
-      console.error("Error al guardar el resumen: ", error);
-    }
+    } catch (error) {}
   }
 
   toggleSummary(id: string){
@@ -230,7 +224,7 @@ export class BookDetailPage implements OnInit {
       await addDoc(reviewRef, {
         bookId: this.book.id,
         userId: user.uid,
-        userName: user.displayName || user.email || 'Anónimo',
+        userName: user.displayName || user.email || this.translate.instant('COMMON.ANONYMOUS'),
         rating: this.newReview.rating,
         text: this.newReview.text,
         pros: prosArray,
@@ -241,11 +235,7 @@ export class BookDetailPage implements OnInit {
       this.newReview = {rating: 0, text: ''};
       this.reviewProsInput = '';
       this.reviewConsInput = '';
-
-      console.log("Reseña publicada");
-    } catch (error) {
-      console.error("Error al guardar la reseña: ", error);
-    }
+    } catch (error) {}
   }
 
   loadMoreSummaries(){
@@ -256,7 +246,7 @@ export class BookDetailPage implements OnInit {
     const content = this.newSummary.content.trim();
 
     if (content.length > 0) {
-      if (confirm(this.translate.instant('BOOK-D.SAVE_SUMMARY.CANCEL_MESSAGE'))){
+      if (confirm(this.translate.instant('BOOK-D.CANCEL_MESSAGE'))){
         this.saveSummaries('draft');
       } else{
         this.showModal = false;
@@ -328,10 +318,7 @@ export class BookDetailPage implements OnInit {
       this.book.ratingCount = newCount;
       this.book.ratingAvg = newAvg;
       this.userVote = value;
-      console.log('Valoración actualizada con éxito');
-    } catch (error) {
-      console.error("Error al actualizar la valoración: ", error);
-    }
+    } catch (error) {}
   }
 
   async checkUserVote(bookId: string){
@@ -424,7 +411,12 @@ export class BookDetailPage implements OnInit {
   }
 
   private async createDefaultList(userId: string) {
-    const defaultNames = ['Por Leer', 'En Curso', 'Leídos', 'Favoritos'];
+    const defaultNames = [
+      this.translate.instant('MY_LISTS.DEFAULTS.TO_READ'),
+      this.translate.instant('MY_LISTS.DEFAULTS.IN_PROGRESS'),
+      this.translate.instant('MY_LISTS.DEFAULTS.READ'),
+      this.translate.instant('MY_LISTS.DEFAULTS.FAVORITES')
+    ];
 
     try {
       const listRef = collection(this.firestore, 'lists');
@@ -436,10 +428,7 @@ export class BookDetailPage implements OnInit {
           createdAt: new Date().toISOString()
         }));
       await Promise.all(promises);
-      console.log('Listas por defecto creadas');
-    } catch (error) {
-      console.error('Error el crear las listas por defecto: ', error);
-    }
+    } catch (error) {}
   }
 
   async toggleBookListModal(list: any){
@@ -450,10 +439,7 @@ export class BookDetailPage implements OnInit {
       await updateDoc(listRef, {
         bookIds: isInList ? arrayRemove(this.book.id) : arrayUnion(this.book.id)
       });
-      console.log(isInList ? 'Eliminado de la lista' : 'Añadido a la lista');
-    } catch (error) {
-      console.error("Error al actualizar la lista: ", error);
-    }
+    } catch (error) {}
   }
 
   async createAndAddToList(){
@@ -471,11 +457,8 @@ export class BookDetailPage implements OnInit {
         createdAt: new Date().toISOString()
       });
       this.newListName = '';
-      console.log("Nueva lista creada con el libro");
     }
-    catch (error) {
-      console.error("Error al actualizar la lista: ", error);
-    }
+    catch (error) {}
   }
 
   async showLoginAlert() {
@@ -494,16 +477,54 @@ export class BookDetailPage implements OnInit {
   }
 
   async deleteList(listId: string){
-    const confirmation = confirm('¿Estás seguro de que quiere eliminar esta lista?');
+    const confirmation = confirm(this.translate.instant('MY_LISTS.CONFIRM_DELETE'));
     if (confirmation){
       try{
         const listRef = doc(this.firestore, 'lists', listId);
         await deleteDoc(listRef);
-        console.log("Lista eliminada correctamente");
-      } catch (error) {
-        console.error("Error al eliminar la lista: ", error);
-      }
+      } catch (error) {}
     }
   }
 
+  toggleComments(reviewId: string){
+    this.showComments[reviewId] = !this.showComments[reviewId];
+    if (this.showComments[reviewId] && !this.commentsMap[reviewId]){
+      this.loadComments(reviewId);
+    }
+  }
+
+  loadComments(reviewId: string){
+    const commentsRef = collection(this.firestore, 'review_comments');
+    const q = query(commentsRef, where('reviewId', '==', reviewId));
+
+    collectionData(q, {idField: 'id'}).subscribe(data => {
+      this.commentsMap[reviewId] = data.sort((a: any, b: any) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    });
+  }
+
+  async postComment(reviewId: string){
+    const user = this.auth.currentUser;
+    const text = this.nextComment[reviewId]?.trim();
+
+    if(!user || !text){
+      return;
+    }
+
+    try {
+      const commentRef = collection(this.firestore, 'review_comments');
+      await addDoc(commentRef, {
+        reviewId: reviewId,
+        userId: user.uid,
+        userName: user.displayName || user.email || this.translate.instant('COMMON.ANONYMOUS'),
+        text: text,
+        createdAt: new Date().toISOString()
+      });
+
+      this.nextComment[reviewId] = '';
+      if (!this.showComments[reviewId]){
+        this.toggleComments(reviewId);
+      }
+    } catch (error) {}
+  }
 }

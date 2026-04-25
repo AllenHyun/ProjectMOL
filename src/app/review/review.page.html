@@ -13,7 +13,7 @@
           <div class="flex items-center border border-[#C5A059] bg-white px-3 py-2 shadow-sm">
 
             <ion-icon name="search-outline" class="text-[#C5A059] mr-2"></ion-icon>
-            <input type="text" [(ngModel)]="searchTerms" (input)="onInputChange()" placeholder="Busca un libro..." class=" bg-white text-black w-full outline-none text-xs font-lato">
+            <input type="text" [(ngModel)]="searchTerms" (input)="onInputChange()" [placeholder]="'REVIEWS_EXPLORE.SEARCH_PLACEHOLDER' | translate" class=" bg-white text-black w-full outline-none text-xs font-lato">
 
           </div>
 
@@ -39,11 +39,13 @@
           @for (filterKey of ['language', 'level', 'category', 'year']; track filterKey) {
             <div class="flex flex-col gap-1 relative">
 
-              <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest ml-1">{{filterKey === 'language' ? 'Idioma' : filterKey === 'level' ? 'Nivel' : filterKey === 'category' ? 'Categoría': 'Año'}}</label>
+              <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest ml-1">
+                {{ 'REVIEWS_EXPLORE.FILTERS.' + filterKey | translate }}
+              </label>
 
               <div (click)="toggleDropdown(filterKey)" class="border border-[#C5A059] bg-white p-2 text-[11px] font-bold text-[#1A1614] flex justify-between items-center min-w-[150px] cursor-pointer shadow-sm">
 
-                <span class="truncate">{{selectedFilters[filterKey].length === 0 ? 'Todos': selectedFilters[filterKey].join(', ')}}</span>
+                <span class="truncate">{{selectedFilters[filterKey].length === 0 ? ('COMMON.ALL' | translate) : selectedFilters[filterKey].join(', ')}}</span>
                 <ion-icon [name]="openFilter === filterKey ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
 
               </div>
@@ -52,7 +54,7 @@
                 <div class="absolute top-[100%] left-0 z-[60] w-full bg-white border border-[#C5A059] shadow-xl mt-1">
 
                   @for (opt of filters[filterKey === 'language' ? 'languages' : filterKey === 'level' ? 'levels' : filterKey === 'category' ? 'categories' : 'years']; track opt) {
-                    <div (click)="toggleFilter(filterKey, opt)" class="p-3, text-[11px] text-[#1A1614] hover:bg-[#FDFBF7] flex justify-between items-center" [class.bg-gray-100]="selectedFilters[filterKey].includes(opt)">
+                    <div (click)="toggleFilter(filterKey, opt)" class="p-3 text-[11px] text-[#1A1614] hover:bg-[#FDFBF7] flex justify-between items-center" [class.bg-gray-100]="selectedFilters[filterKey].includes(opt)">
 
                       {{opt}} <ion-icon *ngIf="selectedFilters[filterKey].includes(opt)" name="close-outline" class="text-[#C5A059]"></ion-icon>
 
@@ -117,7 +119,7 @@
 
                   <button class="flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase text-gray-600 hover:text-green-600 transition-colors">
 
-                    <ion-icon name="thumbs-up-outline" class="text-lg"></ion-icon> Útil
+                    <ion-icon name="thumbs-up-outline" class="text-lg"></ion-icon> {{ 'REVIEWS_EXPLORE.USEFUL' | translate }}
 
                   </button>
 
@@ -125,7 +127,7 @@
 
                   <button class="flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase text-gray-600 hover:text-red-600 transition-colors">
 
-                    <ion-icon name="thumbs-down-outline" class="text-lg"></ion-icon> No útil
+                    <ion-icon name="thumbs-down-outline" class="text-lg"></ion-icon> {{ 'REVIEWS_EXPLORE.NOT_USEFUL' | translate }}
 
                   </button>
 
