@@ -35,10 +35,10 @@
 
             <div class="flex flex-col gap-2">
 
-              @for (lang of filters.languages; track lang) {
+              @for (lang of filters.language; track lang) {
                 <label class="flex items-center gap-3 text-sm font-lato cursor-pointer hover:text-[#C5A059]">
 
-                  <input type="checkbox" (change)="toggleFilters('languages', lang)" class="w-4 h-4 accent-[#1A1614]">
+                  <input type="checkbox" (change)="toggleFilters('language', lang)" class="w-4 h-4 accent-[#1A1614]">
                   {{ 'EXPLORE.LANGS.' + lang | translate }}
 
                 </label>
@@ -54,10 +54,10 @@
 
             <div class="flex flex-col gap-2">
 
-              @for (level of filters.levels; track level) {
+              @for (level of filters.level; track level) {
                 <label class="flex items-center gap-3 text-sm font-lato cursor-pointer">
 
-                  <input type="checkbox" (change)="toggleFilters('levels', level)" class="w-4 h-4 accent-[#C5A059]">
+                  <input type="checkbox" (change)="toggleFilters('level', level)" class="w-4 h-4 accent-[#C5A059]">
                   {{ 'EXPLORE.LEVELS.' + level | translate }}
 
                 </label>
@@ -72,10 +72,10 @@
 
             <div class="flex flex-col gap-2">
 
-              @for (cat of filters.categories; track cat) {
+              @for (cat of filters.category; track cat) {
                 <label class="flex items-center gap-3 text-sm font-lato cursor-pointer">
 
-                  <input type="checkbox" (change)="toggleFilters('categories', cat)" class="w-4 h-4 accent-black">
+                  <input type="checkbox" (change)="toggleFilters('category', cat)" class="w-4 h-4 accent-black">
                   {{ 'BOOK-M.CATEGORIES.' + cat | translate }}
 
                 </label>
@@ -91,10 +91,10 @@
 
             <div class="flex flex-col gap-2">
 
-              @for (year of filters.years; track year) {
+              @for (year of filters.year; track year) {
                 <label class="flex items-center gap-3 text-sm font-lato cursor-pointer">
 
-                  <input type="checkbox" (change)="toggleFilters('years', year)" class="w-4 h-4 accent-[#C5A059]"> {{year}}
+                  <input type="checkbox" (change)="toggleFilters('year', year)" class="w-4 h-4 accent-[#C5A059]"> {{year}}
 
                 </label>
               }

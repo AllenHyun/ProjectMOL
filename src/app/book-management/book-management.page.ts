@@ -50,7 +50,7 @@ export class BookManagementPage implements OnInit {
   public emptyBook : any = this.initBook();
   public searchTerms: string = '';
 
-  public availableCategories = ['Action', 'Romance', 'Thriller', 'Educational', 'Adventure', 'SciFi'];
+  public availableCategories = ['Acción', 'Romance', 'Thriller', 'Educativo', 'Aventura', 'Ciencia Ficción'];
 
   constructor() {
     addIcons({
@@ -205,8 +205,7 @@ export class BookManagementPage implements OnInit {
         const langMap: { [key: string]: string } = {
           'es': 'Español',
           'en': 'Inglés',
-          'fr': 'Francés',
-          'ru': 'Ruso'
+          'fr': 'Francés'
         };
 
         this.emptyBook = {
@@ -214,7 +213,7 @@ export class BookManagementPage implements OnInit {
           title: info.title || '',
           authors: info.authors ? info.authors.join(', ') : '',
           isbn: cleanIsbn,
-          language: langMap[info.language] || info.language,
+          language: langMap[info.language] || 'Inglés',
           categories: [],
           tags: '',
           year: info.publishedDate ? new Date(info.publishedDate).getFullYear() : new Date().getFullYear(),

@@ -27,8 +27,8 @@
     "VERIFY": "Debes verificar primero tu cuenta."
   },
   "REVIEWS": {
-    "MY_REVIEWS": "Mi reseñas",
-    "PUBLISHED": "Publicados",
+    "MY_REVIEWS": "Mis reseñas",
+    "PUBLISHED": "Publicadas",
     "LAST_MOD": "Última modificación",
     "REVIEW": "Reseña: ",
     "WRITE_REVIEW": "Escribir reseña",
@@ -109,12 +109,12 @@
     },
     "EMPTY": "No hay libros en el catálogo acordes a la búsqueda",
     "CATEGORIES": {
-      "Action": "Acción",
+      "Acción": "Acción",
       "Romance": "Romance",
       "Thriller": "Thriller",
-      "Educational": "Educativo",
-      "Adventure": "Aventura",
-      "SciFi": "Ciencia Ficción"
+      "Educativo": "Educativo",
+      "Aventura": "Aventura",
+      "Ciencia Ficción": "Ciencia Ficción"
     },
     "CREATE": {
       "TITLE": "Título de la obra",
@@ -223,14 +223,22 @@
     "YEAR": "Año",
     "EMPTY": "No hay ningún libro que coincida con la búsqueda.",
     "LANGS": {
-      "Spanish": "Español",
-      "English": "Inglés",
-      "French": "Francés"
+      "Español": "Español",
+      "Inglés": "Inglés",
+      "Francés": "Francés"
     },
     "LEVELS": {
-      "ESO": "ESO/Bachiller",
-      "Uni": "Universidad",
-      "Pos": "Posgrado"
+      "ESO/Bachiller": "ESO / Bachillerato",
+      "Universidad": "Universidad",
+      "Posgrado": "Posgrado"
+    },
+    "CATEGORIES": {
+      "Acción": "Acción",
+      "Romance": "Romance",
+      "Thriller": "Thriller",
+      "Educativo": "Educativo",
+      "Aventura": "Aventura",
+      "Ciencia Ficción": "Ciencia Ficción"
     }
   },
   "SUMMARY_EXPLORE": {
@@ -340,7 +348,7 @@
     "UNBLOCK_SUCCESS": "Usuario desbloqueado correctamente.",
     "UPDATE_SUCCESS": "Ajustes de perfil actualizados.",
     "ERROR_UPDATE": "Ocurrió un error al actualizar los datos.",
-    "ERROR_RECENT_LOGIN": "Por seguridad, debes haber iniciado sesión recientemente para realizar esta acción.",
+    "ERROR_RECENT_LOGIN": "Por seguridad, debes haber iniciado sesión recientemente para realizar esta acción. Por favor, sal y vuelve a entrar.",
     "EMAIL_VERIFY_NOTICE": "ATENCIÓN: Se ha enviado un enlace de confirmación a",
     "RESET_SENT": "Se ha enviado un correo para restablecer tu contraseña a",
     "ERROR_RESET": "Error al enviar el correo de restablecimiento.",
@@ -411,7 +419,7 @@
   },
   "REVIEW-D": {
     "TITLE": "Reseñas",
-    "CREATE": "Escrbir reseña",
+    "CREATE": "Escribir reseña",
     "BACK": "Volver al libro",
     "BEST": "Lo mejor",
     "WORST": "Lo peor",
@@ -443,6 +451,7 @@
     "RATING": "Valoración",
     "SUMMARY": "Resumen",
     "BACK": "Volver al libro",
-    "LOAD": "Abriendo el libro requerido..."
+    "LOAD": "Abriendo el libro requerido...",
+    "NOT_FOUND": "Resumen no encontrado o eliminado"
   }
 }

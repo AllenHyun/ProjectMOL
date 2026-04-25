@@ -8,7 +8,6 @@ import {
   Firestore,
   getDocs,
   limit,
-  orderBy,
   query,
   where
 } from "@angular/fire/firestore";
@@ -37,17 +36,17 @@ export class ExplorePage implements OnInit {
   public sortBy: string = 'recent';
 
   public filters = {
-    languages: ['Spanish', 'English', 'French'],
-    levels: ['ESO', 'Uni', 'Pos'],
-    categories: ['Action', 'Romance', 'Thriller', 'Educational', 'Adventure', 'SciFi'],
-    years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018]
+    language: ['Español', 'Inglés', 'Francés'],
+    level: ['ESO/Bachiller', 'Universidad', 'Posgrado'],
+    category: ['Acción', 'Romance', 'Thriller', 'Educativo', 'Aventura', 'Ciencia Ficción'],
+    year: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018]
   };
 
   public selectedFilters : any = {
-    languages: [],
-    levels: [],
-    categories: [],
-    years: []
+    language: [],
+    level: [],
+    category: [],
+    year: []
   }
 
   constructor() {
@@ -83,8 +82,12 @@ export class ExplorePage implements OnInit {
 
   async getLatestSummary(bookId: string){
     const summariesRef = collection(this.firestore, 'summaries');
-    const q = query(summariesRef, where('bookId', '==', bookId), where('status', '==', 'published'),
-      orderBy('createdAt', 'desc'), limit(1));
+    const q = query(
+      summariesRef,
+      where('bookId', '==', bookId),
+      where('status', '==', 'published'),
+      limit(1)
+    );
 
     const snap = await getDocs(q);
     return !snap.empty ? snap.docs[0].data() : null;
@@ -102,16 +105,23 @@ export class ExplorePage implements OnInit {
 
   applyFilters() {
     let results = this.books.filter(book => {
-      const langMatch = this.selectedFilters.languages.length === 0 || this.selectedFilters.languages.includes(book.language);
-      const yearMatch = this.selectedFilters.years.length === 0 || (book.year && this.selectedFilters.years.includes(Number(book.year)));
-      const catMatch = this.selectedFilters.categories.length === 0 || ((book.categories || []).some((c:string) => this.selectedFilters.categories.includes(c)));
-      const levelMatch = this.selectedFilters.levels.length === 0 || this.selectedFilters.levels.includes(book.level);
+      const langMatch = this.selectedFilters.language.length === 0 ||
+        this.selectedFilters.language.includes(book.language);
+
+      const yearMatch = this.selectedFilters.year.length === 0 ||
+        (book.year && this.selectedFilters.year.includes(Number(book.year)));
+
+      const catMatch = this.selectedFilters.category.length === 0 ||
+        (book.categories && book.categories.some((c:string) => this.selectedFilters.category.includes(c)));
+
+      const levelMatch = this.selectedFilters.level.length === 0 ||
+        this.selectedFilters.level.includes(book.level);
 
       return langMatch && yearMatch && catMatch && levelMatch;
     });
 
     if(this.sortBy === 'recent'){
-      results.sort((a,b) => (b.year || 0) - (a.year || 0));
+      results.sort((a,b) => (Number(b.year) || 0) - (Number(a.year) || 0));
     } else if(this.sortBy === 'rating'){
       results.sort((a,b) => (b.ratingAvg || 0) - (a.ratingAvg || 0));
     }
