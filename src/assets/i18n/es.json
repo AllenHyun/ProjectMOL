@@ -317,7 +317,7 @@
   },
   "SETTINGS": {
     "TAB_ACCOUNT": "Cuenta",
-    "TAB_BLOCKED": "Perfiles bloqueados",
+    "TAB_BLOCKED": "Usuarios bloqueados",
     "USER_LABEL": "Nombre de usuario",
     "PASS_LABEL": "Contraseña",
     "EMAIL_LABEL": "Correo electrónico",
@@ -332,7 +332,19 @@
       "ES": "Español",
       "EN": "Inglés",
       "FR": "Francés"
-    }
+    },
+    "BLOCKED_TITLE": "Gestión de bloqueos",
+    "UNBLOCK_BTN": "Desbloquear",
+    "NO_BLOCKED": "No tienes usuarios bloqueados.",
+    "LOADING": "Cargando lista...",
+    "UNBLOCK_SUCCESS": "Usuario desbloqueado correctamente.",
+    "UPDATE_SUCCESS": "Ajustes de perfil actualizados.",
+    "ERROR_UPDATE": "Ocurrió un error al actualizar los datos.",
+    "ERROR_RECENT_LOGIN": "Por seguridad, debes haber iniciado sesión recientemente para realizar esta acción.",
+    "EMAIL_VERIFY_NOTICE": "ATENCIÓN: Se ha enviado un enlace de confirmación a",
+    "RESET_SENT": "Se ha enviado un correo para restablecer tu contraseña a",
+    "ERROR_RESET": "Error al enviar el correo de restablecimiento.",
+    "ERROR_EXPORT": "No se pudieron exportar las listas."
   },
   "ADMIN": {
     "TITLE": "Panel Admin",

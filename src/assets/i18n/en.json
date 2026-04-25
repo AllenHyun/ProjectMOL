@@ -317,7 +317,7 @@
   },
   "SETTINGS": {
     "TAB_ACCOUNT": "Account",
-    "TAB_BLOCKED": "Blocked profiles",
+    "TAB_BLOCKED": "Blocked users",
     "USER_LABEL": "Username",
     "PASS_LABEL": "Password",
     "EMAIL_LABEL": "Email address",
@@ -326,13 +326,25 @@
     "CHANGE": "Change",
     "RESET_BTN": "Send reset email",
     "DOWNLOAD_BTN": "Download",
-    "SUBMIT": "Send",
-    "LOGOUT": "Log Out",
+    "SUBMIT": "Submit",
+    "LOGOUT": "Log out",
     "LANGUAGES": {
       "ES": "Spanish",
       "EN": "English",
       "FR": "French"
-    }
+    },
+    "BLOCKED_TITLE": "Block management",
+    "UNBLOCK_BTN": "Unblock",
+    "NO_BLOCKED": "You have no blocked users.",
+    "LOADING": "Loading list...",
+    "UNBLOCK_SUCCESS": "User successfully unblocked.",
+    "UPDATE_SUCCESS": "Profile settings updated.",
+    "ERROR_UPDATE": "An error occurred while updating data.",
+    "ERROR_RECENT_LOGIN": "For security reasons, you must have logged in recently to perform this action.",
+    "EMAIL_VERIFY_NOTICE": "ATTENTION: A confirmation link has been sent to",
+    "RESET_SENT": "A password reset email has been sent to",
+    "ERROR_RESET": "Error sending the reset email.",
+    "ERROR_EXPORT": "Lists could not be exported."
   },
   "ADMIN": {
     "TITLE": "Admin Panel",

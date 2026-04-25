@@ -1,26 +1,41 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import {IonContent, IonHeader, IonIcon, IonTitle, IonToolbar} from '@ionic/angular/standalone';
 import { Auth, authState, verifyBeforeUpdateEmail, sendPasswordResetEmail } from "@angular/fire/auth";
-import { collection, doc, Firestore, getDoc, getDocs, query, updateDoc, where } from "@angular/fire/firestore";
+import {
+  arrayRemove,
+  collection,
+  doc,
+  Firestore,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where
+} from "@angular/fire/firestore";
 import { Router } from "@angular/router";
 import { filter } from "rxjs";
 import { HeaderComponent } from "../components/header/header.component";
 import { FooterComponent } from "../components/footer/footer.component";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, TranslatePipe]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, TranslatePipe, IonIcon]
 })
 export class SettingsPage implements OnInit {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
   private router = inject(Router);
+  private translate = inject(TranslateService);
+
+  public activeTab: 'account' | 'blocked' = 'account';
+  public blockedUsersProfiles: any[] = [];
+  public loadingBlocked = false;
 
   public user: any = {
     username: '',
@@ -157,5 +172,65 @@ export class SettingsPage implements OnInit {
       this.resetUserData('');
       this.router.navigate(['/login']);
     });
+  }
+
+  async switchTab(tab: 'account' | 'blocked'){
+    this.activeTab = tab;
+    if (tab === 'blocked') {
+      await this.loadBlockedUsers();
+    }
+  }
+
+  async loadBlockedUsers() {
+    const currentUser = this.auth.currentUser;
+    if (!currentUser) return;
+
+    this.loadingBlocked = true;
+    this.blockedUsersProfiles = [];
+
+    try {
+      const userSnap = await getDoc(doc(this.firestore, 'users', currentUser.uid));
+      const blockedIds = userSnap.data()?.['blockedUsers'] || [];
+
+      if (blockedIds.length > 0) {
+        const profilePromises = blockedIds.map((uid: string) =>
+          getDoc(doc(this.firestore, 'users', uid))
+        );
+
+        const snaps = await Promise.all(profilePromises);
+
+        this.blockedUsersProfiles = snaps
+          .filter(snap => snap.exists())
+          .map(snap => ({
+            id: snap.id,
+            ...snap.data()
+          }));
+      }
+    } catch (error) {
+      console.error("Error cargando bloqueados: ", error);
+    } finally {
+      this.loadingBlocked = false;
+    }
+  }
+
+  async unblockUser(targetUid: string){
+    const currentUser = this.auth.currentUser;
+    if(!currentUser){
+      return;
+    }
+
+    try {
+      const userRef = doc(this.firestore, 'users', currentUser.uid);
+      await updateDoc(userRef, {
+        blockedUsers: arrayRemove(targetUid)
+      });
+
+      this.blockedUsersProfiles = this.blockedUsersProfiles.filter(u => u.id !== targetUid);
+      this.user.blockedUsers = this.user.blockedUsers.filter((id:string) => id !== targetUid);
+
+      alert(this.translate.instant('SETTINGS.UNBLOCK_SUCCESS'));
+    } catch (error) {
+      console.error("Error al desbloquear: ", error);
+    }
   }
 }
