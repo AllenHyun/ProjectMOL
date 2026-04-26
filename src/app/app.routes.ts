@@ -11,16 +11,41 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'admin',
+    children: [
+      {
+        path: 'moderacion',
+        loadComponent: () => import('./book-management/book-management.page').then(m => m.BookManagementPage)
+      },
+      {
+        path: 'gestion-libros',
+        loadComponent: () => import('./book-management/book-management.page').then(m => m.BookManagementPage)
+      },
+      {
+        path: 'usuarios',
+        loadComponent: () => import('./user-management/user-management.page').then(m => m.UserManagementPage)
+      },
+      {
+        path: 'taxonomia',
+        redirectTo: 'gestion-libros'
+      },
+      {
+        path: 'takedowns',
+        redirectTo: 'gestion-libros'
+      },
+      {
+        path: 'analitica',
+        redirectTo: 'gestion-libros'
+      }
+    ]
+  },
+  {
     path: 'login',
     loadComponent: () => import('./login/login.page').then( m => m.LoginPage)
   },
   {
     path: 'register',
     loadComponent: () => import('./register/register.page').then( m => m.RegisterPage)
-  },
-  {
-    path: 'book-management',
-    loadComponent: () => import('./book-management/book-management.page').then( m => m.BookManagementPage)
   },
   {
     path: 'book-detail/:id',

@@ -85,6 +85,16 @@ export class LoginPage implements OnInit {
         const userDocRef = doc(this.firestore, `users/${user.uid}`);
         const userSnap = await getDoc(userDocRef);
 
+        if(userSnap.exists()){
+          const userData = userSnap.data();
+          if (userData?.['status'] === "suspended"){
+            const reason = userData['banReason'] || 'No especificado';
+            await signOut(this.auth);
+            alert(`TU CUENTA ESTÁ SUSPENDIDA. \nMotivo: ${reason}`);
+            return;
+          }
+        }
+
         if (!userSnap.exists() || !userSnap.data()?.['username'] || !userSnap.data()?.['email']) {
           const newUser: User = {
             uid: user.uid,

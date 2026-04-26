@@ -119,7 +119,7 @@ export class HeaderComponent  implements OnInit {
   }
 
   async panelAdmin(){
-    this.router.navigate(['/book-management']);
+    this.router.navigate(['/admin/gestion-libros']);
   }
 
   async openLanguageSelector(){
