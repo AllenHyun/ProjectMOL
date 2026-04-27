@@ -1,0 +1,106 @@
+<ion-content>
+
+  <div class="flex flex-col min-h-full bg-[#FDFBF7]">
+
+    <app-header></app-header>
+
+    <main class="flex-1 w-full max-w-3xl mx-auto p-6 md:p-12">
+
+      <div class="flex justify-between items-end mb-10 border-b border-[#C5A059]/20 pb-6">
+
+        <div>
+
+          <h2 class="text-4xl font-['Cormorant_Garamond'] text-[#1A1614]">{{ 'NOTIFICATIONS.TITLE' | translate }}</h2>
+          <p class="text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-2 font-bold">
+            {{ unreadCount }} {{ 'NOTIFICATIONS.UNREAD_LABEL' | translate }}
+          </p>
+
+        </div>
+
+        @if (unreadCount > 0) {
+          <button (click)="markAllAsRead()" class="flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest text-[#2E473B] hover:opacity-70 transition-all">
+
+            <ion-icon name="checkmark-done-outline" class="text-lg"></ion-icon>{{ 'NOTIFICATIONS.MARK_READ' | translate }}
+
+          </button>
+        }
+
+      </div>
+
+      <div class="flex flex-col gap-4">
+
+        @for (noti of notifications; track noti.id) {
+
+          <div (click)="markAsRead(noti)"
+               [class.bg-white]="noti.read"
+               [class.bg-[#2E473B08]]="!noti.read"
+               [class.border-l-4]="!noti.read"
+               class="relative p-6 border border-gray-100 shadow-sm transition-all hover:shadow-md cursor-pointer border-l-[#C5A059]">
+
+            <div class="flex justify-between items-start mb-2">
+
+              <div class="flex items-center gap-3">
+
+                <div [class]="noti.title.includes('aprobado') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
+                     class="w-8 h-8 rounded-full flex items-center justify-center text-lg">
+                  <ion-icon [name]="noti.title.includes('aprobado') ? 'checkmark-outline' : 'close-outline'"></ion-icon>
+                </div>
+
+                <h3 class="font-bold text-sm uppercase tracking-wider text-[#1A1614]">{{ noti.title }}</h3>
+
+              </div>
+
+              <button (click)="deleteNotification($event, noti.id)" class="text-gray-300 hover:text-red-600 transition-colors">
+                <ion-icon name="trash-outline" class="text-lg"></ion-icon>
+              </button>
+
+            </div>
+
+            <p class="text-sm font-lato text-gray-600 leading-relaxed pl-11">
+              {{ noti.message }}
+            </p>
+
+            <div class="mt-4 flex justify-between items-center pl-11">
+
+              <span class="text-[9px] text-gray-400 uppercase tracking-widest italic">
+                {{ noti.createdAt | date:'dd MMMM, yyyy · HH:mm' }}
+              </span>
+
+              @if (noti.refId) {
+                <button [routerLink]="['/summary-detail', noti.refId]" class="flex items-center gap-1 text-[10px] font-bold text-[#C5A059] uppercase tracking-widest hover:underline">
+                  {{ 'SUMMARIES.READ_MORE' | translate }}
+                  <ion-icon name="chevron-forward-outline"></ion-icon>
+                </button>
+              }
+
+            </div>
+
+            @if (!noti.read) {
+              <div class="absolute top-4 right-12 w-2 h-2 bg-[#C5A059] rounded-full animate-pulse"></div>
+            }
+
+          </div>
+
+        } @empty {
+
+          <div class="py-32 text-center flex flex-col items-center">
+
+            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6">
+              <ion-icon name="notifications-outline" class="text-4xl text-gray-200"></ion-icon>
+            </div>
+
+            <p class="text-gray-400 italic font-lato">{{ 'NOTIFICATIONS.EMPTY' | translate }}</p>
+
+          </div>
+
+        }
+
+      </div>
+
+    </main>
+
+    <app-footer></app-footer>
+
+  </div>
+
+</ion-content>

@@ -10,10 +10,10 @@ import {addIcons} from "ionicons";
 import {Router, RouterLink} from "@angular/router";
 import {Auth, onAuthStateChanged, authState} from "@angular/fire/auth";
 import {User} from "../../models/user";
-import {collection, collectionData, doc, docData, Firestore} from "@angular/fire/firestore";
+import {collection, collectionData, doc, docData, Firestore, query, where} from "@angular/fire/firestore";
 import {CommonModule} from "@angular/common";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
-import {of, switchMap} from "rxjs";
+import {of, Subscription, switchMap} from "rxjs";
 import {FormsModule} from "@angular/forms";
 
 @Component({
@@ -36,6 +36,9 @@ export class HeaderComponent  implements OnInit {
   private auth = inject(Auth);
   public menuOpen: boolean = false;
   private firestore = inject(Firestore);
+
+  public unreadCount: number = 0;
+  private notiSub: Subscription | null = null;
 
   private translate = inject(TranslateService);
   private actionSheet = inject(ActionSheetController);
@@ -75,9 +78,12 @@ export class HeaderComponent  implements OnInit {
     authState(this.auth).pipe(
       switchMap(authUser => {
         if (authUser) {
+          this.listenNotifications(authUser.uid);
           const userDocRef = doc(this.firestore, `users/${authUser.uid}`);
           return docData(userDocRef);
         } else {
+          this.unreadCount = 0;
+          this.unsubscribeNotis();
           return of(null);
         }
       })
@@ -92,6 +98,10 @@ export class HeaderComponent  implements OnInit {
     collectionData(booksRef, {idField: 'id'}).subscribe(data => {
       this.allBooks = data;
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeNotis();
   }
 
   toggleMenu() {
@@ -187,5 +197,23 @@ export class HeaderComponent  implements OnInit {
 
   hideSuggestions() {
     setTimeout(() => {this.showSuggestion = false;}, 200);
+  }
+
+  private listenNotifications(uid: string) {
+    this.unsubscribeNotis();
+
+    const notiRef = collection(this.firestore, `notifications`);
+    const q = query(notiRef, where('userId', '==', uid), where('read', '==', false));
+
+    this.notiSub = collectionData(q).subscribe(notis =>{
+      this.unreadCount = notis.length;
+    });
+  }
+
+  private unsubscribeNotis() {
+    if (this.notiSub) {
+      this.notiSub.unsubscribe();
+      this.notiSub = null;
+    }
   }
 }

@@ -137,7 +137,7 @@ export class BookDetailPage implements OnInit {
     });
   }
 
-  async saveSummaries(status: 'draft' | 'published'){
+  async saveSummaries(status: 'draft' | 'pending'){
     const user = this.auth.currentUser;
     if (!user) {
       const alert = await this.alertCtrl.create({
@@ -184,6 +184,7 @@ export class BookDetailPage implements OnInit {
 
       this.showModal = false;
       this.newSummary.content = '';
+      alert(this.translate.instant('MODERATION.SENDING'));
     } catch (error) {}
   }
 

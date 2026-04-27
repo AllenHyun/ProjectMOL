@@ -1,0 +1,100 @@
+<ion-content>
+
+  <div class="flex flex-col min-h-screen">
+
+    <app-header></app-header>
+
+    <div class="flex flex-col lg:flex-row flex-grow">
+
+      <aside class="w-full lg:w-64 flex-shrink-0 border-b lg:border-r border-[#C5A059]">
+
+        <app-admin-panel></app-admin-panel>
+
+      </aside>
+
+      <main class="flex-grow p-6 lg:p-10">
+
+        <h2 class="text-4xl font-['Cormorant_Garamond'] text-[#1A1614] mb-8">{{ 'MODERATION.TITLE' | translate }}</h2>
+
+        <div class="w-full overflow-x-auto border shadow-sm">
+
+          <table class="w-full text-left border-collapse min-w-[800px]">
+
+            <thead>
+
+            <tr class="border-b border-gray-500 text-sm text-[#1A1614]">
+
+              <th class="py-4 px-4 font-normal font-lato">{{ 'MODERATION.TABLE.TYPE' | translate }}</th>
+              <th class="py-4 px-4 font-normal font-lato">{{ 'MODERATION.TABLE.TITLE' | translate }}</th>
+              <th class="py-4 px-4 font-normal font-lato">{{ 'MODERATION.TABLE.USER' | translate }}</th>
+              <th class="py-4 px-4 font-normal font-lato">{{ 'MODERATION.TABLE.DATE' | translate }}</th>
+              <th class="py-4 px-4 font-normal font-lato">{{ 'MODERATION.TABLE.STATUS' | translate }}</th>
+              <th class="py-4 px-4 font-normal font-lato text-center">{{ 'MODERATION.TABLE.ACTIONS' | translate }}</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+              @for (sum of pendingSummaries; track sum.id) {
+
+                <tr class="border-b border-gray-100 text-black hover:bg-gray-50 transition-all">
+
+                  <td class="py-4 px-4 text-[10px] font-bold uppercase tracking-widest text-[#C5A059]">
+                    {{ 'MODERATION.TYPE_SUMMARY' | translate }}
+                  </td>
+
+                  <td class="py-4 px-4 font-bold">{{ sum.bookTitle }}</td>
+
+                  <td class="py-4 px-4 text-sm">{{ sum.authorId }}</td>
+
+                  <td class="py-4 px-4 text-sm">{{ sum.createdAt | date:'dd/MM/yyyy' }}</td>
+
+                  <td class="py-4 px-4 text-[10px] font-bold uppercase text-orange-500">
+                    {{ 'MODERATION.STATUS.pending' | translate }}
+                  </td>
+
+                  <td class="py-4 px-4">
+
+                    <div class="flex justify-center items-center gap-4 text-2xl">
+
+                      <ion-icon [routerLink]="['/summary-detail', sum.id]" name="eye-outline" class="text-gray-400 cursor-pointer hover:text-black"></ion-icon>
+
+                      <ion-icon (click)="approveSummary(sum)" name="checkmark-outline" class="text-green-600 cursor-pointer hover:scale-110"></ion-icon>
+
+                      <ion-icon (click)="rejectSummary(sum)" name="close-outline" class="text-red-600 cursor-pointer hover:scale-110"></ion-icon>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              } @empty {
+
+                <tr>
+
+                  <td colspan="6" class="py-20 text-center text-gray-400 italic">
+                    {{ 'MODERATION.EMPTY' | translate }}
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </main>
+
+    </div>
+
+    <app-footer></app-footer>
+
+  </div>
+
+</ion-content>

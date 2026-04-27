@@ -128,7 +128,7 @@
 
           <button (click)="cancelEdit()" class="flex-1 py-3 bg-white border border-[#2E473B] text-[#2E473B] uppercase text-[10px] font-bold hover:bg-gray-50 transition-colors">{{ 'COMMON.CANCEL' | translate }}</button>
           <button (click)="updateSummary('draft')" class="flex-1 py-3 border border-[#2E473B] bg-[#2E473B] text-white uppercase text-[10px] font-bold shadow-sm">{{ 'SUMMARIES.SAVE_DRAFT' | translate }}</button>
-          <button (click)="updateSummary('published')" class="flex-1 py-3 bg-[#2E473B] text-white uppercase text-[10px] font-bold shadow-md">{{ 'COMMON.PUBLISH' | translate }}</button>
+          <button (click)="updateSummary('pending')" class="flex-1 py-3 bg-[#2E473B] text-white uppercase text-[10px] font-bold shadow-md">{{ 'COMMON.PUBLISH' | translate }}</button>
 
         </div>
 
@@ -175,7 +175,7 @@
         <div class="flex gap-4">
 
           <button (click)="cancelNewSummary()" class="flex-1 py-3 bg-white border border-[#2E473B] text-[#2E473B] uppercase text-[10px] font-bold"> {{ 'COMMON.CANCEL' | translate }} </button>
-          <button (click)="saveNewSummary('published')" class="flex-1 py-3 bg-[#2E473B] text-white uppercase text-[10px] font-bold"> {{ 'COMMON.PUBLISH' | translate }} </button>
+          <button (click)="saveNewSummary('pending')" class="flex-1 py-3 bg-[#2E473B] text-white uppercase text-[10px] font-bold"> {{ 'COMMON.PUBLISH' | translate }} </button>
 
         </div>
 

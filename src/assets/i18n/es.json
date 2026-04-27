@@ -476,5 +476,37 @@
     "CONFIRM_BAN": "¿Estás seguro de que quieres suspender a este usuario?",
     "CONFIRM_UNBAN":"¿Deseas reactivar la cuenta de este usuario?",
     "CONFIRM_DELETE": "Esta acción eliminará al usuario permanentemente, ¿deseas continuar?"
+  },
+  "MODERATION": {
+    "TITLE": "Moderación de Contenido",
+    "SENDING": "Su resumen ha sido enviado a moderación.",
+    "EMPTY": "No hay resúmenes pendientes de revisión",
+    "TABLE": {
+      "TYPE": "Tipo",
+      "TITLE": "Título Libro",
+      "USER": "Usuario",
+      "DATE": "Fecha",
+      "STATUS": "Estado",
+      "ACTIONS": "Acciones"
+    },
+    "TYPE_SUMMARY": "Resumen",
+    "CONFIRM_APPROVE": "¿Estás seguro de que deseas aprobar este resumen?",
+    "CONFIRM_REJECT": "¿Estás seguro de que deseas rechazar este resumen?",
+    "STATUS": {
+      "pending": "Pendiente",
+      "published": "Aprobado",
+      "rejected": "Rechazado"
+    }
+  },
+  "NOTIFICATIONS": {
+    "TITLE": "Notificaciones",
+    "EMPTY": "No tienes notificaciones nuevas",
+    "SUMMARY_APPROVED": "¡Resumen aprobado!",
+    "SUMMARY_REJECTED": "Resumen rechazado",
+    "MSG_APPROVED": "Tu resumen del libro '{{book}}' ha sido aprobado y ya es público.",
+    "MSG_REJECTED": "Tu resumen del libro '{{book}}' ha sido rechazado. Motivo: {{reason}}",
+    "MARK_READ": "Marcar todo como leído",
+    "UNREAD_LABEL": "Notificaciones sin leer",
+    "CONFIRM_DELETE": "¿Estás seguro de que quieres eliminar esta notificación?"
   }
 }

@@ -15,7 +15,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'moderacion',
-        loadComponent: () => import('./book-management/book-management.page').then(m => m.BookManagementPage)
+        loadComponent: () => import('./moderation-management/moderation-management.page').then( m => m.ModerationManagementPage)
       },
       {
         path: 'gestion-libros',
@@ -98,5 +98,9 @@ export const routes: Routes = [
   {
     path: 'settings',
     loadComponent: () => import('./settings/settings.page').then( m => m.SettingsPage)
-  }
+  },
+  {
+    path: 'notifications',
+    loadComponent: () => import('./notifications/notifications.page').then( m => m.NotificationsPage)
+  },
 ];

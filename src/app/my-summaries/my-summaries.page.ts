@@ -105,7 +105,7 @@ export class MySummariesPage implements OnInit {
 
   get filteredSummaries() {
     if (this.activeTab === 'pending') {
-      return this.allSummaries.filter(s => s.status === 'published' || s.status === 'pending');
+      return this.allSummaries.filter(s => s.status === 'pending');
     }
     return this.allSummaries.filter(s => s.status === this.activeTab);
   }
@@ -125,7 +125,7 @@ export class MySummariesPage implements OnInit {
     this.showEditModal = true;
   }
 
-  async updateSummary(newStatus: 'draft' | 'published'){
+  async updateSummary(newStatus: 'draft' | 'pending'){
     if (!this.editingSummary || !this.editContent.trim()){
       return;
     }
@@ -179,7 +179,7 @@ export class MySummariesPage implements OnInit {
     });
   }
 
-  async saveNewSummary(status: 'draft' | 'published') {
+  async saveNewSummary(status: 'draft' | 'pending') {
     const user = this.auth.currentUser;
     if (!user || !this.newSummary.bookId || !this.newSummary.content.trim()) {
       const alert = await this.alertCtrl.create({
