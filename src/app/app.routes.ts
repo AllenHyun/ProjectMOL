@@ -35,7 +35,7 @@ export const routes: Routes = [
       },
       {
         path: 'analitica',
-        redirectTo: 'gestion-libros'
+        loadComponent: () => import('./analytics/analytics.page').then( m => m.AnalyticsPage)
       }
     ]
   },

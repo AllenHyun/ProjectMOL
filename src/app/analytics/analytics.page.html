@@ -1,0 +1,122 @@
+<ion-content>
+
+  <div class="flex flex-col min-h-screen bg-[#FDFBF7]">
+
+    <app-header></app-header>
+
+    <div class="flex flex-col lg:flex-row flex-grow">
+
+      <aside class="w-full lg:w-64 flex-shrink-0 border-b lg:border-r border-[#C5A059]">
+
+        <app-admin-panel></app-admin-panel>
+
+      </aside>
+
+      <main class="flex-grow p-6 lg:p-10">
+
+        <h2 class="text-4xl font-['Cormorant_Garamond'] text-[#1A1614] mb-8 uppercase tracking-tight">Analítica de Plataforma</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          <div class="bg-white p-8 border border-gray-100 shadow-sm flex flex-col items-center justify-center min-h-[200px]">
+
+            <h3 class="text-xs uppercase tracking-[0.2em] font-bold text-gray-400 mb-4">Métricas de Actividad (DAU/MAU)</h3>
+
+            <div class="text-5xl font-['Cormorant_Garamond'] text-[#1A1614]">
+
+              {{ stats.dau }} <span class="text-gray-200 text-3xl">/</span> {{ stats.mau }}
+
+            </div>
+
+          </div>
+
+          <div class="bg-white p-6 border border-gray-100 shadow-sm md:col-span-2">
+
+            <div class="h-full w-full max-h-[180px] flex justify-center">
+
+              <canvas #distChart></canvas>
+
+            </div>
+
+          </div>
+
+          <div class="bg-white p-8 border border-gray-100 shadow-sm md:col-span-2">
+
+            <h3 class="text-lg font-['Cormorant_Garamond'] mb-6">Crecimiento de Usuarios</h3>
+
+            <div class="h-64">
+
+              <canvas #growthChart></canvas>
+
+            </div>
+
+          </div>
+
+          <div class="space-y-6">
+
+            <div class="bg-white p-6 border border-gray-100 shadow-sm h-full">
+
+              <h3 class="text-lg font-['Cormorant_Garamond'] mb-4">Top Contenido</h3>
+
+              <ul class="flex flex-col gap-5">
+
+                @for (book of stats.topBooks; track book.id; let i = $index) {
+                  <div [routerLink]="['/book-detail', book.id]" class="flex items-center gap-4 cursor-pointer transition-all hover:translate-x-1">
+
+                    <span class="text-2xl font-serif text-[#C5A059]/50 font-bold w-4">{{i+1}}</span>
+
+                    <div class="w-12 h-16 flex-shrink-0 shadow-md overflow-hidden rounded-sm border border-gray-500">
+
+                      <img [src]="book.coverUrl" [alt]="book.title" class="w-full h-full object-cover transition-transform group-hover:scale-110">
+
+                    </div>
+
+                    <div class="flex flex-col overflow-hidden">
+
+                      <span class="text-sm font-bold text-[#1A1614] group-hover:text-[#C5A059] transition-colors truncate">{{book.title}}</span>
+                      <span class="text-[10px] uppercase tracking-widest text-gray-500">Ver detalles</span>
+
+                    </div>
+
+                  </div>
+                } @empty {
+                  <li class="text-gray-500 text-sm italic">Cargando podio...</li>
+                }
+
+              </ul>
+
+            </div>
+
+            <div class="bg-white p-8 border border-gray-100 shadow-sm text-center">
+
+              <h3 class="text-xs uppercase tracking-[0.2em] font-bold text-gray-400 mb-4">Tasa de reportes</h3>
+
+              <div class="text-6xl font-['Cormorant_Garamond'] text-[#1A1614]">{{ stats.reportRate }}%</div>
+
+            </div>
+
+          </div>
+
+          <div class="bg-white p-8 border border-gray-100 shadow-sm md:col-span-3">
+
+            <h3 class="text-lg font-['Cormorant_Garamond'] mb-6">Calidad por Revisor</h3>
+
+            <div class="h-64">
+
+              <canvas #qualityChart></canvas>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+
+    </div>
+
+    <app-footer></app-footer>
+
+  </div>
+
+</ion-content>
