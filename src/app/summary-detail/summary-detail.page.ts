@@ -5,13 +5,14 @@ import {IonContent, IonIcon} from '@ionic/angular/standalone';
 import {FooterComponent} from "../components/footer/footer.component";
 import {HeaderComponent} from "../components/header/header.component";
 import {ActivatedRoute, RouterLink} from "@angular/router";
-import {doc, Firestore, getDoc} from "@angular/fire/firestore";
+import {addDoc, collection, collectionData, doc, Firestore, getDoc} from "@angular/fire/firestore";
 import {Summary} from "../models/summary";
 import { star, starOutline, playOutline, pauseOutline, bookmarkOutline, shareOutline, flagOutline, thumbsUpOutline, thumbsDownOutline, arrowBackOutline } from 'ionicons/icons';
 import {addIcons} from "ionicons";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
+import {Auth} from "@angular/fire/auth";
 
 @Component({
   selector: 'app-summary-detail',
@@ -25,6 +26,8 @@ export class SummaryDetailPage implements OnInit {
   private route = inject(ActivatedRoute);
   private firestore = inject(Firestore);
   private http = inject(HttpClient);
+  private translate = inject(TranslateService);
+  private auth = inject(Auth);
 
   public book: any = null;
   public summary: Summary | null = null;
@@ -129,5 +132,32 @@ export class SummaryDetailPage implements OnInit {
     utterance.lang = this.langMap[langName] || 'es-ES';
     utterance.rate = 0.9;
     window.speechSynthesis.speak(utterance);
+  }
+
+  async reportSummary(){
+    if (!this.summary){
+      return;
+    }
+
+    const reason = prompt(this.translate.instant('MODERATION.REPORT_REPORT'));
+    if (!reason){
+      return;
+    }
+
+    try {
+      const newReport = {
+        reportedId: this.auth.currentUser?.uid || 'Anónimo',
+        type: 'summary',
+        refPath: `summaries/${this.summary.id}`,
+        reason: reason,
+        status: 'open',
+        createdAt: new Date().toISOString()
+      };
+
+      await addDoc(collection(this.firestore, 'reports'), newReport);
+      alert(this.translate.instant('MODERATION.REPORT_SUCCESS'));
+    } catch (error) {
+      console.error("Error al reportar: ", error);
+    }
   }
 }

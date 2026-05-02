@@ -32,8 +32,11 @@ export class AnalyticsPage implements OnInit {
 
   private userSub: Subscription | null = null;
   private summarySub: Subscription | null = null;
-
   private bookSub: Subscription | null = null;
+  private reportSub: Subscription | null = null;
+
+  private totalSummaries = 0;
+  private reportedSummariesCount = 0;
 
   public stats = {
     dau: 0,
@@ -52,12 +55,14 @@ export class AnalyticsPage implements OnInit {
     this.summarySub?.unsubscribe();
     this.bookSub?.unsubscribe();
     this.userSub?.unsubscribe();
+    this.reportSub?.unsubscribe();
   }
 
   ngOnInit() {
     this.listenUsersRealTime();
     this.listenSummariesRealTime();
     this.listenTopBooksRealTime();
+    this.listenReportRealTime();
   }
 
   async listenUsersRealTime() {
@@ -81,7 +86,9 @@ export class AnalyticsPage implements OnInit {
   listenSummariesRealTime() {
     const summariesRef = collection(this.firestore, 'summaries');
     this.summarySub = collectionData(summariesRef).subscribe(summaries => {
+      this.totalSummaries = summaries.length;
       this.calculatePlatformQuality(summaries);
+      this.calculateReportRate();
     });
   }
 
@@ -92,8 +99,6 @@ export class AnalyticsPage implements OnInit {
 
     this.stats.dau = users.filter(u => u.lastLogin && new Date(u.lastLogin) > oneDayAgo).length;
     this.stats.mau = users.filter(u => u.lastLogin && new Date(u.lastLogin) > oneMonthAgo).length;
-
-    this.stats.reportRate = 8.5;
   }
 
   calculateGrowthChart(users: any[]) {
@@ -154,10 +159,10 @@ export class AnalyticsPage implements OnInit {
     this.distChart = new Chart(this.distChartCanvas.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: ['Admin', 'Lectores', 'Editores'],
+        labels: ['Admin', 'Lectores'],
         datasets: [{
-          data: [roles.admin, roles.reader, roles.editor],
-          backgroundColor: ['#1A1614', '#C5A059', '#2E473B']
+          data: [roles.admin, roles.reader],
+          backgroundColor: ['#2E473B', '#C5A059']
         }]
       }
     });
@@ -169,11 +174,6 @@ export class AnalyticsPage implements OnInit {
       const st = s['status'] as keyof typeof statusCount;
       if (statusCount.hasOwnProperty(st)) statusCount[st]++;
     });
-
-    const totalProcessed = statusCount.published + statusCount.rejected;
-    this.stats.reportRate = totalProcessed > 0
-      ? Math.round((statusCount.rejected / totalProcessed) * 100)
-      : 0;
 
     if(this.qualityChart){
       this.qualityChart.destroy();
@@ -192,5 +192,22 @@ export class AnalyticsPage implements OnInit {
       options: { responsive: true, maintainAspectRatio: false }
     });
   }
+  listenReportRealTime(){
+    const reportRef = collection(this.firestore, 'reports');
+    this.reportSub = collectionData(reportRef).subscribe(reports => {
+      const summaryReports = reports.filter(r => r['type'] === 'summary');
+      const uniqueReportedPaths = new Set(summaryReports.map(r => r['refPath']));
 
+      this.reportedSummariesCount = uniqueReportedPaths.size;
+      this.calculateReportRate();
+    });
+  }
+
+  calculateReportRate(){
+    if (this.totalSummaries > 0){
+      this.stats.reportRate = Math.round((this.reportedSummariesCount / this.totalSummaries) * 100);
+    } else {
+      this.stats.reportRate = 0;
+    }
+  }
 }

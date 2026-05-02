@@ -31,7 +31,7 @@ export const routes: Routes = [
       },
       {
         path: 'takedowns',
-        redirectTo: 'gestion-libros'
+        loadComponent: () => import('./takedowns/takedowns.page').then( m => m.TakedownsPage)
       },
       {
         path: 'analitica',

@@ -14,7 +14,7 @@ import {
 } from '@angular/fire/firestore';
 import {AlertController, IonContent, IonIcon, IonModal} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline, addOutline, checkmarkCircle, trashOutline, chatbubbleOutline } from 'ionicons/icons';
+import { star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline, addOutline, checkmarkCircle, trashOutline, chatbubbleOutline, flagOutline } from 'ionicons/icons';
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import { FormsModule } from '@angular/forms';
@@ -94,7 +94,7 @@ export class BookDetailPage implements OnInit {
 
   constructor() {
     addIcons( {
-      star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline, addOutline, checkmarkCircle, trashOutline, chatbubbleOutline });
+      star, starOutline, playOutline, thumbsUp, thumbsDown, arrowBackOutline, addOutline, checkmarkCircle, trashOutline, chatbubbleOutline, flagOutline });
   }
 
   ngOnInit() {
@@ -527,5 +527,35 @@ export class BookDetailPage implements OnInit {
         this.toggleComments(reviewId);
       }
     } catch (error) {}
+  }
+
+  async reportReview(reviewId: string){
+    const user = this.auth.currentUser;
+    if (!user){
+      alert(this.translate.instant('REVIEW-D.LOGIN_COMMENT'));
+      return;
+    }
+
+    const reason = prompt(this.translate.instant('MODERATION.REPORT_REPORT'));
+    if (!reason){
+      return;
+    }
+
+    try {
+      const reportsRef = collection(this.firestore, 'reports');
+
+      await addDoc(reportsRef, {
+        reporterId: user.uid,
+        type: 'review',
+        refPath: `reviews/${reviewId}`,
+        reason: reason,
+        status: 'open',
+        createdAt: new Date().toISOString()
+      });
+
+      alert(this.translate.instant('MODERATION.REPORT_SUCCESS'));
+    } catch (error) {
+      console.error("Error al reportar la reseña: ", error);
+    }
   }
 }

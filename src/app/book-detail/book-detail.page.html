@@ -140,6 +140,12 @@
 
                           <span class="font-bold text-[#1A1614] font-lato text-sm uppercase tracking-wider"> {{ $any(rev).userName }}</span>
 
+                          <button (click)="reportReview(rev.id)" class="text-gray-500 hover:text-red-600 transition-colors flex items-center">
+
+                            <ion-icon name="flag-outline" class="text-sm"></ion-icon>
+
+                          </button>
+
                           <div class="flex text-[#FFD700]">
 
                             <ion-icon name="star"></ion-icon>

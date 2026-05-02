@@ -496,7 +496,9 @@
       "pending": "Pendiente",
       "published": "Aprobado",
       "rejected": "Rechazado"
-    }
+    },
+    "REPORT_SUCCESS": "El reporte se ha realizado exitosamente",
+    "REPORT_REPORT": "Defina el motivo del reporte"
   },
   "NOTIFICATIONS": {
     "TITLE": "Notificaciones",
