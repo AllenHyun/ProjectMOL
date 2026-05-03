@@ -242,25 +242,26 @@ export class BookManagementPage implements OnInit {
     });
   }
 
-  toggleCategory(cat: string) {
-    const index = this.emptyBook.categories.indexOf(cat);
+  toggleCategory(cat: Category) {
+    const nameES = cat.names['es'];
+    const index = this.emptyBook.categories.indexOf(nameES);
     if (index > -1) {
       this.emptyBook.categories.splice(index, 1);
     } else {
-      this.emptyBook.categories.push(cat);
+      this.emptyBook.categories.push(nameES);
     }
   }
+
 
   get filteredTags(): Tag[] {
     if (!this.availableCategories || !this.emptyBook?.categories) {
       return [];
     }
-
     const selectedCatIds = this.availableCategories
-      .filter((cat: any) => this.emptyBook.categories.includes(cat.name))
-      .map((cat: any) => cat.id);
+      .filter((cat: Category) => this.emptyBook.categories.includes(cat.names['es']))
+      .map((cat: Category) => cat.id);
 
-    return this.availableTags.filter((tag: any) => selectedCatIds.includes(tag.categoryId));
+    return this.availableTags.filter((tag: Tag) => selectedCatIds.includes(tag.categoryId));
   }
 
   toggleTag(tagName: string) {
@@ -273,6 +274,15 @@ export class BookManagementPage implements OnInit {
     } else {
       this.emptyBook.tags.push(tagName);
     }
+  }
+
+  getCategoryDisplayName(cat: Category): string {
+    if (!cat || !cat.names){
+      return '';
+    }
+
+    const  currentLang = this.translate.currentLang || 'es';
+    return cat.names[currentLang] || cat.names['es'] || Object.values(cat.names)[0] || '';
   }
 
 }

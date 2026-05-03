@@ -16,7 +16,8 @@ import {addIcons} from "ionicons";
 import {star, starOutline, chevronDown, chevronUp} from "ionicons/icons";
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
+import {Category} from "../models/category";
 
 @Component({
   selector: 'app-explore',
@@ -28,6 +29,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 export class ExplorePage implements OnInit {
   private firestore = inject(Firestore);
   private activatedRoute = inject(ActivatedRoute);
+  private translate = inject(TranslateService);
 
   public books: any[] = [];
   public filteredBooks: any[] = [];
@@ -38,7 +40,7 @@ export class ExplorePage implements OnInit {
   public filters = {
     language: ['Español', 'Inglés', 'Francés'],
     level: ['ESO/Bachiller', 'Universidad', 'Posgrado'],
-    category: [] as string[],
+    category: [] as Category[],
     year: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018]
   };
 
@@ -54,9 +56,9 @@ export class ExplorePage implements OnInit {
   }
 
   ngOnInit() {
-    collectionData(collection(this.firestore, 'categories'))
+    collectionData(collection(this.firestore, 'categories'), { idField: 'id' })
       .subscribe(data => {
-        this.filters.category = data.map((c: any) => c.name);
+        this.filters.category = data as Category[];
       });
 
     this.activatedRoute.queryParams.subscribe(params => {
@@ -132,5 +134,14 @@ export class ExplorePage implements OnInit {
     }
 
     this.filteredBooks = results;
+  }
+
+  getCategoryDisplayName(cat: Category): string {
+    if (!cat || !cat.names){
+      return '';
+    }
+
+    const  currentLang = this.translate.currentLang || 'es';
+    return cat.names[currentLang] || cat.names['es'] || Object.values(cat.names)[0] || '';
   }
 }

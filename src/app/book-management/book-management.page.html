@@ -171,7 +171,11 @@
                     <div class="flex flex-wrap gap-2 p-3 border border-[#C5A059] bg-white min-h-[100px]">
 
                       @for (cat of availableCategories; track cat.id) {
-                        <button type="button" (click)="toggleCategory(cat.name)" [class]="emptyBook.categories.includes(cat.name) ? 'bg-[#2E473B] text-white border-[#2E473B]' : 'bg-gray-50 text-gray-400 border-gray-200'" class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all duration-200 hover:scale-105 active:scale-95">{{ cat.name }}</button>
+                        <button type="button" (click)="toggleCategory(cat)" [class]="emptyBook.categories.includes(cat.names['es']) ? 'bg-[#2E473B] text-white border-[#2E473B]' : 'bg-gray-50 text-gray-400 border-gray-200'" class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all duration-200 hover:scale-105">
+
+                          {{ getCategoryDisplayName(cat) }}
+
+                        </button>
                       }
 
                     </div>

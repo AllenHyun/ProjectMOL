@@ -72,14 +72,14 @@
 
             <div class="flex flex-col gap-2">
 
-              @for (cat of filters.category; track cat) {
-                <label class="flex items-center gap-3 text-sm font-lato cursor-pointer">
+              @for (catObj of filters.category; track catObj.id) {
+                <label class="flex items-center gap-3 text-sm text-black font-lato cursor-pointer">
 
-                  <input type="checkbox" (change)="toggleFilters('category', cat)" class="w-4 h-4 accent-black">
-                  {{ 'BOOK-M.CATEGORIES.' + cat | translate }}
+                  <input type="checkbox" (change)="toggleFilters('category', catObj.names['es'])" class="w-4 h-4 accent-black">
+
+                  {{ getCategoryDisplayName(catObj) }}
 
                 </label>
-
               }
             </div>
 

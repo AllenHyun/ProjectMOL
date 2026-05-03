@@ -8,6 +8,7 @@ import {addDoc, collection, collectionData, deleteDoc, doc, Firestore} from "@an
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import {AdminPanelComponent} from "../components/admin-panel/admin-panel.component";
+import {Translation} from "../services/translation";
 
 @Component({
   selector: 'app-taxonomy',
@@ -24,6 +25,8 @@ export class TaxonomyPage implements OnInit {
   public newCategoryName = '';
   public newTagName = '';
   public selectedCategoryIdForTag = '';
+
+  private translationService = inject(Translation);
 
   constructor() {
     addIcons({
@@ -47,18 +50,32 @@ export class TaxonomyPage implements OnInit {
     const defaults = ['Acción', 'Romance', 'Thriller', 'Educativo', 'Aventura', 'Ciencia Ficción'];
     const catRef = collection(this.firestore, 'categories');
     for (const name of defaults){
-      await addDoc(catRef, {name});
+      await addDoc(catRef, {
+        names: {
+          es: name,
+          en: name,
+          fr: name
+        }
+      });
     }
   }
 
   async addCategory(){
-    if (!this.newCategoryName.trim()){
-      return;
-    }
+    if (!this.newCategoryName.trim()) return;
+    const sourceText = this.newCategoryName.trim();
+    const targetLangs = ['en', 'fr'];
+    const names: Record<string, string> = { es: sourceText };
 
-    await addDoc(collection(this.firestore, 'categories'), {name: this.newCategoryName.trim()});
+    const translationPromises = targetLangs.map(async (lang) => {
+      const translated = await this.translationService.translateText(sourceText, lang);
+      names[lang] = translated;
+    });
+
+    await Promise.all(translationPromises);
+    await addDoc(collection(this.firestore, 'categories'), { names });
     this.newCategoryName = '';
   }
+
 
   async addTag(){
     if (!this.newTagName.trim() || !this.selectedCategoryIdForTag){
@@ -79,6 +96,9 @@ export class TaxonomyPage implements OnInit {
   }
 
   getCategoryName(id: string){
-    return this.categories.find(c => c.id === id)?.name || 'Sin categoría';
+    const cat = this.categories.find(c => c.id === id);
+    if (!cat) return 'Sin categoría';
+
+    return cat.names?.es || cat.names?.en || 'Sin nombre';
   }
 }
