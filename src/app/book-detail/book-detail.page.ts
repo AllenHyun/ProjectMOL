@@ -10,7 +10,7 @@ import {
   where,
   collectionData,
   addDoc,
-  updateDoc, setDoc, arrayUnion, arrayRemove, deleteDoc
+  updateDoc, setDoc, arrayUnion, arrayRemove, deleteDoc, docData
 } from '@angular/fire/firestore';
 import {AlertController, IonContent, IonIcon, IonModal} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -19,12 +19,14 @@ import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import { FormsModule } from '@angular/forms';
 import {Summary} from '../models/summary';
-import {Auth} from "@angular/fire/auth";
+import {Auth, authState} from "@angular/fire/auth";
 import { Review } from '../models/review';
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {Vote} from "../models/vote";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
+import {User} from "../models/user";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-book-detail',
@@ -40,6 +42,9 @@ export class BookDetailPage implements OnInit {
   private translate = inject(TranslateService);
   private zone = inject(NgZone);
   private http = inject(HttpClient);
+  protected user: User | null = null;
+
+  private userSub: Subscription | null = null;
 
   public book: any = null;
 
@@ -98,12 +103,31 @@ export class BookDetailPage implements OnInit {
   }
 
   ngOnInit() {
+    this.userSub = authState(this.auth).subscribe(authUser => {
+      if (authUser) {
+        const userDocRef = doc(this.firestore, `users/${authUser.uid}`);
+        docData(userDocRef).subscribe(data => {
+          this.user = data as User;
+        });
+      } else {
+        this.user = null;
+      }
+    });
+
     this.route.paramMap.subscribe(params => {
       const id = params.get('id')?.trim();
       if (id) {
         this.loadData(id);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.userSub?.unsubscribe();
+  }
+
+  navigateRegister(){
+    this.router.navigate(['/register']);
   }
 
   async loadData(id: string) {

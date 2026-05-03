@@ -22,9 +22,20 @@
 
               <div class="flex flex-wrap justify-end gap-4 mb-12">
 
-                <button (click)="openAddToListModal()" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.ADD_LIST'|translate}} </button>
-                <button (click)="showModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.WRITE_RESUME'|translate}} </button>
-                <button (click)="showReviewModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.WRITE_REVIEW'|translate}} </button>
+                @if (user?.role !== 'visitor') {
+                  <button (click)="openAddToListModal()" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.ADD_LIST'|translate}} </button>
+                  <button (click)="showModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.WRITE_RESUME'|translate}} </button>
+                  <button (click)="showReviewModal = true" class="px-3 py-2 border !border-solid border-[#C5A059] bg-white text-[#1A1614] text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-[#FDFBF7] transition-all"> {{'BOOK-D.WRITE_REVIEW'|translate}} </button>
+                } @else {
+                  <div class="bg-[#FDFBF7] p-3 border border-[#C5A059] text-[10px] font-bold uppercase tracking-widest text-[#1A1614]">
+
+                    {{ 'BOOK-D.VISITOR_MESSAGE' | translate }}
+                    <span (click)="navigateRegister()" class="text-[#C5A059] cursor-pointer underline ml-2">{{ 'HEADER.REGISTER' | translate }}</span>
+
+                  </div>
+                }
+
+
 
               </div>
 
@@ -53,26 +64,30 @@
 
                   </div>
 
-                  <div class="flex gap-3 ml-2 border-l border-[#C5A059]/20 pl-4">
-
-                    <button (click)="rateBook(5)" class="flex items-center justify-center text-green-700 hover:scale-110 transition-transform" title="Me gusta">
-
-                      <ion-icon name="thumbs-up" class="text-xl"></ion-icon>
-
-                    </button>
+                  @if (user?.role !== 'visitor') {
 
                     <div class="flex gap-3 ml-2 border-l border-[#C5A059]/20 pl-4">
 
-                      <button (click)="rateBook(1)" class="flex items-center justify-center text-red-700 hover:scale-110 transition-transform" title="No me gusta">
 
-                        <ion-icon name="thumbs-down" class="text-xl"></ion-icon>
+                      <button (click)="rateBook(5)" class="flex items-center justify-center text-green-700 hover:scale-110 transition-transform" title="Me gusta">
+
+                        <ion-icon name="thumbs-up" class="text-xl"></ion-icon>
 
                       </button>
 
+                      <div class="flex gap-3 ml-2 border-l border-[#C5A059]/20 pl-4">
+
+                        <button (click)="rateBook(1)" class="flex items-center justify-center text-red-700 hover:scale-110 transition-transform" title="No me gusta">
+
+                          <ion-icon name="thumbs-down" class="text-xl"></ion-icon>
+
+                        </button>
+
+                      </div>
+
                     </div>
 
-
-                  </div>
+                  }
 
                 </div>
 

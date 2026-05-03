@@ -211,7 +211,8 @@
       "MESSAGE": "Inicia sesión para poder valorar la obra",
       "CANCEL": "Cancelar",
       "LOGIN": "Login"
-    }
+    },
+    "VISITOR_MESSAGE": "Regístrate para añadir a listas o escribir"
   },
   "EXPLORE": {
     "FILTER_TITLE": "Filtrar",

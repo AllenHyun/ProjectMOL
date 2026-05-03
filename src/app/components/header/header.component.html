@@ -55,7 +55,7 @@
 
       <div class="flex items-center pl-6 border-l border-white/10 h-8">
 
-        @if (!user) {
+        @if (!user ||user?.role === 'visitor') {
           <button (click)="navigateRegister()" class="text-sm font-bold text-[#C5A059] uppercase tracking-widest hover:brightness-110 border-none bg-transparent">{{'HEADER.REGISTER' | translate}}</button>
 
         } @else {
