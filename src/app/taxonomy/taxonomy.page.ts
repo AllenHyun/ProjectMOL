@@ -49,29 +49,27 @@ export class TaxonomyPage implements OnInit {
   async seedDefaultCategories() {
     const defaults = ['Acción', 'Romance', 'Thriller', 'Educativo', 'Aventura', 'Ciencia Ficción'];
     const catRef = collection(this.firestore, 'categories');
-    for (const name of defaults){
-      await addDoc(catRef, {
-        names: {
-          es: name,
-          en: name,
-          fr: name
-        }
-      });
+
+    for (const name of defaults) {
+      const names: Record<string, string> = { es: name };
+      names['en'] = await this.translationService.translateText(name, 'en');
+      names['fr'] = await this.translationService.translateText(name, 'fr');
+
+      await addDoc(catRef, { names });
     }
   }
 
-  async addCategory(){
+  async addCategory() {
     if (!this.newCategoryName.trim()) return;
+
     const sourceText = this.newCategoryName.trim();
-    const targetLangs = ['en', 'fr'];
     const names: Record<string, string> = { es: sourceText };
 
-    const translationPromises = targetLangs.map(async (lang) => {
-      const translated = await this.translationService.translateText(sourceText, lang);
-      names[lang] = translated;
+    const targetLangs = ['en', 'fr'];
+    const promises = targetLangs.map(async (lang) => {
+      names[lang] = await this.translationService.translateText(sourceText, lang);
     });
-
-    await Promise.all(translationPromises);
+    await Promise.all(promises);
     await addDoc(collection(this.firestore, 'categories'), { names });
     this.newCategoryName = '';
   }

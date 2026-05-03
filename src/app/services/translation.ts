@@ -8,21 +8,16 @@ import {firstValueFrom} from "rxjs";
 })
 export class Translation {
   private http = inject(HttpClient);
-  private apiKey = environment.googleBookKey;
-  private url = 'https://translation.googleapis.com/language/translate/v2';
+  private url = 'https://lingva.ml/api/v1';
 
   async translateText(text: string, targetLang: string): Promise<string> {
-    const params = {
-      q: text,
-      target: targetLang,
-      key: this.apiKey
-    };
+    const url = `${this.url}/es/${targetLang}/${encodeURIComponent(text)}`;
 
     try {
-      const res: any = await firstValueFrom(this.http.get(this.url, { params }));
-      return res.data.translations[0].translatedText;
+      const res: any = await firstValueFrom(this.http.get(url));
+      return res.translation;
     } catch (error) {
-      console.error(`Error traduciendo a ${targetLang}:`, error);
+      console.error(`Error con Lingva (${targetLang}):`, error);
       return text;
     }
   }
