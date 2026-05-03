@@ -38,7 +38,7 @@ export class ExplorePage implements OnInit {
   public filters = {
     language: ['Español', 'Inglés', 'Francés'],
     level: ['ESO/Bachiller', 'Universidad', 'Posgrado'],
-    category: ['Acción', 'Romance', 'Thriller', 'Educativo', 'Aventura', 'Ciencia Ficción'],
+    category: [] as string[],
     year: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018]
   };
 
@@ -54,6 +54,11 @@ export class ExplorePage implements OnInit {
   }
 
   ngOnInit() {
+    collectionData(collection(this.firestore, 'categories'))
+      .subscribe(data => {
+        this.filters.category = data.map((c: any) => c.name);
+      });
+
     this.activatedRoute.queryParams.subscribe(params => {
       this.searchTerm = params['q'] || "";
       this.loadBooks();

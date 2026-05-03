@@ -32,6 +32,8 @@ import {RouterLink} from "@angular/router";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
+import {Category} from "../models/category";
+import {Tag} from "../models/tag";
 
 @Component({
   selector: 'app-book-management',
@@ -50,7 +52,8 @@ export class BookManagementPage implements OnInit {
   public emptyBook : any = this.initBook();
   public searchTerms: string = '';
 
-  public availableCategories = ['Acción', 'Romance', 'Thriller', 'Educativo', 'Aventura', 'Ciencia Ficción'];
+  public availableCategories: Category[] = [];
+  public availableTags: Tag[] = [];
 
   constructor() {
     addIcons({
@@ -68,6 +71,12 @@ export class BookManagementPage implements OnInit {
     const booksCollection = collection(this.firestore, 'books');
     collectionData(booksCollection, {idField: 'id'}).subscribe((data) => {
       this.book = data as Book[];
+    });
+    collectionData(collection(this.firestore, 'categories'), {idField: 'id'}).subscribe((data) => {
+      this.availableCategories = data as Category[];
+    });
+    collectionData(collection(this.firestore, 'tags'), {idField: 'id'}).subscribe((data) => {
+      this.availableTags = data as Tag[];
     });
   }
 
@@ -241,4 +250,29 @@ export class BookManagementPage implements OnInit {
       this.emptyBook.categories.push(cat);
     }
   }
+
+  get filteredTags(): Tag[] {
+    if (!this.availableCategories || !this.emptyBook?.categories) {
+      return [];
+    }
+
+    const selectedCatIds = this.availableCategories
+      .filter((cat: any) => this.emptyBook.categories.includes(cat.name))
+      .map((cat: any) => cat.id);
+
+    return this.availableTags.filter((tag: any) => selectedCatIds.includes(tag.categoryId));
+  }
+
+  toggleTag(tagName: string) {
+    if (!Array.isArray(this.emptyBook.tags)) {
+      this.emptyBook.tags = [];
+    }
+    const index = this.emptyBook.tags.indexOf(tagName);
+    if (index > -1) {
+      this.emptyBook.tags.splice(index, 1);
+    } else {
+      this.emptyBook.tags.push(tagName);
+    }
+  }
+
 }

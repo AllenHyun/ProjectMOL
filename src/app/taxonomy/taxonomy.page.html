@@ -1,0 +1,93 @@
+<ion-content>
+
+  <div class="flex flex-col min-h-screen">
+
+    <app-header></app-header>
+
+    <div class="flex flex-col lg:flex-row flex-grow">
+
+      <aside class="w-full lg:w-64 border-r border-[#C5A059]">
+
+        <app-admin-panel></app-admin-panel>
+
+      </aside>
+
+      <main class="flex-grow p-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+
+        <section class="bg-white p-6 border border-gray-500 shadow-sm">
+
+          <h2 class="text-2xl font-['Cormorant_Garamond'] uppercase mb-6 tracking-widest text-[#1A1614]">Categorías Principales</h2>
+
+          <div class="flex gap-2 mb-6">
+
+            <input [(ngModel)]="newCategoryName" placeholder="Nueva categoría..." class="flex-grow p-2 border border-[#C5A059] outline-none text-sm text-white">
+            <button (click)="addCategory()" class="bg-[#2E473B] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest">Añadir</button>
+
+          </div>
+
+          <ul class="space-y-2">
+
+            @for (cat of categories; track cat.id) {
+              <li class="flex justify-between items-center p-3 bg-gray-50 border border-gray-100 transition-all">
+
+                <span class="text-xs font-bold text-gray-700 uppercase">{{cat.name}}</span>
+                <ion-icon (click)="deleteItem('categories', cat.id)" name="trash-outline" class="text-red-600 cursor-pointer hover:scale-110"></ion-icon>
+
+              </li>
+            }
+          </ul>
+
+        </section>
+
+        <section class="bg-white p-6 border border-gray-200 shadow-sm">
+
+          <h2 class="text-2xl font-['Cormorant_Garamond'] uppercase mb-6 tracking-widest text-[#1A1614]">Asignaturas / Etiquetas</h2>
+
+          <div class="flex flex-col gap-2 mb-6">
+
+            <select [(ngModel)]="selectedCategoryIdForTag" class="p-2 border border-[#C5A059] text-xs outline-none bg-white text-black">
+
+              <option value="">Vincular a Categoría...</option>
+              @for (cat of categories; track cat.id) {
+                <option [value]="cat.id">{{cat.name}}</option>
+              }
+            </select>
+
+            <div class="flex gap-2">
+
+              <input [(ngModel)]="newTagName" placeholder="Ej: Biología Celular..." class="flex-grow p-2 border border-[#C5A059] outline-none text-sm text-white">
+              <button (click)="addTag()" class="bg-[#2E473B] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest">Añadir</button>
+
+            </div>
+
+          </div>
+
+          <ul class="space-y-2">
+
+            @for (tag of tags; track tag.id) {
+              <li class="flex justify-between items-center p-3 border-l-4 border-[#C5A059] bg-[#FDFBF7]">
+
+                <div class="flex flex-col">
+
+                  <span class="text-sm font-bold text-black font-lato">{{tag.name}}</span>
+                  <span class="text-[9px] uppercase font-bold text-gray-400">Padre: {{getCategoryName(tag.categoryId)}}</span>
+
+                </div>
+
+                <ion-icon (click)="deleteItem('tags', tag.id)" name="trash-outline" class="text-red-600 cursor-pointer hover:scale-110"></ion-icon>
+
+              </li>
+            }
+          </ul>
+
+        </section>
+
+      </main>
+
+    </div>
+
+    <app-footer></app-footer>
+
+  </div>
+
+</ion-content>

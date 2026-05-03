@@ -27,7 +27,7 @@ export const routes: Routes = [
       },
       {
         path: 'taxonomia',
-        redirectTo: 'gestion-libros'
+        loadComponent: () => import('./taxonomy/taxonomy.page').then( m => m.TaxonomyPage)
       },
       {
         path: 'takedowns',
