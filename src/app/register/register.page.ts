@@ -21,7 +21,7 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider, sendEmailVerification,
   signInWithEmailAndPassword,
-  signInWithPopup, signOut, reload
+  signInWithPopup, signOut, reload, signInAnonymously
 } from "@angular/fire/auth";
 import {addIcons} from "ionicons";
 import {logoGoogle} from "ionicons/icons";
@@ -127,6 +127,31 @@ export class RegisterPage implements OnInit {
 
   async countCreated(){
     this.router.navigate(['/login']);
+  }
+
+  async onContinueAsVisitor(){
+    try {
+      const userCredential = await signInAnonymously(this.auth);
+      const user = userCredential.user;
+
+      const userProfile : User = {
+        uid: user.uid,
+        email: '',
+        username: 'Invitado',
+        role: 'visitor',
+        interests: [],
+        level: this.selectLevel,
+        photoUrl: 'assets/icon/default-avatar.png',
+        createdAt: new Date().toISOString(),
+        lastLogin: new Date().toISOString()
+      };
+
+      await setDoc(doc(this.firestore, 'users', user.uid), userProfile);
+      this.router.navigate(['/home']);
+    } catch (error: any) {
+      const msg = this.errorService.getErrorMessage(error.code);
+      alert(msg);
+    }
   }
 }
 

@@ -8,4 +8,5 @@ export interface User {
   photoUrl: string;
   createdAt: string;
   bio?: string;
+  lastLogin?: string;
 }

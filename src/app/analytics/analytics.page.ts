@@ -146,7 +146,7 @@ export class AnalyticsPage implements OnInit {
   }
 
   calculateUserDistribution(users: any[]) {
-    const roles = { admin: 0, reader: 0, editor: 0 };
+    const roles = { admin: 0, reader: 0, visitor: 0 };
     users.forEach(u => {
       const r = (u.role || 'reader').toLowerCase();
       if (roles.hasOwnProperty(r)) roles[r as keyof typeof roles]++;
@@ -159,10 +159,10 @@ export class AnalyticsPage implements OnInit {
     this.distChart = new Chart(this.distChartCanvas.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: ['Admin', 'Lectores'],
+        labels: ['Admin', 'Lectores', 'Invitados'],
         datasets: [{
-          data: [roles.admin, roles.reader],
-          backgroundColor: ['#2E473B', '#C5A059']
+          data: [roles.admin, roles.reader, roles.visitor],
+          backgroundColor: ['#2E473B', '#C5A059', '#A0AEC0']
         }]
       }
     });
