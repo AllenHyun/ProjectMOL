@@ -487,6 +487,7 @@ export class BookDetailPage implements OnInit {
   }
 
   async showLoginAlert() {
+
     const alert = await this.alertCtrl.create({
       header: this.translate.instant('BOOK-D.SAVE_REVIEW.HEADER'),
       message: this.translate.instant('BOOK-D.SAVE_REVIEW.MESSAGE'),
