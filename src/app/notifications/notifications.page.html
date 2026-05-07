@@ -66,7 +66,7 @@
                 {{ noti.createdAt | date:'dd MMMM, yyyy · HH:mm' }}
               </span>
 
-              @if (noti.refId) {
+              @if (noti.refId && canReadMore(noti.title)) {
                 <button [routerLink]="['/summary-detail', noti.refId]" class="flex items-center gap-1 text-[10px] font-bold text-[#C5A059] uppercase tracking-widest hover:underline">
                   {{ 'SUMMARIES.READ_MORE' | translate }}
                   <ion-icon name="chevron-forward-outline"></ion-icon>

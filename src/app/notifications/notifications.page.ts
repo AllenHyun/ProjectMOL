@@ -135,4 +135,9 @@ export class NotificationsPage implements OnInit, OnDestroy {
   get unreadCount(): number {
     return this.notifications.filter(n => !n.read).length;
   }
+
+  canReadMore(title: string): boolean {
+    const t = title.toLowerCase();
+    return t.includes('aprobado');
+  }
 }

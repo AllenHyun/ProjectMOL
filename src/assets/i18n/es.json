@@ -482,6 +482,7 @@
     "TITLE": "Moderación de Contenido",
     "SENDING": "Su resumen ha sido enviado a moderación.",
     "EMPTY": "No hay resúmenes pendientes de revisión",
+    "ACTION_COMPLETED": "Acción realizada con éxito",
     "TABLE": {
       "TYPE": "Tipo",
       "TITLE": "Título Libro",
@@ -510,6 +511,10 @@
     "MSG_REJECTED": "Tu resumen del libro '{{book}}' ha sido rechazado. Motivo: {{reason}}",
     "MARK_READ": "Marcar todo como leído",
     "UNREAD_LABEL": "Notificaciones sin leer",
-    "CONFIRM_DELETE": "¿Estás seguro de que quieres eliminar esta notificación?"
+    "CONFIRM_DELETE": "¿Estás seguro de que quieres eliminar esta notificación?",
+    "REPORT_RESOLVED_TITLE": "Contenido retirado",
+    "REPORT_RESOLVED_MSG": "Tu obra '{{work}}' ha sido retirada tras ser revisada por nuestro equipo de moderación.",
+    "REPORT_DISMISSED_TITLE": "Reporte revisado",
+    "REPORT_DISMISSED_MSG": "Hemos revisado el reporte contra tu obra '{{work}}' y hemos determinado que no infringe nuestras normas. Tu contenido sigue visible."
   }
 }

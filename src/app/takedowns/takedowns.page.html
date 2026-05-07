@@ -21,31 +21,23 @@
           <span class="font-bold text-gray-600">Filtros:</span>
 
           <label class="flex items-center gap-2 cursor-pointer transition-all text-[#C5A059] font-bold">
-
             <input type="radio" name="filter" (change)="setFilter('all')" [checked]="(filter$ | async) === 'all'" class="accent-[#C5A059]">
             <span>Todos</span>
-
           </label>
 
           <label class="flex items-center gap-2 cursor-pointer transition-all text-[#C5A059] font-bold">
-
             <input type="radio" name="filter" (change)="setFilter('open')" [checked]="(filter$ | async) === 'open'" class="accent-[#C5A059]">
             <span>Pendientes</span>
-
           </label>
 
           <label class="flex items-center gap-2 cursor-pointer transition-all text-[#C5A059] font-bold">
-
             <input type="radio" name="filter" (change)="setFilter('resolved')" [checked]="(filter$ | async) === 'resolved'" class="accent-[#C5A059]">
             <span>Resueltos</span>
-
           </label>
 
           <label class="flex items-center gap-2 cursor-pointer transition-all text-[#C5A059] font-bold">
-
             <input type="radio" name="filter" (change)="setFilter('dismissed')" [checked]="(filter$ | async) === 'dismissed'" class="accent-[#C5A059]">
             <span>Desestimados</span>
-
           </label>
 
         </div>
@@ -55,17 +47,14 @@
           <table class="w-full text-left border-collapse">
 
             <thead>
-
             <tr class="border-b-2 border-gray-800 text-[12px] uppercase tracking-wider text-gray-700">
-
               <th class="py-3 px-2">ID</th>
               <th class="py-3 px-2">Obra Reclamada</th>
+              <th class="py-3 px-2">Motivo</th>
               <th class="py-3 px-2">Reclamante</th>
               <th class="py-3 px-2">Estado</th>
               <th class="py-3 px-2 text-center">Acciones</th>
-
             </tr>
-
             </thead>
 
             <tbody class="text-sm">
@@ -73,44 +62,40 @@
               @for (report of reports; track report.id) {
                 <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors">
 
-                  <td class="py-4 px-2 font-mono text-xs">{{ report.displayId }}</td>
+                  <td class="py-4 px-2 font-mono text-xs text-black">{{ report.displayId }}</td>
                   <td class="py-4 px-2 italic text-gray-700">{{ report.type === 'summary' ? 'Resumen: ' : 'Reseña: ' }} {{ report.workTitle }}</td>
+                  <td class="py-4 px-2 text-red-600 font-medium italic">"{{report.reason}}"</td>
                   <td class="py-4 px-2 text-black">{{ report.claimantName }}</td>
                   <td class="py-4 px-2">
-
                     <span class="px-2 py-1 rounded-full text-[10px] uppercase font-bold" [ngClass]="{
                         'bg-orange-100 text-orange-600': report.status === 'open',
                         'bg-green-100 text-green-600': report.status === 'resolved',
                         'bg-gray-100 text-gray-600': report.status === 'dismissed'
                       }">{{ report.status === 'open' ? 'Pendiente' : report.status === 'resolved' ? 'Resuelto' : 'Desestimado' }}
                     </span>
-
                   </td>
 
                   <td class="py-4 px-2">
-
                     <div class="flex justify-center gap-3 text-xl">
 
+                      <ion-icon (click)="reviewContent(report)" name="eye-outline" class="cursor-pointer text-blue-600 hover:scale-125 transition-transform" title="Revisar contenido"></ion-icon>
+
                       @if (report.status === 'open') {
-                        <ion-icon (click)="updateStatus(report.id, 'resolved')" name="checkmark-outline" class="cursor-pointer text-green-600 hover:scale-125 transition-transform" title="Resolver"></ion-icon>
-                        <ion-icon (click)="updateStatus(report.id, 'dismissed')" name="close-outline" class="cursor-pointer text-orange-500 hover:scale-125 transition-transform" title="Desestimar"></ion-icon>
+                        <ion-icon (click)="updateStatus(report, 'resolved')" name="checkmark-outline" class="cursor-pointer text-green-600 hover:scale-125 transition-transform" title="Resolver"></ion-icon>
+                        <ion-icon (click)="updateStatus(report, 'dismissed')" name="close-outline" class="cursor-pointer text-orange-500 hover:scale-125 transition-transform" title="Desestimar"></ion-icon>
                       }
 
                       @if (report.status !== 'open') {
                         <ion-icon (click)="deleteReport(report.id)" name="trash-outline" class="cursor-pointer text-red-600 hover:scale-125 transition-transform" title="Eliminar reporte"></ion-icon>
                       }
-
                     </div>
-
                   </td>
 
                 </tr>
 
               } @empty {
                 <tr>
-
-                  <td colspan="5" class="py-20 text-center text-gray-400 italic">No hay reportes que coincidan con este filtro.</td>
-
+                  <td colspan="6" class="py-20 text-center text-gray-400 italic">No hay reportes que coincidan con este filtro.</td>
                 </tr>
               }
 
@@ -121,13 +106,9 @@
         </div>
 
         <div class="mt-20 flex justify-end items-center gap-4 text-[#2E473B] font-bold">
-
           <ion-icon name="chevron-back-outline" class="cursor-pointer"></ion-icon>
-
           <span class="text-sm tracking-widest uppercase">Mostrando {{ reports.length }} de {{ reports.length }}</span>
-
           <ion-icon name="chevron-forward-outline" class="cursor-pointer"></ion-icon>
-
         </div>
 
       </main>
@@ -137,5 +118,29 @@
     <app-footer></app-footer>
 
   </div>
+
+  <ion-modal [isOpen]="isPreviewOpen" (didDismiss)="isPreviewOpen = false">
+    <ng-template>
+      <div class="p-8 bg-white h-full flex flex-col gap-6 overflow-y-auto">
+        <div class="flex justify-between items-center border-b border-[#C5A059]/20 pb-4">
+          <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614]">Revisión de Contenido</h2>
+          <ion-icon name="close-outline" (click)="isPreviewOpen = false" class="text-3xl cursor-pointer"></ion-icon>
+        </div>
+
+        <div class="space-y-4 text-black">
+          <p class="text-[10px] uppercase tracking-widest font-bold text-gray-400">Obra: <span class="text-black">{{selectedReportContent?.title}}</span></p>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-gray-400">Autor de la obra: <span class="text-black">{{selectedReportContent?.author}}</span></p>
+
+          <div class="p-6 bg-[#FDFBF7] border-l-4 border-[#C5A059] italic font-lato text-sm leading-relaxed text-black">
+            "{{selectedReportContent?.text}}"
+          </div>
+        </div>
+
+        <button (click)="isPreviewOpen = false" class="mt-auto w-full py-3 bg-[#2E473B] text-white font-bold uppercase text-[10px] tracking-widest">
+          Cerrar Vista Previa
+        </button>
+      </div>
+    </ng-template>
+  </ion-modal>
 
 </ion-content>

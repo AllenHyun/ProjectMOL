@@ -14,11 +14,16 @@
 
 body{
   background-color: #F4F1EA !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
 }
 
 
 ion-content {
   --background: #F4F1EA;
+  --user-select: text;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 @theme {

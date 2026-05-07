@@ -134,23 +134,22 @@ export class SummaryDetailPage implements OnInit {
     window.speechSynthesis.speak(utterance);
   }
 
-  async reportSummary(){
-    if (!this.summary){
-      return;
-    }
+  async reportSummary() {
+    if (!this.summary) return;
 
     const reason = prompt(this.translate.instant('MODERATION.REPORT_REPORT'));
-    if (!reason){
-      return;
-    }
+    if (!reason) return;
 
     try {
+      const user = this.auth.currentUser;
       const newReport = {
-        reportedId: this.auth.currentUser?.uid || 'Anónimo',
+        reporterId: user ? user.uid : 'Anónimo',
+        reporterName: user ? (user.displayName || user.email) : 'Anónimo',
         type: 'summary',
         refPath: `summaries/${this.summary.id}`,
         reason: reason,
         status: 'open',
+        workTitle: this.book?.title || 'Resumen sin título',
         createdAt: new Date().toISOString()
       };
 
