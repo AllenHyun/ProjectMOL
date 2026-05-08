@@ -18,7 +18,7 @@
   <nav [class.hidden]="isCollapsed" class="flex flex-col lg:!flex lg:pt-0 gap-6 p-6 lg:gap-10 transition-all duration-500">
 
     @for (option of optionsAdmin; track option.name){
-      <a [routerLink]="option.path" (click)="isCollapsed = true" routerLinkActive="text-[#6FAB72] font-semibold lg:border-l-2 border-[#6FAB72] lg:pl-4" class="text-base lg:text-lg hover:text-[#6FAB72] transition-all whitespace-nowrap">{{ option.name }}</a>
+      <a [routerLink]="option.path" (click)="isCollapsed = true" routerLinkActive="text-[#6FAB72] font-semibold lg:border-l-2 border-[#6FAB72] lg:pl-4" class="text-base lg:text-lg hover:text-[#6FAB72] transition-all whitespace-nowrap">{{ option.name | translate }}</a>
     }
   </nav>
 
