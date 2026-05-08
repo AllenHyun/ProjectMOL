@@ -53,13 +53,35 @@
               @if (openFilter === filterKey) {
                 <div class="absolute top-[100%] left-0 z-[60] w-full bg-white border border-[#C5A059] shadow-xl mt-1">
 
-                  @for (opt of filters[filterKey === 'language' ? 'languages' : filterKey === 'level' ? 'levels' : filterKey === 'category' ? 'categories' : 'years']; track opt) {
-                    <div (click)="toggleFilter(filterKey, opt)" class="p-3 text-[11px] text-[#1A1614] hover:bg-[#FDFBF7] flex justify-between items-center" [class.bg-gray-100]="selectedFilters[filterKey].includes(opt)">
+                  @if (filterKey === 'category'){
+                    @for (catObj of filters.categories; track  catObj.id){
+                      <div (click)="toggleFilter('category', catObj.names['es'])" class="p-3 text-[11px] text-[#1A1614] hover:bg-[#FDFBF7] flex justify-between items-center" [class.bg-gray-100]="selectedFilters.category.includes(catObj.names['es'])">
 
-                      {{opt}}
-                      <ion-icon *ngIf="selectedFilters[filterKey].includes(opt)" name="close-outline" class="text-[#C5A059]"></ion-icon>
+                        {{getCategoryDisplayName(catObj)}}
+                        <ion-icon *ngIf="selectedFilters.category.includes(catObj.names['es'])" name="close-outline" class="text-[#C5A059]"></ion-icon>
 
-                    </div>
+                      </div>
+                    }
+                  } @else {
+
+                    @for (opt of filters[filterKey === 'language' ? 'languages' : filterKey === 'level' ? 'levels' : filterKey === 'category' ? 'categories' : 'years']; track opt) {
+                      <div (click)="toggleFilter(filterKey, opt)" class="p-3 text-[11px] text-[#1A1614] hover:bg-[#FDFBF7] flex justify-between items-center" [class.bg-gray-100]="selectedFilters[filterKey].includes(opt)">
+
+                        <span>
+                          @if (filterKey === 'language') {
+                            {{ 'EXPLORE.LANGS.' + opt | translate }}
+                          } @else if (filterKey === 'level') {
+                            {{ 'EXPLORE.LEVELS.' + opt | translate }}
+                          } @else {
+                            {{ opt }}
+                          }
+                        </span>
+
+                        <ion-icon *ngIf="selectedFilters[filterKey].includes(opt)" name="close-outline" class="text-[#C5A059]"></ion-icon>
+
+                      </div>
+                    }
+
                   }
 
                 </div>

@@ -8,7 +8,8 @@ import {searchOutline, thumbsUpOutline, thumbsDownOutline, personOutline, star, 
 import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import {RouterLink} from "@angular/router";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
+import {Category} from "../models/category";
 
 @Component({
   selector: 'app-review',
@@ -19,6 +20,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 })
 export class ReviewPage implements OnInit {
   private firestore = inject(Firestore);
+  private translate = inject(TranslateService);
 
   public searchTerms: string = '';
   public allBooks: any[] = [];
@@ -30,7 +32,7 @@ export class ReviewPage implements OnInit {
   public filters = {
     languages: ['Español', 'Inglés', 'Francés'],
     levels: ['ESO/Bachiller', 'Universidad', 'Posgrado'],
-    categories: ['Acción', 'Romance', 'Thriller', 'Educativo', 'Aventura', 'Ciencia Ficción'],
+    categories: [] as Category[],
     years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018]
   };
 
@@ -50,6 +52,11 @@ export class ReviewPage implements OnInit {
   }
 
   ngOnInit() {
+    collectionData(collection(this.firestore, 'categories'), {idField: 'id'})
+      .subscribe(data => {
+        this.filters.categories = data as Category[];
+      });
+
     this.loadData();
   }
 
@@ -140,7 +147,7 @@ export class ReviewPage implements OnInit {
 
       const langMatch = this.selectedFilters.language.length === 0 || this.selectedFilters.language.includes(rev.bookLanguage);
       const yearMatch = this.selectedFilters.year.length === 0 || this.selectedFilters.year.includes(Number(rev.bookYear));
-      const catMatch = this.selectedFilters.category.length === 0 || rev.bookCategory.some((c: string) => this.selectedFilters.category.includes(c));
+      const catMatch = this.selectedFilters.category.length === 0 || (rev.bookCategory && rev.bookCategory.some((c: string) => this.selectedFilters.category.includes(c)));
       const levelMatch = this.selectedFilters.level.length === 0 || this.selectedFilters.level.includes(rev.bookLevel);
 
       return matchesSearch && langMatch && yearMatch && catMatch && levelMatch;
@@ -151,4 +158,31 @@ export class ReviewPage implements OnInit {
     this.openFilter = this.openFilter === filterName ? null : filterName;
   }
 
+  getCategoryDisplayName(cat: Category): string {
+    if (!cat || !cat.names){
+      return '';
+    }
+    const currentLang = this.translate.currentLang || 'es';
+    return cat.names[currentLang] || cat.names['es'] || Object.values(cat.names)[0] || '';
+  }
+
+  getFilterSelectedLabel(group: string): string {
+    const selected = this.selectedFilters[group];
+    if (selected.length === 0) {
+      return this.translate.instant('COMMON.ALL');
+    }
+
+    return selected.map((val: any) => {
+      if (group === 'language') {
+        return this.translate.instant('EXPLORE.LANGS.' + val);
+      }
+      if (group === 'level') {
+        return this.translate.instant('EXPLORE.LEVELS.' + val);
+      }
+      if (group === 'category') {
+        return val;
+      }
+      return val;
+    }).join(', ');
+  }
 }

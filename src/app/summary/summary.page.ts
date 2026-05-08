@@ -19,6 +19,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {RouterLink} from "@angular/router";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
+import {Category} from "../models/category";
 
 @Component({
   selector: 'app-summary',
@@ -40,9 +41,9 @@ export class SummaryPage implements OnInit {
   public filteredSummaries: any[] = [];
 
   public filters = {
-    languages: ['Spanish', 'English', 'French'],
-    levels: ['ESO', 'Uni', 'Pos'],
-    categories: ['Action', 'Romance', 'Thriller', 'Educational', 'Adventure', 'SciFi'],
+    languages: ['Español', 'Inglés', 'Francés'],
+    levels: ['ESO/Bachiller', 'Universidad', 'Posgrado'],
+    categories: [] as Category[],
     years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018]
   };
 
@@ -79,6 +80,11 @@ export class SummaryPage implements OnInit {
   }
 
   ngOnInit() {
+    collectionData(collection(this.firestore, 'categories'), {idField: 'id'})
+      .subscribe(data => {
+        this.filters.categories = data as Category[];
+      });
+
     this.loadData();
   }
 
@@ -169,7 +175,7 @@ export class SummaryPage implements OnInit {
 
       const langMatch = this.selectedFilters.language.length === 0 || this.selectedFilters.language.includes(sum.bookLanguage);
       const yearMatch = this.selectedFilters.year.length === 0 || this.selectedFilters.year.includes(Number(sum.bookYear));
-      const catMatch = this.selectedFilters.category.length === 0 || sum.bookCategory.some((c: string) => this.selectedFilters.category.includes(c));
+      const catMatch = this.selectedFilters.category.length === 0 || (sum.bookCategory && sum.bookCategory.some((c: string) => this.selectedFilters.category.includes(c)));
       const levelMatch = this.selectedFilters.level.length === 0 || this.selectedFilters.level.includes(sum.bookLevel);
 
       return matchesSearch && langMatch && yearMatch && catMatch && levelMatch;
@@ -227,5 +233,33 @@ export class SummaryPage implements OnInit {
     utterance.lang = this.langMap[langName] || 'es-ES';
     utterance.rate = 0.9;
     window.speechSynthesis.speak(utterance);
+  }
+
+  getCategoryDisplayName(cat: Category): string {
+    if (!cat || !cat.names){
+      return '';
+    }
+    const currentLang = this.translate.currentLang || 'es';
+    return cat.names[currentLang] || cat.names['es'] || Object.values(cat.names)[0] || '';
+  }
+
+  getFilterSelectedLabel(group: string): string {
+    const selected = this.selectedFilters[group];
+    if (selected.length === 0) {
+      return this.translate.instant('COMMON.ALL');
+    }
+
+    return selected.map((val: any) => {
+      if (group === 'language') {
+        return this.translate.instant('EXPLORE.LANGS.' + val);
+      }
+      if (group === 'level') {
+        return this.translate.instant('EXPLORE.LEVELS.' + val);
+      }
+      if (group === 'category') {
+        return val;
+      }
+      return val;
+    }).join(', ');
   }
 }
