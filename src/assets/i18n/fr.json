@@ -86,7 +86,7 @@
   "COMMON": {
     "CANCEL": "Annuler",
     "PUBLISH": "Publier",
-    "CONFIRM": "Confirmer l'enregistrement",
+    "CONFIRM": "Confirmer",
     "SELECT": "Sélectionner le livre",
     "SELECTED": "Choisissez un livre dans la bibliothèque...",
     "DELETE": "Supprimer",
@@ -211,7 +211,8 @@
       "MESSAGE": "Veuillez vous connecter pour noter cette œuvre",
       "CANCEL": "Annuler",
       "LOGIN": "Connexion"
-    }
+    },
+    "VISITOR_MESSAGE": "Inscrivez-vous pour ajouter des listes ou écrire"
   },
   "EXPLORE": {
     "FILTER_TITLE": "Filtrer",
@@ -433,7 +434,7 @@
     "RECOMMEND": "Recommandations",
     "REVIEW": "Critiques à la une",
     "EXAMS": "Pour les examens",
-    "EMPTY_NEW": "Pas de nouveautés cette semaine, pero de nouveaux titres arrivent bientôt.",
+    "EMPTY_NEW": "Pas de nouveautés cette semaine, mais de nouveaux titres arrivent bientôt.",
     "EXPLORE_CATALOG": "Continuer à explorer notre catalogue"
   },
   "SUMMARY-D": {
@@ -453,5 +454,67 @@
     "BACK": "Retour au livre",
     "LOAD": "Ouverture du livre requis...",
     "NOT_FOUND": "Résumé non trouvé ou supprimé"
+  },
+  "ADMIN-U": {
+    "TITLE": "Gestion des utilisateurs",
+    "TABLE": {
+      "USER": "Utilisateur",
+      "EMAIL": "E-mail",
+      "LEVEL": "Niveau d'études",
+      "ROLE": "Rôle",
+      "STATUS": "Statut",
+      "ACTIONS": "Actions"
+    },
+    "STATUS": {
+      "active": "Actif",
+      "suspended": "Suspendu"
+    },
+    "ROLE": {
+      "admin": "Administrateur",
+      "reader": "Lecteur"
+    },
+    "EMPTY": "Aucun utilisateur trouvé.",
+    "CONFIRM_BAN": "Êtes-vous sûr de vouloir suspendre cet utilisateur ?",
+    "CONFIRM_UNBAN": "Voulez-vous réactiver le compte de cet utilisateur ?",
+    "CONFIRM_DELETE": "Cette action supprimera définitivement l'utilisateur, voulez-vous continuer ?"
+  },
+  "MODERATION": {
+    "TITLE": "Modération de contenu",
+    "SENDING": "Votre résumé a été envoyé pour modération.",
+    "EMPTY": "Aucun résumé en attente de révision",
+    "ACTION_COMPLETED": "Action réalisée avec succès",
+    "TABLE": {
+      "TYPE": "Type",
+      "TITLE": "Titre du livre",
+      "USER": "Utilisateur",
+      "DATE": "Date",
+      "STATUS": "Statut",
+      "ACTIONS": "Actions"
+    },
+    "TYPE_SUMMARY": "Résumé",
+    "CONFIRM_APPROVE": "Êtes-vous sûr de vouloir approuver ce résumé ?",
+    "CONFIRM_REJECT": "Êtes-vous sûr de vouloir rejeter ce résumé ?",
+    "STATUS": {
+      "pending": "En attente",
+      "published": "Approuvé",
+      "rejected": "Rejeté"
+    },
+    "REPORT_SUCCESS": "Le signalement a été effectué avec succès",
+    "REPORT_REPORT": "Définissez le motif du signalement"
+  },
+  "NOTIFICATIONS": {
+    "TITLE": "Notifications",
+    "EMPTY": "Vous n'avez aucune nouvelle notification",
+    "SUMMARY_APPROVED": "Résumé approuvé !",
+    "SUMMARY_REJECTED": "Résumé rejeté",
+    "MSG_APPROVED": "Votre résumé du livre '{{book}}' a été approuvé et est maintenant public.",
+    "MSG_REJECTED": "Votre résumé du livre '{{book}}' a été rejeté. Motif : {{reason}}",
+    "MARK_READ": "Tout marquer comme lu",
+    "UNREAD_LABEL": "Notifications non lues",
+    "CONFIRM_DELETE": "Êtes-vous sûr de vouloir supprimer cette notification ?",
+    "REPORT_RESOLVED_TITLE": "Contenu retiré",
+    "REPORT_RESOLVED_MSG": "Votre œuvre '{{work}}' a été retirée après examen par notre équipe de modération.",
+    "REPORT_DISMISSED_TITLE": "Signalement révisé",
+    "REPORT_DISMISSED_MSG": "Nous avons examiné le signalement contre votre œuvre '{{work}}' et avons déterminé qu'elle ne viole pas nos règles. Votre contenu reste visible."
   }
 }

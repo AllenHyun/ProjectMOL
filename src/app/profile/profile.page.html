@@ -100,7 +100,7 @@
 
           </div>
 
-          <textarea *ngIf="isEditing" [(ngModel)]="user.bio" rows="4" class="w-full text-black p-4 border border-[#C5A059] rounded-xl outline-none font-lato leading-relaxed resize-none"></textarea>
+          <textarea *ngIf="isEditing" [(ngModel)]="user.bio" rows="4" class="w-full text-white p-4 border border-[#C5A059] rounded-xl outline-none font-lato leading-relaxed resize-none"></textarea>
 
           <p *ngIf="!isEditing" class="text-[#1A1614] font-lato leading-relaxed text-justify px-4 italic opacity-80">{{ user.bio || ('PROFILE.BIO_EMPTY' | translate) }}</p>
 
@@ -132,7 +132,7 @@
 
             <div *ngIf="isEditing" class="flex border border-[#C5A059] rounded-sm bg-white">
 
-              <input #newInterest type="text" [placeholder]="'PROFILE.NEW_INTEREST' | translate" class="p-2 text-xs outline-none w-32 font-lato" (keyup.enter)="addInterest(newInterest)">
+              <input #newInterest type="text" [placeholder]="'PROFILE.NEW_INTEREST' | translate" class="text-white p-2 text-xs outline-none w-32 font-lato" (keyup.enter)="addInterest(newInterest)">
 
               <button (click)="addInterest(newInterest)" class="px-3 text-[#C5A059] hover:bg-[#FDFBF7]">
 

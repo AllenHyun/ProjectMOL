@@ -120,7 +120,7 @@
 
           </div>
 
-          <textarea [(ngModel)]="editContent" rows="10" [placeholder]="'SUMMARIES.EDIT.PLACEHOLDER' | translate" class="p-3 border border-[#C5A059] outline-none font-lato text-black w-full"></textarea>
+          <textarea [(ngModel)]="editContent" rows="10" [placeholder]="'SUMMARIES.EDIT.PLACEHOLDER' | translate" class="p-3 text-white border border-[#C5A059] outline-none font-lato text-black w-full"></textarea>
 
         </div>
 
@@ -166,7 +166,7 @@
           <div>
 
             <p class="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-2">{{auth.currentUser?.displayName}}</p>
-            <textarea [(ngModel)]="newSummary.content" rows="8" placeholder="{{ 'SUMMARIES.CREATE.CONTENT_PLACEHOLDER' | translate }}" class="p-3 w-full border border-[#C5A059] outline-none font-lato"></textarea>
+            <textarea [(ngModel)]="newSummary.content" rows="8" placeholder="{{ 'SUMMARIES.CREATE.CONTENT_PLACEHOLDER' | translate }}" class="p-3 w-full border border-[#C5A059] outline-none font-lato text-white"></textarea>
 
           </div>
 

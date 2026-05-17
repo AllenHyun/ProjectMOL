@@ -134,22 +134,6 @@
 
                 <div class="flex items-center gap-4">
 
-                  <div class="flex gap-3">
-
-                    <button class="flex items-center gap-2 border border-gray-100 text-black px-3 py-1 text-[11px] font-bold uppercase hover:bg-green-50 transition-colors">
-
-                      <ion-icon name="thumbs-up-outline" class="text-green-600"></ion-icon> {{ 'SUMMARY_EXPLORE.USEFUL' | translate }}
-
-                    </button>
-
-                    <button class="flex items-center gap-1 border border-gray-100 text-black px-3 py-1 text-[11px] font-bold uppercase hover:bg-red-50 transition-colors">
-
-                      <ion-icon name="thumbs-down-outline" class="text-red-600"></ion-icon> {{ 'SUMMARY_EXPLORE.NOT_USEFUL' | translate }}
-
-                    </button>
-
-                  </div>
-
                   <button (click)="speakSummary(sum?.structure?.tldr || '', sum.bookLanguage)" class="flex items-center gap-2 text-[#C5A059] text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform">
 
                     <ion-icon [name]="currentAudio ? 'pause-outline' : 'play-outline'" class="text-xl"></ion-icon>{{'BOOK-D.RESUME.LISTEN' | translate}}

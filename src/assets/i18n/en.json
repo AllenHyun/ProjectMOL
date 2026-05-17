@@ -86,7 +86,7 @@
   "COMMON": {
     "CANCEL": "Cancel",
     "PUBLISH": "Publish",
-    "CONFIRM": "Confirm Save",
+    "CONFIRM": "Confirm",
     "SELECT": "Select book",
     "SELECTED": "Choose a book from the library...",
     "DELETE": "Delete",
@@ -211,7 +211,8 @@
       "MESSAGE": "Please log in to rate this work",
       "CANCEL": "Cancel",
       "LOGIN": "Login"
-    }
+    },
+    "VISITOR_MESSAGE": "Register to add to lists or write"
   },
   "EXPLORE": {
     "FILTER_TITLE": "Filter",
@@ -453,5 +454,67 @@
     "BACK": "Back to book",
     "LOAD": "Opening required book...",
     "NOT_FOUND": "Summary not found or deleted"
+  },
+  "ADMIN-U": {
+    "TITLE": "User Management",
+    "TABLE": {
+      "USER": "User",
+      "EMAIL": "Email",
+      "LEVEL": "Education Level",
+      "ROLE": "Role",
+      "STATUS": "Status",
+      "ACTIONS": "Actions"
+    },
+    "STATUS": {
+      "active": "Active",
+      "suspended": "Suspended"
+    },
+    "ROLE": {
+      "admin": "Administrator",
+      "reader": "Reader"
+    },
+    "EMPTY": "No users found.",
+    "CONFIRM_BAN": "Are you sure you want to suspend this user?",
+    "CONFIRM_UNBAN": "Do you want to reactivate this user's account?",
+    "CONFIRM_DELETE": "This action will permanently delete the user, do you want to continue?"
+  },
+  "MODERATION": {
+    "TITLE": "Content Moderation",
+    "SENDING": "Your summary has been sent for moderation.",
+    "EMPTY": "No summaries pending review",
+    "ACTION_COMPLETED": "Action completed successfully",
+    "TABLE": {
+      "TYPE": "Type",
+      "TITLE": "Book Title",
+      "USER": "User",
+      "DATE": "Date",
+      "STATUS": "Status",
+      "ACTIONS": "Actions"
+    },
+    "TYPE_SUMMARY": "Summary",
+    "CONFIRM_APPROVE": "Are you sure you want to approve this summary?",
+    "CONFIRM_REJECT": "Are you sure you want to reject this summary?",
+    "STATUS": {
+      "pending": "Pending",
+      "published": "Approved",
+      "rejected": "Rejected"
+    },
+    "REPORT_SUCCESS": "Report submitted successfully",
+    "REPORT_REPORT": "Define the reason for the report"
+  },
+  "NOTIFICATIONS": {
+    "TITLE": "Notifications",
+    "EMPTY": "You have no new notifications",
+    "SUMMARY_APPROVED": "Summary approved!",
+    "SUMMARY_REJECTED": "Summary rejected",
+    "MSG_APPROVED": "Your summary of the book '{{book}}' has been approved and is now public.",
+    "MSG_REJECTED": "Your summary of the book '{{book}}' has been rejected. Reason: {{reason}}",
+    "MARK_READ": "Mark all as read",
+    "UNREAD_LABEL": "Unread notifications",
+    "CONFIRM_DELETE": "Are you sure you want to delete this notification?",
+    "REPORT_RESOLVED_TITLE": "Content removed",
+    "REPORT_RESOLVED_MSG": "Your work '{{work}}' has been removed after review by our moderation team.",
+    "REPORT_DISMISSED_TITLE": "Report reviewed",
+    "REPORT_DISMISSED_MSG": "We have reviewed the report against your work '{{work}}' and determined it does not violate our policies. Your content remains visible."
   }
 }

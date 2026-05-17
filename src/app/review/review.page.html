@@ -136,28 +136,6 @@
               <h3 class="text-3xl font-['Cormorant_Garamond'] font-bold text-[#1A1614] mb-3">{{rev.bookTitle}}</h3>
               <p [routerLink]="['/book-detail', rev.bookId]" class="text-[16px] text-black font-lato leading-relaxed mb-6 line-clamp-5">{{rev.text}}</p>
 
-              <div class="mt-auto flex items-center justify-start gap-4">
-
-                <div class="flex items-center gap-2 border border-gray-100 bg-gray-50/50 p-1 rounded-sm">
-
-                  <button class="flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase text-gray-600 hover:text-green-600 transition-colors">
-
-                    <ion-icon name="thumbs-up-outline" class="text-lg"></ion-icon> {{ 'REVIEWS_EXPLORE.USEFUL' | translate }}
-
-                  </button>
-
-                  <div class="w-[1px] h-4 bg-gray-200"></div>
-
-                  <button class="flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase text-gray-600 hover:text-red-600 transition-colors">
-
-                    <ion-icon name="thumbs-down-outline" class="text-lg"></ion-icon> {{ 'REVIEWS_EXPLORE.NOT_USEFUL' | translate }}
-
-                  </button>
-
-                </div>
-
-              </div>
-
             </div>
 
           </div>

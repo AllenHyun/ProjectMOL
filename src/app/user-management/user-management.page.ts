@@ -33,7 +33,7 @@ export class UserManagementPage implements OnInit {
   ngOnInit() {
     const usersCollection = collection(this.firestore, 'users');
     collectionData(usersCollection, {idField: 'id'}).subscribe(data => {
-      this.users = data;
+      this.users = data.filter(user => user['role'] !== 'visitor');
     });
   }
 

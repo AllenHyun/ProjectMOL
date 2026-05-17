@@ -4,15 +4,17 @@ import { FormsModule } from '@angular/forms';
 import {IonContent, IonIcon} from '@ionic/angular/standalone';
 import {FooterComponent} from "../components/footer/footer.component";
 import {HeaderComponent} from "../components/header/header.component";
-import {ActivatedRoute, RouterLink} from "@angular/router";
-import {addDoc, collection, collectionData, doc, Firestore, getDoc} from "@angular/fire/firestore";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {addDoc, collection, collectionData, doc, docData, Firestore, getDoc} from "@angular/fire/firestore";
 import {Summary} from "../models/summary";
 import { star, starOutline, playOutline, pauseOutline, bookmarkOutline, shareOutline, flagOutline, thumbsUpOutline, thumbsDownOutline, arrowBackOutline } from 'ionicons/icons';
 import {addIcons} from "ionicons";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {Auth} from "@angular/fire/auth";
+import {Auth, authState} from "@angular/fire/auth";
+import {User} from "../models/user";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-summary-detail',
@@ -28,6 +30,10 @@ export class SummaryDetailPage implements OnInit {
   private http = inject(HttpClient);
   private translate = inject(TranslateService);
   private auth = inject(Auth);
+  private router = inject(Router);
+
+  public user: User | null = null;
+  private userSub: Subscription | null = null;
 
   public book: any = null;
   public summary: Summary | null = null;
@@ -72,6 +78,21 @@ export class SummaryDetailPage implements OnInit {
         }
       } catch (error) {}
     }
+
+    this.userSub = authState(this.auth).subscribe(authUser => {
+      if (authUser) {
+        const userRef = doc(this.firestore, `users/${authUser.uid}`);
+        docData(userRef).subscribe(data => {
+          this.user = data as User;
+        });
+      } else {
+        this.user = null;
+      }
+    })
+  }
+
+  private ngOnDestroy() {
+    this.userSub?.unsubscribe();
   }
 
   private async loadBookInfo(bookId: string) {
@@ -158,5 +179,9 @@ export class SummaryDetailPage implements OnInit {
     } catch (error) {
       console.error("Error al reportar: ", error);
     }
+  }
+
+  navigateRegister() {
+    this.router.navigate(['/register']);
   }
 }
