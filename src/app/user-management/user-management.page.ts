@@ -84,10 +84,14 @@ export class UserManagementPage implements OnInit {
       await updateDoc(userDoc, {
         status: newStatus,
         banReason: reason,
-        bannedAt: newStatus === 'suspended' ? new Date() : null
+        bannedAt: newStatus === 'suspended' ? new Date().toISOString() : null
       });
 
       if (newStatus === 'suspended') {
+        if (!user.email){
+          console.warn("El usuario no tiene un correo electrónico registrado");
+        }
+
         await addDoc(collection(this.firestore, 'mail'), {
           to: user.email,
           message: {
