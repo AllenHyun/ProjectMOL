@@ -86,25 +86,6 @@ export class UserManagementPage implements OnInit {
         banReason: reason,
         bannedAt: newStatus === 'suspended' ? new Date().toISOString() : null
       });
-
-      if (newStatus === 'suspended') {
-        if (!user.email){
-          console.warn("El usuario no tiene un correo electrónico registrado");
-        }
-
-        await addDoc(collection(this.firestore, 'mail'), {
-          to: user.email,
-          message: {
-            subject: 'Tu cuenta ha sido suspendida - Project M.O.L',
-            html: `
-              <h2>Hola, ${user.username || 'usuario'}.</h2>
-              <p>Te informamos que tu cuenta ha sido suspendida temporalmente.</p>
-              <p><strong>Motivo:</strong> ${reason}</p>
-              <p>Si crees que esto es un error, contacta con soporte.</p>
-            `
-          }
-        });
-      }
     } catch (error) {
       console.error("Error de permisos o red:", error);
       alert("No tienes permisos para modificar este usuario.");

@@ -291,10 +291,10 @@ export class MyListsPage implements OnInit {
           createdAt: reminderData.createdAt
         });
 
-        await this.scheduleEmailNotification(user.email || user.uid, reminderData);
+        await this.createNotificationAlert(user.uid, reminderData);
       } else {
         await addDoc(remindersRef, reminderData);
-        await this.scheduleEmailNotification(user.email || user.uid, reminderData);
+        await this.createNotificationAlert(user.uid, reminderData);
       }
       this.resetReminderForm();
     } catch (error) {
@@ -335,27 +335,21 @@ export class MyListsPage implements OnInit {
     this.remindDaysBefore = 1;
   }
 
-  private async scheduleEmailNotification(email: string, reminder: Omit<Reminder, 'id'>){
-    const eventTime = new Date(reminder.eventDate).getTime();
-    const daysInMs = reminder.remindDaysBefore * 24 * 60 * 60 * 1000;
-    const deliveryTime = new Date(eventTime - daysInMs);
+ private async createNotificationAlert(userUid: string, reminder: Omit<Reminder, 'id'>){
+    try {
+      const notificationRef = collection(this.firestore, 'notifications');
+      const formattedDate = new Date(reminder.eventDate).toLocaleString();
 
-    const finalDelivery = deliveryTime.getTime() < Date.now() ? new Date() : deliveryTime;
-
-    await addDoc(collection(this.firestore, 'mail'), {
-      to: email,
-      deliveryAt: finalDelivery.toISOString(),
-      message: {
-        subject: `Recordatorio: ${reminder.title} - Project M.O.L`,
-        html: `
-          <h2> ¡Hola de parte de Project M.O.L! </h2>
-          <p>Te escribimos para recordarte tu próximo evento programado: </p>
-          <p><strong>Evento: </strong>${reminder.title}</p>
-          <p><strong>Fecha del evento: </strong>${new Date(reminder.eventDate).toLocaleString()}</p>
-          <br>
-          <p>¡Disfruta de tus lecturas!</p>
-        `
-      }
-    });
-  }
+      await addDoc(notificationRef, {
+        userUid: userUid,
+        title: `RECORDATORIO: ${reminder.title}`,
+        text: `Tienes un evento programado para el día: ${formattedDate}. Alerta configurada con ${reminder.remindDaysBefore} día(s) de antelación.`,
+        read: false,
+        createdAt: new Date().toISOString()
+      });
+      console.log("Notificación generada");
+    } catch (error){
+      console.error("Error el crear la notificación interna: ", error);
+    }
+ }
 }

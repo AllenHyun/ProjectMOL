@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -28,6 +28,7 @@ import { doc, docData, Firestore, getDoc, setDoc } from "@angular/fire/firestore
 import { User } from "../models/user";
 import { AuthError } from "../services/auth-error";
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,7 @@ import { TranslatePipe, TranslateService } from "@ngx-translate/core";
   standalone: true,
   imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, IonCard, IonCardTitle, IonCardContent, IonInput, IonIcon, TranslatePipe, RouterLink]
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit, OnDestroy {
   private auth = inject(Auth);
   private router = inject(Router);
   private alertCtrl = inject(AlertController);
@@ -47,6 +48,8 @@ export class LoginPage implements OnInit {
   email: string = '';
   password: string = '';
 
+  private userDocSub: Subscription | null = null;
+
   constructor() {
     addIcons({
       logoGoogle
@@ -55,18 +58,28 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     authState(this.auth).subscribe((authUser) => {
+      if (this.userDocSub) {
+        this.userDocSub.unsubscribe();
+      }
+
       if (authUser) {
         const emailName = authUser.email ? authUser.email.split('@')[0] : this.translate.instant('COMMON.ANONYMOUS');
         this.user = { username: emailName, email: authUser.email || '' } as User;
 
         const userDocRef = doc(this.firestore, `users/${authUser.uid}`);
-        docData(userDocRef).subscribe((data: any) => {
-          if (data) {
-            this.user = {
-              ...data,
-              username: (data.username && data.username.trim() !== "") ? data.username : emailName,
-              email: (data.email && data.email.trim() !== "") ? data.email : (authUser.email || '')
-            } as User;
+
+        this.userDocSub = docData(userDocRef).subscribe({
+          next: (data: any) => {
+            if (data) {
+              this.user = {
+                ...data,
+                username: (data.username && data.username.trim() !== "") ? data.username : emailName,
+                email: (data.email && data.email.trim() !== "") ? data.email : (authUser.email || '')
+              } as User;
+            }
+          },
+          error: (err) => {
+            console.log("Cerrado de forma controlada.");
           }
         });
       }
@@ -74,6 +87,10 @@ export class LoginPage implements OnInit {
         this.user = null;
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.userDocSub?.unsubscribe();
   }
 
   async onLogin() {
@@ -89,6 +106,7 @@ export class LoginPage implements OnInit {
           const userData = userSnap.data();
           if (userData?.['status'] === "suspended"){
             const reason = userData['banReason'] || 'No especificado';
+            this.userDocSub?.unsubscribe();
             await signOut(this.auth);
             alert(`TU CUENTA ESTÁ SUSPENDIDA. \nMotivo: ${reason}`);
             return;
@@ -113,15 +131,21 @@ export class LoginPage implements OnInit {
 
         this.router.navigate(['/first-page']);
       } else {
+        this.userDocSub?.unsubscribe();
         await signOut(this.auth);
         alert(this.translate.instant('LOGIN.VERIFY'))
       }
 
     } catch (error: any) {
+      if (error.code === 'permission-denied' || error.message?.includes('permission-denied')) {
+        console.log("Flujo de error de baneo gestionado e ignorado en onLogin.");
+        return;
+      }
       const msg = this.errorService.getErrorMessage(error.code);
       alert(msg);
     }
   }
+
 
   async logingWithGoogle() {
     try {
@@ -135,6 +159,7 @@ export class LoginPage implements OnInit {
         const userData = userSnap.data();
         if (userData?.['status'] === 'suspended') {
           const reason = userData['banReason'] || 'No especificado';
+          this.userDocSub?.unsubscribe();
           await signOut(this.auth);
           alert(`TU CUENTA ESTÁ SUSPENDIDA. \nMotivo: ${reason}`);
           return;
@@ -159,10 +184,15 @@ export class LoginPage implements OnInit {
       this.router.navigate(['/first-page']);
     }
     catch (error: any) {
+      if (error.code === 'permission-denied' || error.message?.includes('permission-denied')) {
+        console.log("Flujo de error de baneo gestionado e ignorado en onLogin.");
+        return;
+      }
       const msg = this.errorService.getErrorMessage(error.code);
       alert(msg);
     }
   }
+
 
   async forgotPassword() {
     const alert = await this.alertCtrl.create({

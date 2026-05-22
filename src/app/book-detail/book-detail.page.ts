@@ -193,7 +193,7 @@ export class BookDetailPage implements OnInit {
       const summaryRef = collection(this.firestore, 'summaries');
       await addDoc(summaryRef, {
         bookId: this.book.id,
-        authorId: user?.displayName || user?.email || this.translate.instant('COMMON.ANONYMOUS'),
+        authorId: this.user?.username || user?.email || this.translate.instant('COMMON.ANONYMOUS'),
         userId: user?.uid,
         structure: {
           tldr: this.newSummary.content,
@@ -249,7 +249,7 @@ export class BookDetailPage implements OnInit {
       await addDoc(reviewRef, {
         bookId: this.book.id,
         userId: user.uid,
-        userName: user.displayName || user.email || this.translate.instant('COMMON.ANONYMOUS'),
+        userName: this.user?.username || user.email || this.translate.instant('COMMON.ANONYMOUS'),
         rating: this.newReview.rating,
         text: this.newReview.text,
         pros: prosArray,
@@ -542,7 +542,7 @@ export class BookDetailPage implements OnInit {
       await addDoc(commentRef, {
         reviewId: reviewId,
         userId: user.uid,
-        userName: user.displayName || user.email || this.translate.instant('COMMON.ANONYMOUS'),
+        userName: this.user?.username || user.email || this.translate.instant('COMMON.ANONYMOUS'),
         text: text,
         createdAt: new Date().toISOString()
       });

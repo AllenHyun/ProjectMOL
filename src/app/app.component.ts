@@ -38,16 +38,27 @@ export class AppComponent {
   }
 
   private listenToUserStatus() {
+    let unSubscribeSnapshot: (() => void) | null = null;
     authState(this.auth).subscribe((authUser) => {
+      if (unSubscribeSnapshot){
+        unSubscribeSnapshot();
+        unSubscribeSnapshot = null;
+      }
       if (authUser) {
         const userRef = doc(this.firestore, `users/${authUser.uid}`);
         onSnapshot(userRef, (docSnap) => {
           const userData = docSnap.data();
 
           if (userData?.['status'] === 'suspended') {
+            if (unSubscribeSnapshot){
+              unSubscribeSnapshot();
+              unSubscribeSnapshot = null;
+            }
             this.handleSuspension(userData['banReason']);
           }
-        });
+        }, (error) => {
+          console.log("Listener en tiempo real cerrado de forma segura al revocar la sesión");
+          });
       }
     });
   }
