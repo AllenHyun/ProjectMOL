@@ -24,7 +24,7 @@
 
       </div>
 
-      <button class="text-[10px] uppercase tracking-widest font-bold text-[#C5A059] hover:underline">{{ 'MY_LISTS.REMINDERS' | translate }}</button>
+      <button (click)="openRemindersModal()" class="text-[10px] uppercase tracking-widest font-bold text-[#C5A059] hover:underline">{{ 'MY_LISTS.REMINDERS' | translate }}</button>
 
     </div>
 
@@ -300,6 +300,130 @@
           <button (click)="importListByCode()" class="flex-1 py-3 bg-[#C5A059] text-white uppercase text-[10px] font-bold shadow-md">{{ 'MY_LISTS.IMPORT_MODAL.IMPORT_BTN' | translate }}</button>
 
         </div>
+
+      </div>
+
+    </ng-template>
+
+  </ion-modal>
+
+  <ion-modal [isOpen]="showRemindersModal" (didDismiss)="showRemindersModal = false" class="floating-modal">
+
+    <ng-template>
+
+      <div class="p-8 bg-white flex flex-col gap-6 overflow-y-auto max-h-[85vh]">
+
+        <div class="flex justify-between items-center border-b border-[#C5A059]/20 pb-4">
+
+          <h2 class="text-3xl font-['Cormorant_Garamond'] text-[#1A1614]">{{ 'MY_LISTS.REMINDERS' | translate }}</h2>
+          <button (click)="showRemindersModal = false" class="text-gray-500 hover:text-gray-600">
+
+            <ion-icon name="close-circle-outline" class="text-2xl"></ion-icon>
+
+          </button>
+
+        </div>
+
+        <div class="bg-[#FDFBF7] p-4 border border-[#C5A059]/20 rounded-sm flex flex-col gap-4">
+
+          <h3 class="text-xs font-bold uppercase tracking-wider text-[#1A1614]">
+            {{ isEditingReminder ? 'Gestionar Recordatorio' : 'Nuevo Recordatorio' }}
+          </h3>
+
+          <div class="flex flex-col gap-1">
+
+            <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Título de la alerta</label>
+            <input [(ngModel)]="reminderTitle" type="text" placeholder="Ej: Examen de matemáticas" class="w-full p-2 border border-[#C5A059] bg-white outline-none text-xs text-black font-lato rounded-none">
+
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <div class="flex flex-col gap-1">
+
+              <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Fecha y hora del evento</label>
+              <input [(ngModel)]="reminderDate" type="datetime-local" class="w-full p-2 border border-[#C5A059] bg-white outline-none text-xs text-black font-lato rounded-none">
+
+            </div>
+
+            <div class="flex flex-col gap-1">
+
+              <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Aviso por correo</label>
+              <select [(ngModel)]="remindDaysBefore" class="w-full p-2 border border-[#C5A059] bg-white outline-none text-xs text-black font-lato font-bold rounded-none">
+
+                <option [value]="0">El mismo día</option>
+                <option [value]="1">1 día antes</option>
+                <option [value]="3">3 días antes</option>
+                <option [value]="7">1 semana antes</option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+          <div class="flex gap-2 justify-end mt-2">
+
+            @if (isEditingReminder) {
+              <button (click)="resetReminderForm()" class="px-4 py-2 border border-gray-500 text-gray-500 text-[10px] font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors">{{ 'COMMON.CANCEL' | translate }}</button>
+            }
+
+            <button (click)="saveReminder()" class="px-4 py-2 bg-[#2E473B] text-white text-[10px] font-bold uppercase tracking-wider shadow-sm active:scale-95 transition-transform">
+              {{ isEditingReminder ? ('PROFILE.SAVE' | translate) : 'Guardar Alerta' }}
+            </button>
+
+          </div>
+
+        </div>
+
+        <div class="flex flex-col gap-3 mt-2">
+
+          <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Tus alertas programadas ({{ reminders?.length || 0 }})</label>
+
+          <div class="flex flex-col gap-2 max-h-[35vh] overflow-y-auto pr-2 custom-scrollbar">
+
+            @for (rem of reminders; track rem.id) {
+              <div class="flex items-center justify-between p-3 border border-gray-100 rounded-sm bg-[#FDFBF7]/40 hover:bg-[#FDFBF7] transition-colors">
+
+                <div class="flex flex-col gap-0.5 truncate max-w-[70%]">
+
+                  <span class="text-xs font-bold text-[#1A1614] truncate">{{ rem.title }}</span>
+                  <span class="text-[9px] text-[#C5A059] font-bold flex items-center gap-1 mt-1 font-mono">
+
+                    <ion-icon name="calendar-outline"></ion-icon>
+                    {{ rem.eventDate | date:'dd/MM/yyyy HH:mm' }}
+                    <span class="text-gray-500 font-sans">(-{{ rem.remindDaysBefore }}d)</span>
+
+                  </span>
+
+                </div>
+
+                <div class="flex items-center gap-1 flex-shrink-0">
+
+                  <button (click)="editReminder(rem)" class="text-gray-500 hover:text-[#C5A059] p-2 transition-colors" title="Editar">
+                    <ion-icon name="pencil-outline" class="text-base"></ion-icon>
+                  </button>
+
+                  <button (click)="deleteReminder(rem.id!)" class="text-red-400 hover:text-red-600 p-2 transition-colors" title="Eliminar">
+                    <ion-icon name="trash-outline" class="text-base"></ion-icon>
+                  </button>
+
+                </div>
+
+              </div>
+            } @empty {
+              <div class="py-6 text-center border border-dashed border-gray-200">
+
+                <p class="text-xs italic text-gray-500 font-lato">No tienes alertas o recordatorios vigentes.</p>
+
+              </div>
+            }
+
+          </div>
+
+        </div>
+
+        <button (click)="showRemindersModal = false" class="w-full py-3 mt-4 border border-gray-300 uppercase text-[10px] font-bold text-gray-500 hover:bg-gray-50">{{ 'MY_LISTS.EDIT_MODAL.CLOSE' | translate }}</button>
 
       </div>
 

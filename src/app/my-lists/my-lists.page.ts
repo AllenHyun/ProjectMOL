@@ -21,7 +21,8 @@ import {RouterLink} from "@angular/router";
 import {register} from "swiper/element/bundle";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {addIcons} from "ionicons";
-import {addOutline, pencilOutline, trashOutline, closeCircleOutline, checkmarkOutline, shareOutline, downloadOutline} from "ionicons/icons";
+import {addOutline, pencilOutline, trashOutline, closeCircleOutline, checkmarkOutline, shareOutline, downloadOutline, timeOutline, calendarOutline} from "ionicons/icons";
+import {Reminder} from "../models/reminder";
 
 register();
 
@@ -65,14 +66,24 @@ export class MyListsPage implements OnInit {
   public importCode = '';
   public listToShare: any = null;
 
+  public showRemindersModal = false;
+  public reminders: Reminder[] = [];
+  public isEditingReminder = false;
+
+  public currentReminderId: string | null = null;
+  public reminderTitle = '';
+  public reminderDate = '';
+  public remindDaysBefore = 1;
+
   constructor() {
-    addIcons({addOutline, trashOutline, pencilOutline, closeCircleOutline, checkmarkOutline, shareOutline, downloadOutline});
+    addIcons({addOutline, trashOutline, pencilOutline, closeCircleOutline, checkmarkOutline, shareOutline, downloadOutline, calendarOutline, timeOutline});
   }
 
   ngOnInit() {
     this.auth.onAuthStateChanged((user) => {
       if (user) {
         this.loadLists(user.uid);
+        this.loadReminders(user.uid);
       }
     });
   }
@@ -107,6 +118,19 @@ export class MyListsPage implements OnInit {
         return combineLatest(listsObservables);
       })
     );
+  }
+
+  loadReminders(userId: string) {
+    const remindersRef = collection(this.firestore, 'reminders');
+    const q = query(remindersRef, where('userId', '==', userId));
+
+    collectionData(q, { idField: 'id' }).subscribe(data => {
+      const sortedReminders = (data as Reminder[]).sort((a, b) =>
+        new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime()
+      );
+
+      this.reminders = [...sortedReminders];
+    });
   }
 
   async createList(){
@@ -234,4 +258,104 @@ export class MyListsPage implements OnInit {
     } catch (error) {}
   }
 
+  openRemindersModal(){
+    this.resetReminderForm();
+    this.showRemindersModal = true;
+  }
+
+  async saveReminder(){
+    const user = this.auth.currentUser;
+    if (!this.reminderTitle.trim() || !this.reminderDate || !user){
+      return;
+    }
+
+    try {
+      const remindersRef = collection(this.firestore, 'reminders');
+
+      const reminderData = {
+        userId: user.uid,
+        title: this.reminderTitle.trim(),
+        eventDate: new Date(this.reminderDate).toISOString(),
+        remindDaysBefore: Number(this.remindDaysBefore),
+        createdAt: new Date().toISOString()
+      };
+
+      if (this.isEditingReminder && this.currentReminderId){
+        const reminderDoc = doc(this.firestore, `reminders/${this.currentReminderId}`);
+
+        await updateDoc(reminderDoc, {
+          userId: reminderData.userId,
+          title: reminderData.title,
+          eventDate: reminderData.eventDate,
+          remindDaysBefore: reminderData.remindDaysBefore,
+          createdAt: reminderData.createdAt
+        });
+
+        await this.scheduleEmailNotification(user.email || user.uid, reminderData);
+      } else {
+        await addDoc(remindersRef, reminderData);
+        await this.scheduleEmailNotification(user.email || user.uid, reminderData);
+      }
+      this.resetReminderForm();
+    } catch (error) {
+      console.log("Error al guardar el recordatorio: ", error);
+    }
+  }
+
+  editReminder(reminder: Reminder){
+    this.isEditingReminder = true;
+    this.currentReminderId = reminder.id || null;
+    this.reminderTitle = reminder.title;
+
+    const dateObj = new Date(reminder.eventDate);
+    dateObj.setMinutes(dateObj.getMinutes() - dateObj.getTimezoneOffset());
+    this.reminderDate = dateObj.toISOString().slice(0, 16);
+    this.remindDaysBefore = reminder.remindDaysBefore;
+  }
+
+  async deleteReminder(id: string){
+    if (!confirm(this.translate.instant('SUMMARIES.CONFIRM_DELETE'))) {
+      return;
+    }
+
+    try {
+      const reminderDoc = doc(this.firestore, `reminders/${id}`);
+      await deleteDoc(reminderDoc);
+      if (this.currentReminderId === id){
+        this.resetReminderForm();
+      }
+    } catch (error) {}
+  }
+
+  protected resetReminderForm(){
+    this.isEditingReminder = false;
+    this.currentReminderId = null;
+    this.reminderTitle = '';
+    this.reminderDate = '';
+    this.remindDaysBefore = 1;
+  }
+
+  private async scheduleEmailNotification(email: string, reminder: Omit<Reminder, 'id'>){
+    const eventTime = new Date(reminder.eventDate).getTime();
+    const daysInMs = reminder.remindDaysBefore * 24 * 60 * 60 * 1000;
+    const deliveryTime = new Date(eventTime - daysInMs);
+
+    const finalDelivery = deliveryTime.getTime() < Date.now() ? new Date() : deliveryTime;
+
+    await addDoc(collection(this.firestore, 'mail'), {
+      to: email,
+      deliveryAt: finalDelivery.toISOString(),
+      message: {
+        subject: `Recordatorio: ${reminder.title} - Project M.O.L`,
+        html: `
+          <h2> ¡Hola de parte de Project M.O.L! </h2>
+          <p>Te escribimos para recordarte tu próximo evento programado: </p>
+          <p><strong>Evento: </strong>${reminder.title}</p>
+          <p><strong>Fecha del evento: </strong>${new Date(reminder.eventDate).toLocaleString()}</p>
+          <br>
+          <p>¡Disfruta de tus lecturas!</p>
+        `
+      }
+    });
+  }
 }
