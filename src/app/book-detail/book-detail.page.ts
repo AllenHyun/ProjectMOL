@@ -208,7 +208,12 @@ export class BookDetailPage implements OnInit {
 
       this.showModal = false;
       this.newSummary.content = '';
-      alert(this.translate.instant('MODERATION.SENDING'));
+
+      if (status === 'pending'){
+        alert(this.translate.instant('MODERATION.SENDING'));
+      } else {
+        alert(this.translate.instant('MODERATION.SENDING_DRAFT'));
+      }
     } catch (error) {}
   }
 

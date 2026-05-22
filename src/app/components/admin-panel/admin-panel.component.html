@@ -7,6 +7,10 @@
       <ion-icon name="grid-outline" class="text-[#C5A059] lg:hidden"></ion-icon>
       <h1 class="lg:text-lg text-sm font-lato text-center mb-2 tracking-widest uppercase">{{ 'ADMIN.TITLE' | translate }}</h1>
 
+      @if (pendingCount > 0) {
+        <span class="lg:hidden w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+      }
+
     </div>
 
     <ion-icon [name]="isCollapsed ? 'chevron-down-outline' : 'chevron-up-outline'" class="lg:hidden text-[#C5A059] text-xl transition-transform"></ion-icon>
@@ -18,7 +22,14 @@
   <nav [class.hidden]="isCollapsed" class="flex flex-col lg:!flex lg:pt-0 gap-6 p-6 lg:gap-10 transition-all duration-500">
 
     @for (option of optionsAdmin; track option.name){
-      <a [routerLink]="option.path" (click)="isCollapsed = true" routerLinkActive="text-[#6FAB72] font-semibold lg:border-l-2 border-[#6FAB72] lg:pl-4" class="text-base lg:text-lg hover:text-[#6FAB72] transition-all whitespace-nowrap">{{ option.name | translate }}</a>
+      <a [routerLink]="option.path" (click)="isCollapsed = true" routerLinkActive="text-[#6FAB72] font-semibold lg:border-l-2 border-[#6FAB72] lg:pl-4" class="text-base lg:text-lg hover:text-[#6FAB72] transition-all whitespace-nowrap flex items-center justify-between group w-full">
+
+        <span>{{ option.name | translate }}</span>
+
+        @if (option.path === '/admin/moderacion' && pendingCount > 0) {
+          <span class="ml-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center animate-pulse">{{ pendingCount }}</span>
+        }
+      </a>
     }
   </nav>
 

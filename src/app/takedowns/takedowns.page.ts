@@ -15,7 +15,6 @@ import {
   updateDoc
 } from "@angular/fire/firestore";
 import {async, BehaviorSubject, map, Subscription, switchMap} from "rxjs";
-import {data} from "autoprefixer";
 import {FooterComponent} from "../components/footer/footer.component";
 import {AdminPanelComponent} from "../components/admin-panel/admin-panel.component";
 import {HeaderComponent} from "../components/header/header.component";
@@ -38,6 +37,18 @@ export class TakedownsPage implements OnInit {
 
   public selectedReportContent: any = null;
   public isPreviewOpen = false;
+
+  public currentPage = 1;
+  public readonly pageSize = 10;
+
+  get pagedReports(): any[]{
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.reports.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.reports.length / this.pageSize) || 1;
+  }
 
   constructor() {
     addIcons({
@@ -159,4 +170,15 @@ export class TakedownsPage implements OnInit {
     }
   }
 
+  nextPage(){
+    if (this.currentPage < this.totalPages){
+      this.currentPage += 1;
+    }
+  }
+
+  prevPage(){
+    if (this.currentPage > 1){
+      this.currentPage -= 1;
+    }
+  }
 }

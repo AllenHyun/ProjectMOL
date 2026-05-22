@@ -59,7 +59,7 @@
 
             <tbody class="text-sm">
 
-              @for (report of reports; track report.id) {
+              @for (report of pagedReports; track report.id) {
                 <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors">
 
                   <td class="py-4 px-2 font-mono text-xs text-black">{{ report.displayId }}</td>
@@ -106,9 +106,9 @@
         </div>
 
         <div class="mt-20 flex justify-end items-center gap-4 text-[#2E473B] font-bold">
-          <ion-icon name="chevron-back-outline" class="cursor-pointer"></ion-icon>
-          <span class="text-sm tracking-widest uppercase">Mostrando {{ reports.length }} de {{ reports.length }}</span>
-          <ion-icon name="chevron-forward-outline" class="cursor-pointer"></ion-icon>
+          <ion-icon name="chevron-back-outline" (click)="prevPage()" [class.opacity-30]="currentPage === 1" [class.cursor-not-allowed]="currentPage === 1" class="cursor-pointer text-lg"></ion-icon>
+          <span class="text-sm tracking-widest uppercase">Mostrando {{ currentPage }} de {{ totalPages }} (Total: {{reports.length}})</span>
+          <ion-icon name="chevron-forward-outline" (click)="nextPage()" [class.opacity-30]="currentPage === totalPages" [class.cursor-not-allowed]="currentPage === totalPages" class="cursor-pointer text-lg"></ion-icon>
         </div>
 
       </main>

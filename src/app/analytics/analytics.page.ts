@@ -76,7 +76,7 @@ export class AnalyticsPage implements OnInit {
 
   listenTopBooksRealTime() {
     const bookRef = collection(this.firestore, 'books');
-    const q = query(bookRef, orderBy('ratingCount', 'desc'), limit(3));
+    const q = query(bookRef, orderBy('ratingAvg', 'desc'), limit(3));
 
     this.bookSub = collectionData(q, {idField: 'id'}).subscribe(books => {
       this.stats.topBooks = books;

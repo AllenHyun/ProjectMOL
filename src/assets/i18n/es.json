@@ -481,6 +481,7 @@
   "MODERATION": {
     "TITLE": "Moderación de Contenido",
     "SENDING": "Su resumen ha sido enviado a moderación.",
+    "SENDING_DRAFT":  "Su resumen ha sido enviado a borradores",
     "EMPTY": "No hay resúmenes pendientes de revisión",
     "ACTION_COMPLETED": "Acción realizada con éxito",
     "TABLE": {
