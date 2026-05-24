@@ -194,7 +194,7 @@
                         <button type="button" (click)="toggleTag(tag.name)" [class]="emptyBook.tags?.includes(tag.name) ? 'bg-[#C5A059] text-white border-[#C5A059]' : 'bg-gray-50 text-gray-400 border-gray-200'" class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all duration-200 hover:scale-105 active:scale-95">{{ tag.name }}</button>
 
                       } @empty {
-                        <p class="text-[9px] text-gray-400 italic">Selecciona una categoría primero para ver las asignaturas disponibles.</p>
+                        <p class="text-[9px] text-gray-400 italic">{{'BOOK-M.EMPTY_SELECT' | translate}}</p>
                       }
 
                     </div>

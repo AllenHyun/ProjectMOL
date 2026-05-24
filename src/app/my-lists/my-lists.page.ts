@@ -8,7 +8,7 @@ import {
   collectionData, deleteDoc,
   doc,
   docData,
-  Firestore, getDoc,
+  Firestore, getDoc, getDocs,
   query,
   updateDoc,
   where
@@ -84,6 +84,7 @@ export class MyListsPage implements OnInit {
       if (user) {
         this.loadLists(user.uid);
         this.loadReminders(user.uid);
+        this.checkAndProcessExpiredReminder(user.uid);
       }
     });
   }
@@ -180,7 +181,9 @@ export class MyListsPage implements OnInit {
       const listRef = doc(this.firestore, 'lists', this.selectedList.id);
       await updateDoc(listRef, {bookIds: arrayRemove(bookId)});
       this.selectedList.books = this.selectedList.books.filter((b: any) => b.id !== bookId);
-    } catch (error){}
+    } catch (error){
+      console.error(error);
+    }
   }
 
   async deleteList(listId: string) {
@@ -190,7 +193,9 @@ export class MyListsPage implements OnInit {
       const listRef = doc(this.firestore, 'lists', listId);
       await deleteDoc(listRef);
       this.showEditModal = false;
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   openShare(list: any){
@@ -226,7 +231,9 @@ export class MyListsPage implements OnInit {
       } else{
         alert(this.translate.instant('MY_LISTS.INVALID_CODE'));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   private async createDefaultLists(userId: string) {
@@ -255,7 +262,9 @@ export class MyListsPage implements OnInit {
     try {
       const listRef = doc(this.firestore, 'lists', list.id);
       await updateDoc(listRef, {isPublic: list.isPublic});
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   openRemindersModal(){
@@ -291,11 +300,10 @@ export class MyListsPage implements OnInit {
           createdAt: reminderData.createdAt
         });
 
-        await this.createNotificationAlert(user.uid, reminderData);
       } else {
         await addDoc(remindersRef, reminderData);
-        await this.createNotificationAlert(user.uid, reminderData);
       }
+      this.checkAndProcessExpiredReminder(user.uid);
       this.resetReminderForm();
     } catch (error) {
       console.log("Error al guardar el recordatorio: ", error);
@@ -314,7 +322,7 @@ export class MyListsPage implements OnInit {
   }
 
   async deleteReminder(id: string){
-    if (!confirm(this.translate.instant('SUMMARIES.CONFIRM_DELETE'))) {
+    if (!confirm(this.translate.instant('MY_LISTS.REMINDER.DELETE'))) {
       return;
     }
 
@@ -324,7 +332,9 @@ export class MyListsPage implements OnInit {
       if (this.currentReminderId === id){
         this.resetReminderForm();
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   protected resetReminderForm(){
@@ -341,15 +351,39 @@ export class MyListsPage implements OnInit {
       const formattedDate = new Date(reminder.eventDate).toLocaleString();
 
       await addDoc(notificationRef, {
-        userUid: userUid,
-        title: `RECORDATORIO: ${reminder.title}`,
-        text: `Tienes un evento programado para el día: ${formattedDate}. Alerta configurada con ${reminder.remindDaysBefore} día(s) de antelación.`,
+        userId: userUid,
+        title: this.translate.instant('MY_LISTS.REMINDER.TITLE') + ' ' + reminder.title,
+        message: this.translate.instant('MY_LISTS.REMINDER.MESSAGE_1') + ' ' + formattedDate + this.translate.instant('MY_LISTS.REMINDER.MESSAGE_2') + ' ' + reminder.remindDaysBefore + this.translate.instant('MY_LISTS.REMINDER.MESSAGE_3'),
         read: false,
         createdAt: new Date().toISOString()
       });
       console.log("Notificación generada");
     } catch (error){
       console.error("Error el crear la notificación interna: ", error);
+    }
+ }
+
+ async checkAndProcessExpiredReminder(userId: string){
+    try {
+      const remindersRef = collection(this.firestore, 'reminders');
+      const q = query(remindersRef, where('userId', '==', userId));
+      const snap = await getDocs(q);
+
+      const now = new Date().getTime();
+
+      snap.forEach(async (document) => {
+        const reminder = document.data() as Reminder;
+        const eventTime = new Date(reminder.eventDate).getTime();
+        const daysInMs = reminder.remindDaysBefore * 24 * 60 * 60 * 1000;
+
+        const targetAlertTime = eventTime - daysInMs;
+
+        if (now >= targetAlertTime) {
+          await this.createNotificationAlert(userId, reminder);
+        }
+      });
+    } catch (error) {
+      console.error("Error procesando el cálculo del tiempo: ", error);
     }
  }
 }

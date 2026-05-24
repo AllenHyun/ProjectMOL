@@ -22,7 +22,8 @@
     "MESSAGES": {
       "INVALID_EMAIL": "Introduce un correo válido",
       "RESET_MAIL_SENT": "Correo enviado. Revisa tu bandeja de correo, puede estar en Spam.",
-      "ERROR": "Hubo un problema al iniciar sesión. Inténtalo de nuevo."
+      "ERROR": "Hubo un problema al iniciar sesión. Inténtalo de nuevo.",
+      "BAN": "TU CUENTA ESTÁ SUSPENDIDA. \nMotivo:"
     },
     "VERIFY": "Debes verificar primero tu cuenta."
   },
@@ -108,6 +109,7 @@
       "ACTIONS": "Acciones"
     },
     "EMPTY": "No hay libros en el catálogo acordes a la búsqueda",
+    "EMPTY_SELECT": "Selecciona una categoría primero para ver las opciones disponibles",
     "CATEGORIES": {
       "Acción": "Acción",
       "Romance": "Romance",
@@ -231,7 +233,9 @@
     "LEVELS": {
       "ESO/Bachiller": "ESO / Bachillerato",
       "Universidad": "Universidad",
-      "Posgrado": "Posgrado"
+      "Posgrado": "Posgrado",
+      "ESO": "ESO / Bachillerato",
+      "Uni": "Universidad"
     },
     "CATEGORIES": {
       "Acción": "Acción",
@@ -303,6 +307,26 @@
       "LABEL": "Pega el código de la lista",
       "PLACEHOLDER": "ID de la lista compartida",
       "IMPORT_BTN": "Importar"
+    },
+    "REMINDER": {
+      "TITLE": "RECORDATORIO:",
+      "MESSAGE_1": "Tienes un evento programado para el día:",
+      "MESSAGE_2": ". Alerta configurada con",
+      "MESSAGE_3": " día(s) de antelación.",
+      "MANAGE": "Gestionar Recordatorio",
+      "NEW": "Recordatorio Nuevo",
+      "NEW_TITLE": "Título de la alerta",
+      "TITLE_PLACEHOLDER": "Ej: Examen de matemáticas",
+      "TIME": "Fecha y hora del evento",
+      "NOTIFY": "Aviso por correo",
+      "TIME_0": "El mismo día",
+      "TIME_1": "1 día antes",
+      "TIME_3": "3 días antes",
+      "TIME_7": "1 semana antes",
+      "SAVE": "Guardar Alerta",
+      "ALERT": "Tus alertas programadas",
+      "EMPTY": "No tienes alertas o recordatorios vigentes.",
+      "DELETE": "¿Estás seguro de que quieres eliminar este recordatorio?"
     }
   },
   "PROFILE": {
@@ -322,7 +346,11 @@
     "BLOCK": "Bloquear usuario",
     "BLOCKED_LABEL": "Usuario bloqueado",
     "BLOCKED_BY_ME": "Has bloqueado a este usuario",
-    "UNAVAILABLE": "Este perfil no está disponible"
+    "UNAVAILABLE": "Este perfil no está disponible",
+    "LISTS": {
+      "SAVE_LIST": "Debes iniciar sesión para guardar listas",
+      "LIBRARY": "Lista guardada en tu biblioteca"
+    }
   },
   "SETTINGS": {
     "TAB_ACCOUNT": "Cuenta",
@@ -351,9 +379,11 @@
     "ERROR_UPDATE": "Ocurrió un error al actualizar los datos.",
     "ERROR_RECENT_LOGIN": "Por seguridad, debes haber iniciado sesión recientemente para realizar esta acción. Por favor, sal y vuelve a entrar.",
     "EMAIL_VERIFY_NOTICE": "ATENCIÓN: Se ha enviado un enlace de confirmación a",
-    "RESET_SENT": "Se ha enviado un correo para restablecer tu contraseña a",
+    "RESET_SENT_1": "Se ha enviado un correo a ",
+    "RESET_SENT_2": "para restablecer tu contraseña",
     "ERROR_RESET": "Error al enviar el correo de restablecimiento.",
-    "ERROR_EXPORT": "No se pudieron exportar las listas."
+    "ERROR_EXPORT": "No se pudieron exportar las listas.",
+    "RETURN": "Para completar el cambio, debes verificarlo. La sesión se cerrará ahora."
   },
   "ADMIN": {
     "TITLE": "Panel Admin",
@@ -416,7 +446,8 @@
     "POS": "Posgrado / Máster",
     "REGISTER_BTN": "Registrarme",
     "LOGIN": "¿Ya tienes una cuenta? Iniciar sesión",
-    "ACCOUNT_CREATED": "Cuenta creada. Por favor, revise su correo para validarla."
+    "ACCOUNT_CREATED": "Cuenta creada. Por favor, revise su correo para validarla.",
+    "GUEST": "Entrar como visitante"
   },
   "REVIEW-D": {
     "TITLE": "Reseñas",
@@ -476,13 +507,18 @@
     "EMPTY": "No se han encontrado usuarios.",
     "CONFIRM_BAN": "¿Estás seguro de que quieres suspender a este usuario?",
     "CONFIRM_UNBAN":"¿Deseas reactivar la cuenta de este usuario?",
-    "CONFIRM_DELETE": "Esta acción eliminará al usuario permanentemente, ¿deseas continuar?"
+    "CONFIRM_DELETE": "Esta acción eliminará al usuario permanentemente, ¿deseas continuar?",
+    "REASON": "Escribe el motivo de la suspensión",
+    "SUSPENDED": "Incumplimiento de las normas de la comunidad",
+    "MODIFY": "No tienes permisos para modificar este usuario"
   },
   "MODERATION": {
     "TITLE": "Moderación de Contenido",
     "SENDING": "Su resumen ha sido enviado a moderación.",
     "SENDING_DRAFT":  "Su resumen ha sido enviado a borradores",
     "EMPTY": "No hay resúmenes pendientes de revisión",
+    "BOOK_NOT_FOUND": "Libro no encontrado",
+    "REJECT": "",
     "ACTION_COMPLETED": "Acción realizada con éxito",
     "TABLE": {
       "TYPE": "Tipo",
@@ -517,5 +553,64 @@
     "REPORT_RESOLVED_MSG": "Tu obra '{{work}}' ha sido retirada tras ser revisada por nuestro equipo de moderación.",
     "REPORT_DISMISSED_TITLE": "Reporte revisado",
     "REPORT_DISMISSED_MSG": "Hemos revisado el reporte contra tu obra '{{work}}' y hemos determinado que no infringe nuestras normas. Tu contenido sigue visible."
+  },
+  "ANALYTICS":{
+    "USERS": "Usuarios Totales (Crecimiento)",
+    "ADMIN": "Admin",
+    "READER": "Lectores",
+    "GUEST": "Invitados",
+    "APPROVED": "Aprobados",
+    "REJECTED": "Rechazados",
+    "PENDING": "Pendientes",
+    "SUMMARIES": "Estado de Resúmenes",
+    "TITLE": "Analítica de Plataforma",
+    "DAUMAU": "Métricas de Actividad (DAU/MAU)",
+    "TITLE_USERS": "Crecimiento de Usuarios",
+    "TOP": "Top Contenido",
+    "DETAILS": "Ver detalles",
+    "LOAD": "Cargando podio...",
+    "REPORTS": "Tasa de Reportes",
+    "QUALITY": "Calidad Reportes"
+  },
+  "TAKEDOWNS": {
+    "CONFIRM": "¿Eliminar este registro de reporte permanentemente?",
+    "DELETE": "El contenido original ya ha sido eliminado",
+    "TITLE": "Takedowns",
+    "FILTERS": "Filtros:",
+    "ALL": "Todos",
+    "PENDING": "Pendientes",
+    "RESOLVED": "Resueltos",
+    "DISMISS": "Desestimados",
+    "BOOK": {
+      "TITLE": "Obra Reclamada",
+      "REASON": "Motivo",
+      "USER": "Reclamante",
+      "STATUS": "Estado",
+      "ACTIONS": "Acciones"
+    },
+    "EMPTY": "No hay reportes que coincidan con este filtro.",
+    "SHOWING": "Mostrando ",
+    "OF": " de ",
+    "TOTAL": "Total: ",
+    "PREVIEW": {
+      "TITLE": "Revisión de Contenido",
+      "BOOK": "Obra: ",
+      "AUTHOR": "Autor de la obra: ",
+      "CLOSE": "Cerrar Vista Previa"
+    }
+  },
+  "TAXONOMY": {
+    "CONFIRM_DELETE": "¿Eliminar permanentemente?",
+    "ADD": "Añadir",
+    "CATEGORIES": {
+      "TITLE": "Categorías principales",
+      "PLACEHOLDER": "Nueva categoría..."
+    },
+    "TAGS": {
+      "TITLE": "Asignaturas / Etiquetas",
+      "ADD": "Vincular a Categoría",
+      "PLACEHOLDER": "Ej: Biología Celular",
+      "FATHER": "Padre: "
+    }
   }
 }

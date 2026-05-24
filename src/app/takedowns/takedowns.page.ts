@@ -18,14 +18,14 @@ import {async, BehaviorSubject, map, Subscription, switchMap} from "rxjs";
 import {FooterComponent} from "../components/footer/footer.component";
 import {AdminPanelComponent} from "../components/admin-panel/admin-panel.component";
 import {HeaderComponent} from "../components/header/header.component";
-import {TranslateService} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-takedowns',
   templateUrl: './takedowns.page.html',
   styleUrls: ['./takedowns.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, FooterComponent, IonIcon, AdminPanelComponent, HeaderComponent, IonModal]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, FooterComponent, IonIcon, AdminPanelComponent, HeaderComponent, IonModal, TranslatePipe]
 })
 export class TakedownsPage implements OnInit {
   private firestore = inject(Firestore);
@@ -142,7 +142,7 @@ export class TakedownsPage implements OnInit {
   }
 
   async deleteReport(reportId: string) {
-    if (confirm('¿Eliminar este registro de reporte permanentemente?')) {
+    if (confirm(this.translate.instant('TAKEDOWNS.CONFIRM'))) {
       await deleteDoc(doc(this.firestore, `reports/${reportId}`));
     }
   }
@@ -163,7 +163,7 @@ export class TakedownsPage implements OnInit {
         };
         this.isPreviewOpen = true;
       } else {
-        alert("El contenido original ya ha sido eliminado.");
+        alert(this.translate.instant('TAKEDOWNS.DELETE'));
       }
     } catch (error) {
       console.error("Error al actualizar el reporte: ", error);

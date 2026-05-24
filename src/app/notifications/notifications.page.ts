@@ -24,7 +24,8 @@ import {
   trashOutline,
   checkmarkOutline,
   closeOutline,
-  chevronForwardOutline
+  chevronForwardOutline,
+  timeOutline
 } from "ionicons/icons";
 import { Subscription, switchMap, of } from 'rxjs';
 import { RouterLink } from '@angular/router';
@@ -61,7 +62,8 @@ export class NotificationsPage implements OnInit, OnDestroy {
       trashOutline,
       checkmarkOutline,
       closeOutline,
-      chevronForwardOutline
+      chevronForwardOutline,
+      timeOutline
     });
   }
 

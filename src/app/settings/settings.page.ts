@@ -86,8 +86,8 @@ export class SettingsPage implements OnInit {
       if (this.user.email !== currentUser.email) {
         await verifyBeforeUpdateEmail(currentUser, this.user.email);
 
-        alert("ATENCIÓN: Se ha enviado un enlace de confirmación a " + this.user.email + ". " +
-          "Para completar el cambio, debes verificarlo. La sesión se cerrará ahora.");
+        alert(this.translate.instant('SETTINGS.EMAIL_VERIFY_NOTICE') + ' ' + this.user.email + ". " +
+          this.translate.instant('SETTINGS.RETURN'));
 
         await this.auth.signOut();
         this.router.navigate(['/login']);
@@ -95,14 +95,14 @@ export class SettingsPage implements OnInit {
         return;
       }
 
-      alert("Ajustes de perfil actualizados.");
+      alert(this.translate.instant('SETTINGS.UPDATE_SUCCESS'));
 
     } catch (error: any) {
       console.error(error);
       if (error.code === 'auth/requires-recent-login') {
-        alert("Por seguridad, debes haber iniciado sesión recientemente para cambiar tu correo. Por favor, sal y vuelve a entrar.");
+        alert(this.translate.instant('SETTINGS.ERROR_RECENT_LOGIN'));
       } else {
-        alert("Ocurrió un error al actualizar los datos.");
+        alert(this.translate.instant('SETTINGS.ERROR_UPDATE'));
       }
     }
   }
@@ -111,10 +111,10 @@ export class SettingsPage implements OnInit {
     if (!this.user.email) return;
     try {
       await sendPasswordResetEmail(this.auth, this.user.email);
-      alert("Se ha enviado un correo a " + this.user.email + " para restablecer tu contraseña.");
+      alert(this.translate.instant('SETTINGS.RESET_SENT_1') + this.user.email + ' ' + this.translate.instant('SETTINGS.RESET_SENT_2'));
     } catch (error) {
       console.error(error);
-      alert("Error al enviar el correo de restablecimiento.");
+      alert(this.translate.instant('SETTINGS.ERROR_RESET'));
     }
   }
 
@@ -163,7 +163,7 @@ export class SettingsPage implements OnInit {
 
     } catch (error) {
       console.error(error);
-      alert("No se pudieron exportar las listas.");
+      alert(this.translate.instant('SETTINGS.ERROR_EXPORT'));
     }
   }
 

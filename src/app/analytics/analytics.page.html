@@ -14,13 +14,13 @@
 
       <main class="flex-grow p-6 lg:p-10">
 
-        <h2 class="text-4xl font-['Cormorant_Garamond'] text-[#1A1614] mb-8 uppercase tracking-tight">Analítica de Plataforma</h2>
+        <h2 class="text-4xl font-['Cormorant_Garamond'] text-[#1A1614] mb-8 uppercase tracking-tight">{{'ANALYTICS.TITLE' | translate}}</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
           <div class="bg-white p-8 border border-gray-100 shadow-sm flex flex-col items-center justify-center min-h-[200px]">
 
-            <h3 class="text-xs uppercase tracking-[0.2em] text-black mb-4">Métricas de Actividad (DAU/MAU)</h3>
+            <h3 class="text-xs uppercase tracking-[0.2em] text-black mb-4">{{'ANALYTICS.DAUMAU' | translate}}</h3>
 
             <div class="text-5xl font-['Cormorant_Garamond'] text-[#1A1614]">
 
@@ -42,7 +42,7 @@
 
           <div class="bg-white p-8 border border-gray-100 shadow-sm md:col-span-2">
 
-            <h3 class="text-lg font-['Cormorant_Garamond'] text-black mb-6">Crecimiento de Usuarios</h3>
+            <h3 class="text-lg font-['Cormorant_Garamond'] text-black mb-6">{{'ANALYTICS.TITLE_USERS' | translate}}</h3>
 
             <div class="h-64">
 
@@ -56,7 +56,7 @@
 
             <div class="bg-white p-6 border border-gray-100 shadow-sm">
 
-              <h3 class="text-lg font-['Cormorant_Garamond'] mb-4 text-black">Top Contenido</h3>
+              <h3 class="text-lg font-['Cormorant_Garamond'] mb-4 text-black">{{'ANALYTICS.TOP' | translate}}</h3>
 
               <ul class="flex flex-col gap-5">
 
@@ -74,13 +74,13 @@
                     <div class="flex flex-col overflow-hidden">
 
                       <span class="text-sm font-bold text-[#1A1614] group-hover:text-[#C5A059] transition-colors truncate">{{book.title}}</span>
-                      <span class="text-[10px] uppercase tracking-widest text-gray-500">Ver detalles</span>
+                      <span class="text-[10px] uppercase tracking-widest text-gray-500">{{'ANALYTICS.DETAILS' | translate}}</span>
 
                     </div>
 
                   </div>
                 } @empty {
-                  <li class="text-gray-500 text-sm italic">Cargando podio...</li>
+                  <li class="text-gray-500 text-sm italic">{{'ANALYTICS.LOAD' | translate}}</li>
                 }
 
               </ul>
@@ -89,7 +89,7 @@
 
             <div class="bg-white p-8 border border-gray-100 shadow-sm text-center">
 
-              <h3 class="text-xs uppercase tracking-[0.2em] text-black mb-4">Tasa de reportes</h3>
+              <h3 class="text-xs uppercase tracking-[0.2em] text-black mb-4">{{'ANALYTICS.REPORTS' | translate}}</h3>
 
               <div class="text-6xl font-['Cormorant_Garamond'] text-[#1A1614]">{{ stats.reportRate }}%</div>
 
@@ -99,7 +99,7 @@
 
           <div class="bg-white p-8 border border-gray-100 shadow-sm md:col-span-3">
 
-            <h3 class="text-lg font-['Cormorant_Garamond'] text-black mb-6">Calidad Reportes</h3>
+            <h3 class="text-lg font-['Cormorant_Garamond'] text-black mb-6">{{'ANALYTICS.QUALITY' | translate}}</h3>
 
             <div class="h-64">
 

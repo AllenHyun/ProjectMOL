@@ -108,7 +108,7 @@ export class LoginPage implements OnInit, OnDestroy {
             const reason = userData['banReason'] || 'No especificado';
             this.userDocSub?.unsubscribe();
             await signOut(this.auth);
-            alert(`TU CUENTA ESTÁ SUSPENDIDA. \nMotivo: ${reason}`);
+            alert(this.translate.instant('LOGIN.MESSAGES.BAN') +  ' ' + reason);
             return;
           }
         }
@@ -161,7 +161,7 @@ export class LoginPage implements OnInit, OnDestroy {
           const reason = userData['banReason'] || 'No especificado';
           this.userDocSub?.unsubscribe();
           await signOut(this.auth);
-          alert(`TU CUENTA ESTÁ SUSPENDIDA. \nMotivo: ${reason}`);
+          alert(this.translate.instant('LOGIN.MESSAGES.BAN') + '' + reason);
           return;
         }
       }

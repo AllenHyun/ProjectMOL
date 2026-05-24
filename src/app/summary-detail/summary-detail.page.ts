@@ -103,7 +103,9 @@ export class SummaryDetailPage implements OnInit {
       if (bookSnap.exists()) {
         this.book = {...bookSnap.data(), id: bookSnap.id};
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async speakSummary(text: string, langName: string = 'Spanish') {

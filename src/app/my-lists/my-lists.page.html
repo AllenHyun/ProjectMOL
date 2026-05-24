@@ -327,13 +327,13 @@
         <div class="bg-[#FDFBF7] p-4 border border-[#C5A059]/20 rounded-sm flex flex-col gap-4">
 
           <h3 class="text-xs font-bold uppercase tracking-wider text-[#1A1614]">
-            {{ isEditingReminder ? 'Gestionar Recordatorio' : 'Nuevo Recordatorio' }}
+            {{ isEditingReminder ? ('MY_LISTS.REMINDER.MANAGE' | translate) : ('MY_LISTS.REMINDER.NEW' | translate) }}
           </h3>
 
           <div class="flex flex-col gap-1">
 
-            <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Título de la alerta</label>
-            <input [(ngModel)]="reminderTitle" type="text" placeholder="Ej: Examen de matemáticas" class="w-full p-2 border border-[#C5A059] bg-white outline-none text-xs text-black font-lato rounded-none">
+            <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">{{ 'MY_LISTS.REMINDER.NEW_TITLE' | translate }}</label>
+            <input [(ngModel)]="reminderTitle" type="text" placeholder="{{'MY_LISTS.REMINDER.TITLE_PLACEHOLDER' | translate}}" class="w-full p-2 border border-[#C5A059] bg-white outline-none text-xs text-black font-lato rounded-none">
 
           </div>
 
@@ -341,20 +341,20 @@
 
             <div class="flex flex-col gap-1">
 
-              <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Fecha y hora del evento</label>
+              <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">{{'MY_LISTS.REMINDER.TIME' | translate}}</label>
               <input [(ngModel)]="reminderDate" type="datetime-local" class="w-full p-2 border border-[#C5A059] bg-white outline-none text-xs text-black font-lato rounded-none">
 
             </div>
 
             <div class="flex flex-col gap-1">
 
-              <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Aviso por correo</label>
+              <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">{{'MY_LISTS.REMINDER.NOTIFY' | translate}}</label>
               <select [(ngModel)]="remindDaysBefore" class="w-full p-2 border border-[#C5A059] bg-white outline-none text-xs text-black font-lato font-bold rounded-none">
 
-                <option [value]="0">El mismo día</option>
-                <option [value]="1">1 día antes</option>
-                <option [value]="3">3 días antes</option>
-                <option [value]="7">1 semana antes</option>
+                <option [value]="0">{{'MY_LISTS.REMINDER.TIME_0' | translate}}</option>
+                <option [value]="1">{{'MY_LISTS.REMINDER.TIME_1' | translate}}</option>
+                <option [value]="3">{{'MY_LISTS.REMINDER.TIME_3' | translate}}</option>
+                <option [value]="7">{{'MY_LISTS.REMINDER.TIME_7' | translate}}</option>
 
               </select>
 
@@ -369,7 +369,7 @@
             }
 
             <button (click)="saveReminder()" class="px-4 py-2 bg-[#2E473B] text-white text-[10px] font-bold uppercase tracking-wider shadow-sm active:scale-95 transition-transform">
-              {{ isEditingReminder ? ('PROFILE.SAVE' | translate) : 'Guardar Alerta' }}
+              {{ isEditingReminder ? ('PROFILE.SAVE' | translate) : ('MY_LISTS.REMINDER.SAVE' | translate) }}
             </button>
 
           </div>
@@ -378,7 +378,7 @@
 
         <div class="flex flex-col gap-3 mt-2">
 
-          <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Tus alertas programadas ({{ reminders?.length || 0 }})</label>
+          <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">{{'MY_LISTS.REMINDER.ALERT' | translate}} ({{ reminders?.length || 0 }})</label>
 
           <div class="flex flex-col gap-2 max-h-[35vh] overflow-y-auto pr-2 custom-scrollbar">
 
@@ -414,7 +414,7 @@
             } @empty {
               <div class="py-6 text-center border border-dashed border-gray-200">
 
-                <p class="text-xs italic text-gray-500 font-lato">No tienes alertas o recordatorios vigentes.</p>
+                <p class="text-xs italic text-gray-500 font-lato">{{'MY_LISTS.REMINDER.EMPTY' | translate}}</p>
 
               </div>
             }

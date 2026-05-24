@@ -9,16 +9,19 @@ import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import {AdminPanelComponent} from "../components/admin-panel/admin-panel.component";
 import {Translation} from "../services/translation";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-taxonomy',
   templateUrl: './taxonomy.page.html',
   styleUrls: ['./taxonomy.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, AdminPanelComponent, IonIcon]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, AdminPanelComponent, IonIcon, TranslatePipe]
 })
 export class TaxonomyPage implements OnInit {
   private firestore = inject(Firestore);
+  private translate = inject(TranslateService);
+
   public categories: any[] = [];
   public tags: any[] = [];
 
@@ -88,7 +91,7 @@ export class TaxonomyPage implements OnInit {
   }
 
   async deleteItem(col: string, id: string){
-    if (confirm('¿Eliminar permanentemente?')){
+    if (confirm(this.translate.instant('TAXONOMY.CONFIRM_DELETE'))) {
       await deleteDoc(doc(this.firestore, col, id));
     }
   }

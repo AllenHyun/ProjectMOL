@@ -58,14 +58,14 @@ export class UserManagementPage implements OnInit {
         await this.processStatusChange(user, 'active', '');
       }
     } else {
-      const reason = prompt("Escribe el motivo de la suspensión (se enviará por email):");
+      const reason = prompt(this.translate.instant('ADMIN-U.REASON'));
 
       if (reason === null) {
         return;
       }
 
       if (confirm(this.translate.instant('ADMIN-U.CONFIRM_BAN'))) {
-        await this.processStatusChange(user, 'suspended', reason || 'Incumplimiento de las normas de la comunidad');
+        await this.processStatusChange(user, 'suspended', reason || this.translate.instant('ADMIN-U.SUSPENDED'));
       }
     }
   }
@@ -88,7 +88,7 @@ export class UserManagementPage implements OnInit {
       });
     } catch (error) {
       console.error("Error de permisos o red:", error);
-      alert("No tienes permisos para modificar este usuario.");
+      alert(this.translate.instant('ADMIN-U.MODIFY'));
     }
   }
 }

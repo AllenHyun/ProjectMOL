@@ -23,7 +23,7 @@ import {combineLatest, filter, map, Observable, of, switchMap} from "rxjs";
 import {shareOutline, downloadOutline, cameraOutline, closeOutline, addOutline, banOutline, checkmarkCircleOutline, lockClosedOutline} from "ionicons/icons";
 import {addIcons} from "ionicons";
 import {register} from "swiper/element/bundle";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 register();
 
@@ -39,6 +39,7 @@ export class ProfilePage implements OnInit {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
   private route = inject(ActivatedRoute);
+  private translate = inject(TranslateService);
 
   public isReadOnly = true;
   public isEditing = false;
@@ -205,7 +206,7 @@ export class ProfilePage implements OnInit {
   async saveToMyLists(list: any) {
     const user = this.auth.currentUser;
     if (!user) {
-      alert("Debes iniciar sesión para guardar listas");
+      alert(this.translate.instant('PROFILE.LISTS.SAVE_LISTS'));
       return;
     }
     try {
@@ -217,7 +218,7 @@ export class ProfilePage implements OnInit {
         isPublic: false,
         createdAt: new Date().toISOString(),
       });
-      alert("Lista guardada en tu biblioteca");
+      alert(this.translate.instant('PROFILE.LISTS.LIBRARY'));
     } catch (error) {
       console.error("Error al guardar lista: ", error);
     }

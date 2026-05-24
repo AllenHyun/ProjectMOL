@@ -110,11 +110,16 @@ export class SummaryPage implements OnInit {
       let name = this.translate.instant('COMMON.ANONYMOUS');
 
       if (sum['userId']) {
-        const userSnap = await getDoc(doc(this.firestore, 'users', sum['userId']));
-        if (userSnap.exists()) {
-          const userData = userSnap.data() as any;
-          photo = userData.photoUrl || '';
-          name = userData.username || name;
+
+        try {
+          const userSnap = await getDoc(doc(this.firestore, 'users', sum['userId']));
+          if (userSnap.exists()) {
+            const userData = userSnap.data() as any;
+            photo = userData.photoUrl || '';
+            name = userData.username || name;
+          }
+        } catch (error){
+          console.error(error);
         }
       }
 

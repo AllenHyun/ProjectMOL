@@ -1,4 +1,4 @@
-import {Component, OnInit, inject, NgZone} from '@angular/core';
+import {Component, OnInit, inject, NgZone, OnDestroy} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {
@@ -34,7 +34,7 @@ import {Subscription} from "rxjs";
   standalone: true,
   imports: [IonContent, CommonModule, HeaderComponent, FooterComponent, IonIcon, HeaderComponent, FooterComponent, IonModal, FormsModule, RouterLink, TranslatePipe]
 })
-export class BookDetailPage implements OnInit {
+export class BookDetailPage implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private firestore = inject(Firestore);
   private router = inject(Router);
@@ -348,7 +348,9 @@ export class BookDetailPage implements OnInit {
       this.book.ratingCount = newCount;
       this.book.ratingAvg = newAvg;
       this.userVote = value;
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async checkUserVote(bookId: string){
@@ -458,7 +460,9 @@ export class BookDetailPage implements OnInit {
           createdAt: new Date().toISOString()
         }));
       await Promise.all(promises);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async toggleBookListModal(list: any){
@@ -469,7 +473,9 @@ export class BookDetailPage implements OnInit {
       await updateDoc(listRef, {
         bookIds: isInList ? arrayRemove(this.book.id) : arrayUnion(this.book.id)
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async createAndAddToList(){
@@ -488,7 +494,9 @@ export class BookDetailPage implements OnInit {
       });
       this.newListName = '';
     }
-    catch (error) {}
+    catch (error) {
+      console.error(error);
+    }
   }
 
   async showLoginAlert() {
@@ -556,7 +564,9 @@ export class BookDetailPage implements OnInit {
       if (!this.showComments[reviewId]){
         this.toggleComments(reviewId);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async reportReview(reviewId: string){

@@ -16,12 +16,12 @@
 
         <section class="bg-white p-6 border border-gray-500 shadow-sm">
 
-          <h2 class="text-2xl font-['Cormorant_Garamond'] uppercase mb-6 tracking-widest text-[#1A1614]">Categorías Principales</h2>
+          <h2 class="text-2xl font-['Cormorant_Garamond'] uppercase mb-6 tracking-widest text-[#1A1614]">{{'TAXONOMY.CATEGORIES.TITLE' | translate}}</h2>
 
           <div class="flex gap-2 mb-6">
 
-            <input [(ngModel)]="newCategoryName" placeholder="Nueva categoría..." class="flex-grow p-2 border border-[#C5A059] outline-none text-sm text-white">
-            <button (click)="addCategory()" class="bg-[#2E473B] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest">Añadir</button>
+            <input [(ngModel)]="newCategoryName" placeholder="{{'TAXONOMY.CATEGORIES.PLACEHOLDER' | translate}}" class="flex-grow p-2 border border-[#C5A059] outline-none text-sm text-white">
+            <button (click)="addCategory()" class="bg-[#2E473B] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest">{{'TAXONOMY.ADD' | translate}}</button>
 
           </div>
 
@@ -41,13 +41,13 @@
 
         <section class="bg-white p-6 border border-gray-200 shadow-sm">
 
-          <h2 class="text-2xl font-['Cormorant_Garamond'] uppercase mb-6 tracking-widest text-[#1A1614]">Asignaturas / Etiquetas</h2>
+          <h2 class="text-2xl font-['Cormorant_Garamond'] uppercase mb-6 tracking-widest text-[#1A1614]">{{'TAXONOMY.TAGS.TITLE' | translate}}</h2>
 
           <div class="flex flex-col gap-2 mb-6">
 
             <select [(ngModel)]="selectedCategoryIdForTag" class="p-2 border border-[#C5A059] text-xs outline-none bg-white text-black">
 
-              <option value="">Vincular a Categoría...</option>
+              <option value="">{{'TAXONOMY.TAGS.ADD' | translate}}</option>
               @for (cat of categories; track cat.id) {
                 <option [value]="cat.id">{{cat.names?.es}}</option>
               }
@@ -55,8 +55,8 @@
 
             <div class="flex gap-2">
 
-              <input [(ngModel)]="newTagName" placeholder="Ej: Biología Celular..." class="flex-grow p-2 border border-[#C5A059] outline-none text-sm text-white">
-              <button (click)="addTag()" class="bg-[#2E473B] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest">Añadir</button>
+              <input [(ngModel)]="newTagName" placeholder="{{'TAXONOMY.TAGS.PLACEHOLDER' | translate}}" class="flex-grow p-2 border border-[#C5A059] outline-none text-sm text-white">
+              <button (click)="addTag()" class="bg-[#2E473B] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest">{{'TAXONOMY.ADD' | translate}}</button>
 
             </div>
 
@@ -70,7 +70,7 @@
                 <div class="flex flex-col">
 
                   <span class="text-sm font-bold text-black font-lato">{{tag.name}}</span>
-                  <span class="text-[9px] uppercase font-bold text-gray-400">Padre: {{getCategoryName(tag.categoryId)}}</span>
+                  <span class="text-[9px] uppercase font-bold text-gray-400">{{'TAXONOMY.TAGS.FATHER' | translate}} {{getCategoryName(tag.categoryId)}}</span>
 
                 </div>
 

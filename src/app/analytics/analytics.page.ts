@@ -1,4 +1,4 @@
-import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
@@ -9,6 +9,7 @@ import {AdminPanelComponent} from "../components/admin-panel/admin-panel.compone
 import {HeaderComponent} from "../components/header/header.component";
 import {Subscription} from "rxjs";
 import {RouterLink} from "@angular/router";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 Chart.register(...registerables);
 
@@ -17,10 +18,11 @@ Chart.register(...registerables);
   templateUrl: './analytics.page.html',
   styleUrls: ['./analytics.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, FooterComponent, AdminPanelComponent, HeaderComponent, RouterLink]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, FooterComponent, AdminPanelComponent, HeaderComponent, RouterLink, TranslatePipe]
 })
-export class AnalyticsPage implements OnInit {
+export class AnalyticsPage implements OnInit, OnDestroy {
   private firestore = inject(Firestore);
+  private translate = inject(TranslateService);
 
   @ViewChild('growthChart') growthChartCanvas!: ElementRef;
   @ViewChild('distChart') distChartCanvas!: ElementRef;
@@ -133,7 +135,7 @@ export class AnalyticsPage implements OnInit {
       data: {
         labels: labels,
         datasets: [{
-          label: 'Usuarios Totales (Crecimiento)',
+          label: this.translate.instant('ANALYTICS.USERS'),
           data: values,
           borderColor: '#C5A059',
           backgroundColor: '#C5A05933',
@@ -159,7 +161,7 @@ export class AnalyticsPage implements OnInit {
     this.distChart = new Chart(this.distChartCanvas.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: ['Admin', 'Lectores', 'Invitados'],
+        labels: [this.translate.instant('ANALYTICS.ADMIN'), this.translate.instant('ANALYTICS.READER'), this.translate.instant('ANALYTICS.GUEST')],
         datasets: [{
           data: [roles.admin, roles.reader, roles.visitor],
           backgroundColor: ['#2E473B', '#C5A059', '#A0AEC0']
@@ -182,9 +184,9 @@ export class AnalyticsPage implements OnInit {
     this.qualityChart = new Chart(this.qualityChartCanvas.nativeElement, {
       type: 'bar',
       data: {
-        labels: ['Aprobados', 'Rechazados', 'Pendientes'],
+        labels: [this.translate.instant('ANALYTICS.APPROVED'), this.translate.instant('ANALYTICS.REJECTED'), this.translate.instant('ANALYTICS.PENDING')],
         datasets: [{
-          label: 'Estado de Resúmenes',
+          label: this.translate.instant('ANALYTICS.SUMMARIES'),
           data: [statusCount.published, statusCount.rejected, statusCount.pending],
           backgroundColor: ['#2E473B', '#E53E3E', '#C5A059']
         }]

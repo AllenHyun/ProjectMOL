@@ -22,7 +22,8 @@
     "MESSAGES": {
       "INVALID_EMAIL": "Veuillez saisir un e-mail valide",
       "RESET_MAIL_SENT": "E-mail envoyé. Veuillez vérifier votre boîte de réception (et vos spams).",
-      "ERROR": "Un problème est survenu lors de la connexion. Veuillez réessayer."
+      "ERROR": "Un problème est survenu lors de la connexion. Veuillez réessayer.",
+      "BAN": "VOTRE COMPTE A ÉTÉ SUSPENDU. \nMotif :"
     },
     "VERIFY": "Vous devez d'abord vérifier votre compte."
   },
@@ -108,6 +109,7 @@
       "ACTIONS": "Actions"
     },
     "EMPTY": "Aucun livre ne correspond à votre recherche",
+    "EMPTY_SELECT": "Sélectionnez d'abord une catégorie pour voir les options disponibles",
     "CATEGORIES": {
       "Acción": "Action",
       "Romance": "Romance",
@@ -231,7 +233,13 @@
     "LEVELS": {
       "ESO/Bachiller": "Collège / Lycée",
       "Universidad": "Université",
-      "Posgrado": "Master / Doctorat"
+      "Posgrado": "Master / Doctorat",
+      "Eso": "Collège / Lycée",
+      "Uni": "Université",
+      "Pos": "Master / Doctorat",
+      "ESO": "Collège / Lycée",
+      "UNI": "Université",
+      "POS": "Master / Doctorat"
     },
     "CATEGORIES": {
       "Acción": "Action",
@@ -303,6 +311,26 @@
       "LABEL": "Collez le code de la liste",
       "PLACEHOLDER": "ID de la liste partagée",
       "IMPORT_BTN": "Importer"
+    },
+    "REMINDER": {
+      "TITLE": "RAPPEL :",
+      "MESSAGE_1": "Vous avez un événement de prévu le :",
+      "MESSAGE_2": ". Alerte configurée",
+      "MESSAGE_3": " jour(s) à l'avance.",
+      "MANAGE": "Gérer le rappel",
+      "NEW": "Nouveau rappel",
+      "NEW_TITLE": "Titre de l'alerte",
+      "TITLE_PLACEHOLDER": "Ex : Examen de mathématiques",
+      "TIME": "Date et heure de l'événement",
+      "NOTIFY": "Notification de rappel",
+      "TIME_0": "Le jour même",
+      "TIME_1": "1 jour avant",
+      "TIME_3": "3 jours avant",
+      "TIME_7": "1 semaine avant",
+      "SAVE": "Enregistrer l'alerte",
+      "ALERT": "Vos alertes programmées",
+      "EMPTY": "Vous n'avez pas d'alertes ou de rappels en cours.",
+      "DELETE": "Êtes-vous sûr de vouloir supprimer ce rappel ?"
     }
   },
   "PROFILE": {
@@ -313,7 +341,7 @@
     "BIO_EMPTY": "Aucune description pour le moment...",
     "INTERESTS": "Mes intérêts",
     "NEW_INTEREST": "Nouvel intérêt",
-    "PUBLIC_LISTS": "Listas publiques",
+    "PUBLIC_LISTS": "Étagères publiques",
     "LIST_EMPTY": "Cette étagère n'a pas encore de livres sélectionnés.",
     "USER_LISTS_EMPTY": "Cet utilisateur n'a pas encore partagé d'étagère.",
     "LOADING_LISTS": "Chargement des étagères...",
@@ -322,7 +350,11 @@
     "BLOCK": "Bloquer l'utilisateur",
     "BLOCKED_LABEL": "Utilisateur bloqué",
     "BLOCKED_BY_ME": "Vous avez bloqué cet utilisateur",
-    "UNAVAILABLE": "Ce profil n'est pas disponible"
+    "UNAVAILABLE": "Ce profil n'est pas disponible",
+    "LISTS": {
+      "SAVE_LIST": "Vous devez vous connecter pour enregistrer des listes",
+      "LIBRARY": "Liste enregistrée dans votre bibliothèque"
+    }
   },
   "SETTINGS": {
     "TAB_ACCOUNT": "Compte",
@@ -351,9 +383,11 @@
     "ERROR_UPDATE": "Une erreur est survenue lors de la mise à jour des données.",
     "ERROR_RECENT_LOGIN": "Pour des raisons de sécurité, vous devez vous être connecté récemment pour effectuer cette action. Veuillez vous déconnecter et vous reconnecter.",
     "EMAIL_VERIFY_NOTICE": "ATTENTION : Un lien de confirmation a été envoyé à",
-    "RESET_SENT": "Un e-mail de réinitialisation de mot de passe a été envoyé à",
+    "RESET_SENT_1": "Un e-mail a été envoyé à ",
+    "RESET_SENT_2": " pour réinitialiser votre mot de passe",
     "ERROR_RESET": "Erreur lors de l'envoi de l'e-mail de réinitialisation.",
-    "ERROR_EXPORT": "Impossible d'exporter les listes."
+    "ERROR_EXPORT": "Impossible d'exporter les listes.",
+    "RETURN": "Pour valider la modification, vous devez la vérifier. La session va maintenant se fermer."
   },
   "ADMIN": {
     "TITLE": "Panel Admin",
@@ -416,7 +450,8 @@
     "POS": "Master / Doctorat",
     "REGISTER_BTN": "S'inscrire",
     "LOGIN": "Vous avez déjà un compte ? Se connecter",
-    "ACCOUNT_CREATED": "Compte créé. Veuillez vérifier vos e-mails pour le valider."
+    "ACCOUNT_CREATED": "Compte créé. Veuillez vérifier vos e-mails pour le valider.",
+    "GUEST": "Entrer en tant que visiteur"
   },
   "REVIEW-D": {
     "TITLE": "Critiques",
@@ -476,12 +511,18 @@
     "EMPTY": "Aucun utilisateur trouvé.",
     "CONFIRM_BAN": "Êtes-vous sûr de vouloir suspendre cet utilisateur ?",
     "CONFIRM_UNBAN": "Voulez-vous réactiver le compte de cet utilisateur ?",
-    "CONFIRM_DELETE": "Cette action supprimera définitivement l'utilisateur, voulez-vous continuer ?"
+    "CONFIRM_DELETE": "Cette action supprimera définitivement l'utilisateur, voulez-vous continuer ?",
+    "REASON": "Saisissez le motif de la suspension",
+    "SUSPENDED": "Non-respect des règles de la communauté",
+    "MODIFY": "Vous n'avez pas les autorisations nécessaires pour modifier cet utilisateur"
   },
   "MODERATION": {
     "TITLE": "Modération de contenu",
     "SENDING": "Votre résumé a été envoyé pour modération.",
+    "SENDING_DRAFT": "Votre résumé a été enregistré dans les brouillons",
     "EMPTY": "Aucun résumé en attente de révision",
+    "BOOK_NOT_FOUND": "Livre non trouvé",
+    "REJECT": "",
     "ACTION_COMPLETED": "Action réalisée avec succès",
     "TABLE": {
       "TYPE": "Type",
@@ -516,5 +557,64 @@
     "REPORT_RESOLVED_MSG": "Votre œuvre '{{work}}' a été retirée après examen par notre équipe de modération.",
     "REPORT_DISMISSED_TITLE": "Signalement révisé",
     "REPORT_DISMISSED_MSG": "Nous avons examiné le signalement contre votre œuvre '{{work}}' et avons déterminé qu'elle ne viole pas nos règles. Votre contenu reste visible."
+  },
+  "ANALYTICS": {
+    "USERS": "Utilisateurs totaux (Croissance)",
+    "ADMIN": "Admin",
+    "READER": "Lecteurs",
+    "GUEST": "Invités",
+    "APPROVED": "Approuvés",
+    "REJECTED": "Refusés",
+    "PENDING": "En attente",
+    "SUMMARIES": "Statut des résumés",
+    "TITLE": "Analytiques de la plateforme",
+    "DAUMAU": "Indicateurs d'activité (DAU/MAU)",
+    "TITLE_USERS": "Croissance des utilisateurs",
+    "TOP": "Contenu le plus populaire",
+    "DETAILS": "Voir les détails",
+    "LOAD": "Chargement du podium...",
+    "REPORTS": "Taux de signalement",
+    "QUALITY": "Qualité des signalements"
+  },
+  "TAKEDOWNS": {
+    "CONFIRM": "Supprimer définitivement ce signalement ?",
+    "DELETE": "Le contenu original a déjà été supprimé",
+    "TITLE": "Signalements de contenu (Takedowns)",
+    "FILTERS": "Filtres :",
+    "ALL": "Tous",
+    "PENDING": "En attente",
+    "RESOLVED": "Résolus",
+    "DISMISS": "Rejetés",
+    "BOOK": {
+      "TITLE": "Œuvre contestée",
+      "REASON": "Motif",
+      "USER": "Auteur du signalement",
+      "STATUS": "Statut",
+      "ACTIONS": "Actions"
+    },
+    "EMPTY": "Aucun signalement ne correspond à ce filtre.",
+    "SHOWING": "Affichage de ",
+    "OF": " sur ",
+    "TOTAL": "Total : ",
+    "PREVIEW": {
+      "TITLE": "Examen du contenu",
+      "BOOK": "Œuvre : ",
+      "AUTHOR": "Auteur de l'œuvre : ",
+      "CLOSE": "Fermer l'aperçu"
+    }
+  },
+  "TAXONOMY": {
+    "CONFIRM_DELETE": "Supprimer définitivement ?",
+    "ADD": "Ajouter",
+    "CATEGORIES": {
+      "TITLE": "Catégories principales",
+      "PLACEHOLDER": "Nouvelle catégorie..."
+    },
+    "TAGS": {
+      "TITLE": "Matières / Étiquettes",
+      "ADD": "Associer à la catégorie",
+      "PLACEHOLDER": "Ex : Biologie cellulaire",
+      "FATHER": "Parent : "
+    }
   }
 }

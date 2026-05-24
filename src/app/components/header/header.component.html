@@ -124,7 +124,8 @@
       <div routerLink="/profile" (click)="menuOpen = false" class="p-4 flex flex-col gap-1 bg-gray-50 border-b border-gray-200">
 
         <span class="font-lato text-lg font-bold leading-none">{{'HEADER.LOGIN_MENU.PROFILE' | translate}}</span>
-        <span class="text-[10px] uppercase tracking-widest opacity-60"> {{'HEADER.LOGIN_MENU.SCHOOL_LEVEL' | translate}} {{user?.level}} </span>
+        <span class="text-[10px] uppercase tracking-widest opacity-60"> {{'HEADER.LOGIN_MENU.SCHOOL_LEVEL' | translate}} {{ 'EXPLORE.LEVELS.' + user?.level | translate}} </span>
+
 
       </div>
 

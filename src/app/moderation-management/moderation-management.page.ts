@@ -46,7 +46,7 @@ export class ModerationManagementPage implements OnInit {
         const bookSnap = await getDoc(doc(this.firestore, 'books', s.bookId));
         return {
           ...s,
-          bookTitle: bookSnap.exists() ? bookSnap.data()['title'] : 'Libro no encontrado'
+          bookTitle: bookSnap.exists() ? bookSnap.data()['title'] : this.translate.instant('MODERATION.BOOK_NOT_FOUND')
         };
       }));
     } catch (error) {

@@ -22,7 +22,8 @@
     "MESSAGES": {
       "INVALID_EMAIL": "Please enter a valid email",
       "RESET_MAIL_SENT": "Email sent. Please check your inbox (and your Spam folder).",
-      "ERROR": "There was a problem signing in. Please try again."
+      "ERROR": "There was a problem signing in. Please try again.",
+      "BAN": "YOUR ACCOUNT HAS BEEN SUSPENDED. \nReason:"
     },
     "VERIFY": "You must verify your account first."
   },
@@ -108,6 +109,7 @@
       "ACTIONS": "Actions"
     },
     "EMPTY": "No books match your search",
+    "EMPTY_SELECT": "Select a category first to see the available options",
     "CATEGORIES": {
       "Acción": "Action",
       "Romance": "Romance",
@@ -231,7 +233,12 @@
     "LEVELS": {
       "ESO/Bachiller": "Secondary / High School",
       "Universidad": "University",
-      "Posgrado": "Postgraduate"
+      "Posgrado": "Postgraduate",
+      "Eso": "Secondary / High School",
+      "Uni": "University",
+      "ESO": "Secondary / High School",
+      "UNI": "University",
+      "POS": "Postgraduate / Master"
     },
     "CATEGORIES": {
       "Acción": "Action",
@@ -303,6 +310,26 @@
       "LABEL": "Paste the list code",
       "PLACEHOLDER": "Shared list ID",
       "IMPORT_BTN": "Import"
+    },
+    "REMINDER": {
+      "TITLE": "REMINDER:",
+      "MESSAGE_1": "You have an event scheduled for:",
+      "MESSAGE_2": ". Alert configured with",
+      "MESSAGE_3": " day(s) in advance.",
+      "MANAGE": "Manage Reminder",
+      "NEW": "New Reminder",
+      "NEW_TITLE": "Alert Title",
+      "TITLE_PLACEHOLDER": "e.g., Math Exam",
+      "TIME": "Event Date and Time",
+      "NOTIFY": "Email Alert",
+      "TIME_0": "The same day",
+      "TIME_1": "1 day before",
+      "TIME_3": "3 days before",
+      "TIME_7": "1 week before",
+      "SAVE": "Save Alert",
+      "ALERT": "Your Scheduled Alerts",
+      "EMPTY": "You have no current alerts or reminders.",
+      "DELETE": "Are you sure you want to delete this reminder?"
     }
   },
   "PROFILE": {
@@ -322,7 +349,11 @@
     "BLOCK": "Block user",
     "BLOCKED_LABEL": "User blocked",
     "BLOCKED_BY_ME": "You have blocked this user",
-    "UNAVAILABLE": "This profile is unavailable"
+    "UNAVAILABLE": "This profile is unavailable",
+    "LISTS": {
+      "SAVE_LIST": "You must log in to save lists",
+      "LIBRARY": "List saved to your library"
+    }
   },
   "SETTINGS": {
     "TAB_ACCOUNT": "Account",
@@ -351,9 +382,11 @@
     "ERROR_UPDATE": "An error occurred while updating data.",
     "ERROR_RECENT_LOGIN": "For security reasons, you must have logged in recently to perform this action. Please log out and log back in.",
     "EMAIL_VERIFY_NOTICE": "ATTENTION: A confirmation link has been sent to",
-    "RESET_SENT": "A password reset email has been sent to",
+    "RESET_SENT_1": "An email has been sent to ",
+    "RESET_SENT_2": " to reset your password",
     "ERROR_RESET": "Error sending the reset email.",
-    "ERROR_EXPORT": "Lists could not be exported."
+    "ERROR_EXPORT": "Lists could not be exported.",
+    "RETURN": "To complete the change, you must verify it. The session will now close."
   },
   "ADMIN": {
     "TITLE": "Admin Panel",
@@ -361,7 +394,7 @@
     "BOOK": "Book Management",
     "USERS": "Users",
     "TAXONOMY": "Taxonomy",
-    "TAKEDOWN": "Reports",
+    "TAKEDOWN": "Takedowns",
     "ANALYTICS": "Analytics"
   },
   "FOOTER": {
@@ -416,7 +449,8 @@
     "POS": "Postgraduate / Master",
     "REGISTER_BTN": "Register",
     "LOGIN": "Already have an account? Sign In",
-    "ACCOUNT_CREATED": "Account created. Please check your email to verify it."
+    "ACCOUNT_CREATED": "Account created. Please check your email to verify it.",
+    "GUEST": "Enter as Guest"
   },
   "REVIEW-D": {
     "TITLE": "Reviews",
@@ -476,12 +510,18 @@
     "EMPTY": "No users found.",
     "CONFIRM_BAN": "Are you sure you want to suspend this user?",
     "CONFIRM_UNBAN": "Do you want to reactivate this user's account?",
-    "CONFIRM_DELETE": "This action will permanently delete the user, do you want to continue?"
+    "CONFIRM_DELETE": "This action will permanently delete the user, do you want to continue?",
+    "REASON": "Enter the reason for suspension",
+    "SUSPENDED": "Breach of community guidelines",
+    "MODIFY": "You do not have permissions to modify this user"
   },
   "MODERATION": {
     "TITLE": "Content Moderation",
     "SENDING": "Your summary has been sent for moderation.",
+    "SENDING_DRAFT": "Your summary has been saved to drafts",
     "EMPTY": "No summaries pending review",
+    "BOOK_NOT_FOUND": "Book not found",
+    "REJECT": "",
     "ACTION_COMPLETED": "Action completed successfully",
     "TABLE": {
       "TYPE": "Type",
@@ -516,5 +556,64 @@
     "REPORT_RESOLVED_MSG": "Your work '{{work}}' has been removed after review by our moderation team.",
     "REPORT_DISMISSED_TITLE": "Report reviewed",
     "REPORT_DISMISSED_MSG": "We have reviewed the report against your work '{{work}}' and determined it does not violate our policies. Your content remains visible."
+  },
+  "ANALYTICS": {
+    "USERS": "Total Users (Growth)",
+    "ADMIN": "Admin",
+    "READER": "Readers",
+    "GUEST": "Guests",
+    "APPROVED": "Approved",
+    "REJECTED": "Rejected",
+    "PENDING": "Pending",
+    "SUMMARIES": "Summaries Status",
+    "TITLE": "Platform Analytics",
+    "DAUMAU": "Activity Metrics (DAU/MAU)",
+    "TITLE_USERS": "User Growth",
+    "TOP": "Top Content",
+    "DETAILS": "View details",
+    "LOAD": "Loading podium...",
+    "REPORTS": "Report Rate",
+    "QUALITY": "Report Quality"
+  },
+  "TAKEDOWNS": {
+    "CONFIRM": "Permanently delete this report record?",
+    "DELETE": "The original content has already been deleted",
+    "TITLE": "Takedowns",
+    "FILTERS": "Filters:",
+    "ALL": "All",
+    "PENDING": "Pending",
+    "RESOLVED": "Resolved",
+    "DISMISS": "Dismissed",
+    "BOOK": {
+      "TITLE": "Claimed Work",
+      "REASON": "Reason",
+      "USER": "Claimant",
+      "STATUS": "Status",
+      "ACTIONS": "Actions"
+    },
+    "EMPTY": "No reports match this filter.",
+    "SHOWING": "Showing ",
+    "OF": " of ",
+    "TOTAL": "Total: ",
+    "PREVIEW": {
+      "TITLE": "Content Review",
+      "BOOK": "Work: ",
+      "AUTHOR": "Author of the work: ",
+      "CLOSE": "Close Preview"
+    }
+  },
+  "TAXONOMY": {
+    "CONFIRM_DELETE": "Permanently delete?",
+    "ADD": "Add",
+    "CATEGORIES": {
+      "TITLE": "Main Categories",
+      "PLACEHOLDER": "New category..."
+    },
+    "TAGS": {
+      "TITLE": "Subjects / Tags",
+      "ADD": "Link to Category",
+      "PLACEHOLDER": "e.g., Cell Biology",
+      "FATHER": "Parent: "
+    }
   }
 }

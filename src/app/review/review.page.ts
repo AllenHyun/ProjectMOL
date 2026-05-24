@@ -81,11 +81,15 @@ export class ReviewPage implements OnInit {
       let username = 'Usuario';
 
       if (rev.userId) {
-        const userSnap = await getDoc(doc(this.firestore, 'users', rev.userId));
-        if (userSnap.exists()) {
-          const userData = userSnap.data() as any;
-          photo = userData.photoUrl || '';
-          username = userData.username || 'Usuario';
+        try {
+          const userSnap = await getDoc(doc(this.firestore, 'users', rev.userId));
+          if (userSnap.exists()) {
+            const userData = userSnap.data() as any;
+            photo = userData.photoUrl || '';
+            username = userData.username || 'Usuario';
+          }
+        } catch (error) {
+          console.error(error);
         }
       }
 

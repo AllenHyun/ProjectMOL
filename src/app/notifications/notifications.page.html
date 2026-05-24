@@ -41,9 +41,9 @@
 
               <div class="flex items-center gap-3">
 
-                <div [class]="noti.title.includes('aprobado') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
+                <div [class]="noti.title.includes('aprobado') ? 'bg-green-100 text-green-700' : noti.title.toLowerCase().includes('recordatorio') ? 'bg-red-100 text-red-700' : 'bg-red-100 text-red-700'"
                      class="w-8 h-8 rounded-full flex items-center justify-center text-lg">
-                  <ion-icon [name]="noti.title.includes('aprobado') ? 'checkmark-outline' : 'close-outline'"></ion-icon>
+                  <ion-icon [name]="noti.title.includes('aprobado') ? 'checkmark-outline' : noti.title.toLowerCase().includes('recordatorio') ? 'time-outline' : 'close-outline'"></ion-icon>
                 </div>
 
                 <h3 class="font-bold text-sm uppercase tracking-wider text-[#1A1614]">{{ noti.title }}</h3>
