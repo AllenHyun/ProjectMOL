@@ -20,7 +20,7 @@ import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 })
 export class TaxonomyPage implements OnInit {
   private firestore = inject(Firestore);
-  private translate = inject(TranslateService);
+  protected translate = inject(TranslateService);
 
   public categories: any[] = [];
   public tags: any[] = [];
@@ -100,6 +100,8 @@ export class TaxonomyPage implements OnInit {
     const cat = this.categories.find(c => c.id === id);
     if (!cat) return 'Sin categoría';
 
-    return cat.names?.es || cat.names?.en || 'Sin nombre';
+    const currentLang = this.translate.currentLang || 'es';
+
+    return cat.names?.[currentLang] || cat.names?.es || cat.names?.en || 'Sin nombre';
   }
 }

@@ -285,4 +285,28 @@ export class BookManagementPage implements OnInit {
     return cat.names[currentLang] || cat.names['es'] || Object.values(cat.names)[0] || '';
   }
 
+  translateBookCategory(bookCategoryStr: string): string {
+    if (!bookCategoryStr) return '';
+
+    const matchedCategory = this.availableCategories.find(cat => {
+      const names = cat.names || {};
+      return Object.values(names).some(val =>
+        String(val).toLowerCase() === bookCategoryStr.toLowerCase() ||
+        bookCategoryStr.toLowerCase().endsWith('.' + String(val).toLowerCase())
+      );
+    });
+    if (matchedCategory) {
+      const currentLang = this.translate.currentLang || 'es';
+      const catData = matchedCategory as any; // <--- Añadimos esta línea puente
+      return catData.names?.[currentLang] || catData.names?.['es'] || '';
+    }
+
+    if (bookCategoryStr.includes('.')) {
+      const parts = bookCategoryStr.split('.');
+      return parts[parts.length - 1];
+    }
+
+    return bookCategoryStr;
+  }
+
 }

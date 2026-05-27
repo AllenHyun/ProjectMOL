@@ -74,7 +74,15 @@
                     <td class="py-4 px-4 cursor-pointer hover:text-[#C5A059]" [routerLink]="['/book-detail', libro.id]" >{{libro.title}}</td>
                     <td class="py-4 px-4">{{libro.authors.join(', ')}}</td>
                     <td class="py-4 px-4">{{libro.isbn}}</td>
-                    <td class="py-4 px-4">{{libro.categories.join(', ')}}</td>
+                    <td class="py-4 px-4">
+
+                      @for (catName of libro.categories; track catName; let last = $last) {
+                        <span class="text-xs text-gray-500 uppercase">{{translateBookCategory(catName)}} </span>
+                      } @empty {
+                        <span class="text-xs text-gray-500 uppercase">{{'BOOK-M.EMPTY_CATEGORY' | translate}}</span>
+                      }
+
+                    </td>
 
                     <td class="py-4 px-4 text-center">
 
