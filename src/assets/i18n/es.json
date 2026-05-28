@@ -598,7 +598,15 @@
       "BOOK": "Obra: ",
       "AUTHOR": "Autor de la obra: ",
       "CLOSE": "Cerrar Vista Previa"
-    }
+    },
+    "ANONYMOUS": "Anónimo",
+    "CONTENT": "Contenido",
+    "DELETED": "Contenido eliminado",
+    "UNKNOWN": "Desconocido",
+    "NO_AVAILABLE": "Sin texto disponible",
+    "PENDING_STATUS": "Pendiente",
+    "RESOLVED_STATUS": "Resuelto",
+    "DISMISS_STATUS": "Desestimado"
   },
   "TAXONOMY": {
     "CONFIRM_DELETE": "¿Eliminar permanentemente?",

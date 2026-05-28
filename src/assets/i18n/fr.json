@@ -602,7 +602,15 @@
       "BOOK": "Œuvre : ",
       "AUTHOR": "Auteur de l'œuvre : ",
       "CLOSE": "Fermer l'aperçu"
-    }
+    },
+    "ANONYMOUS": "Anonyme",
+    "CONTENT": "Contenu",
+    "DELETED": "Contenu supprimé",
+    "UNKNOWN": "Inconnu",
+    "NO_AVAILABLE": "Aucun texte disponible",
+    "PENDING_STATUS": "En attente",
+    "RESOLVED_STATUS": "Résolus",
+    "DISMISS_STATUS": "Rejeté"
   },
   "TAXONOMY": {
     "CONFIRM_DELETE": "Supprimer définitivement ?",

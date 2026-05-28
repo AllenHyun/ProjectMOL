@@ -71,7 +71,7 @@
                         'bg-orange-100 text-orange-600': report.status === 'open',
                         'bg-green-100 text-green-600': report.status === 'resolved',
                         'bg-gray-100 text-gray-600': report.status === 'dismissed'
-                      }">{{ report.status === 'open' ? 'Pendiente' : report.status === 'resolved' ? 'Resuelto' : 'Desestimado' }}
+                      }">{{ report.status === 'open' ? ('TAKEDOWNS.PENDING_STATUS' | translate) : report.status === 'resolved' ? ('TAKEDOWNS.RESOLVED_STATUS' | translate) : ('TAKEDOWNS.DISMISS_STATUS' | translate) }}
                     </span>
                   </td>
 

@@ -71,8 +71,8 @@ export class TakedownsPage implements OnInit {
       })
     ).subscribe(async (data) => {
       this.reports = await Promise.all(data.map(async (r: any) => {
-        let claimant = r.reporterName || 'Anónimo';
-        if (r.reporterId && r.reporterId !== 'Anónimo') {
+        let claimant = r.reporterName || this.translate.instant('TAKEDOWNS.ANONYMOUS');
+        if (r.reporterId && r.reporterId !== this.translate.instant('TAKEDOWNS.ANONYMOUS')) {
           const userSnap = await getDoc(doc(this.firestore, `users/${r.reporterId}`));
           if (userSnap.exists()) claimant = userSnap.data()['username'];
         }
@@ -82,9 +82,9 @@ export class TakedownsPage implements OnInit {
           const contentSnap = await getDoc(doc(this.firestore, r.refPath));
           if (contentSnap.exists()) {
             const cData = contentSnap.data();
-            title = cData['bookTitle'] || cData['title'] || 'Contenido';
+            title = cData['bookTitle'] || cData['title'] || this.translate.instant('TAKEDOWNS.CONTENT');
           } else {
-            title = 'Contenido eliminado';
+            title = this.translate.instant('TAKEDOWNS.DELETED');
           }
         }
 
@@ -158,8 +158,8 @@ export class TakedownsPage implements OnInit {
         const data = contentSnap.data();
         this.selectedReportContent = {
           title: report.workTitle,
-          text: data['structure']?.tldr || data['text'] || 'Sin texto disponible',
-          author: data['userName'] || data['authorName'] || 'Desconocido'
+          text: data['structure']?.tldr || data['text'] || this.translate.instant('TAKEDOWNS.NO_AVAILABLE'),
+          author: data['userName'] || data['authorName'] || this.translate.instant('TAKEDOWNS.UNKNOWN'),
         };
         this.isPreviewOpen = true;
       } else {

@@ -601,7 +601,15 @@
       "BOOK": "Work: ",
       "AUTHOR": "Author of the work: ",
       "CLOSE": "Close Preview"
-    }
+    },
+    "ANONYMOUS": "Anonymous",
+    "CONTENT": "Content",
+    "DELETED": "Deleted content",
+    "UNKNOWN": "Unknown",
+    "NO_AVAILABLE": "No text available",
+    "PENDING_STATUS": "Pending",
+    "RESOLVED_STATUS": "Resolved",
+    "DISMISS_STATUS": "Dismiss"
   },
   "TAXONOMY": {
     "CONFIRM_DELETE": "Permanently delete?",
