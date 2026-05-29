@@ -10,6 +10,10 @@ import {HeaderComponent} from "../components/header/header.component";
 import {Subscription} from "rxjs";
 import {RouterLink} from "@angular/router";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
+import {Book} from "../models/book";
+import {User} from "../models/user";
+import {Summary} from "../models/summary";
+import {Report} from "../models/report";
 
 Chart.register(...registerables);
 
@@ -44,7 +48,7 @@ export class AnalyticsPage implements OnInit, OnDestroy {
     dau: 0,
     mau: 0,
     reportRate: 0,
-    topBooks: [] as any[]
+    topBooks: [] as Book[]
   }
 
   constructor() {
@@ -69,7 +73,8 @@ export class AnalyticsPage implements OnInit, OnDestroy {
 
   async listenUsersRealTime() {
     const usersRef = collection(this.firestore, 'users');
-    const users = collectionData(usersRef).subscribe(users => {
+    this.userSub = collectionData(usersRef).subscribe((data: any[]) => {
+      const users = data as User[];
       this.calculateActiveUsers(users);
       this.calculateGrowthChart(users);
       this.calculateUserDistribution(users);
@@ -80,14 +85,15 @@ export class AnalyticsPage implements OnInit, OnDestroy {
     const bookRef = collection(this.firestore, 'books');
     const q = query(bookRef, orderBy('ratingAvg', 'desc'), limit(3));
 
-    this.bookSub = collectionData(q, {idField: 'id'}).subscribe(books => {
-      this.stats.topBooks = books;
+    this.bookSub = collectionData(q, {idField: 'id'}).subscribe((data: any[]) => {
+      this.stats.topBooks = data as Book[];
     });
   }
 
   listenSummariesRealTime() {
     const summariesRef = collection(this.firestore, 'summaries');
-    this.summarySub = collectionData(summariesRef).subscribe(summaries => {
+    this.summarySub = collectionData(summariesRef).subscribe((data: any[]) => {
+      const summaries = data as Summary[];
       this.totalSummaries = summaries.length;
       this.calculatePlatformQuality(summaries);
       this.calculateReportRate();
@@ -196,9 +202,10 @@ export class AnalyticsPage implements OnInit, OnDestroy {
   }
   listenReportRealTime(){
     const reportRef = collection(this.firestore, 'reports');
-    this.reportSub = collectionData(reportRef).subscribe(reports => {
+    this.reportSub = collectionData(reportRef).subscribe((data: any[]) => {
+      const reports = data as Report[];
       const summaryReports = reports.filter(r => r['type'] === 'summary');
-      const uniqueReportedPaths = new Set(summaryReports.map(r => r['refPath']));
+      const uniqueReportedPaths = new Set(summaryReports.map(r => r.refPath));
 
       this.reportedSummariesCount = uniqueReportedPaths.size;
       this.calculateReportRate();

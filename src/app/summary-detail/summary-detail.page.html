@@ -49,7 +49,7 @@
 
                 <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'SUMMARY-D.AUTHOR'|translate}} </span> {{summary?.authorId}}</p>
                 <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'SUMMARY-D.YEAR'|translate}} </span> {{book.year}}</p>
-                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'SUMMARY-D.TAGS'|translate}} </span> {{book.tags.join(', ')}} </p>
+                <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'SUMMARY-D.TAGS'|translate}} </span> {{book.tags.join(', ') || ''}} </p>
                 <p><span class="uppercase tracking-widest font-bold text-gray-500 text-[10px] mr-4"> {{'SUMMARY-D.LANGUAGE'|translate}} </span> {{ book.language}}</p>
 
                 <div class="flex items-center gap-1 mt-4">
@@ -85,7 +85,7 @@
 
               <div class="mt-12 flex justify-start">
 
-                <button [routerLink]="['/book-detail', book.id]" class="text-[#C5A059] text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 hover:translate-x-[-5px] transition-transform">
+                <button [routerLink]="['/book-detail', book?.id || '']" class="text-[#C5A059] text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 hover:translate-x-[-5px] transition-transform">
 
                   <ion-icon name="arrow-back-outline"></ion-icon> {{'SUMMARY-D.BACK'|translate}}
 

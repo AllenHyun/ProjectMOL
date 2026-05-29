@@ -133,7 +133,7 @@
 
   <app-footer></app-footer>
 
-  <ion-modal [isOpen]="showCreateModal" (didDismiss)="showCreateModal = false" class="floating-modal">
+  <ion-modal [isOpen]="showCreateModal" (didDismiss)="showCreateModal = false" class="floating-modal" style="--height: auto; --background: transparent">
 
     <ng-template>
 
@@ -144,7 +144,7 @@
         <div class="flex flex-col gap-4">
 
           <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">{{ 'MY_LISTS.CREATE_MODAL.LABEL' | translate }}</label>
-          <input [(ngModel)]="newListName" type="text" [placeholder]="'MY_LISTS.CREATE_MODAL.PLACEHOLDER' | translate" class="w-full p-3 border border-[#C5A059] outline-none text-sm font-lato text-black">
+          <input [(ngModel)]="newListName" type="text" [placeholder]="'MY_LISTS.CREATE_MODAL.PLACEHOLDER' | translate" class="w-full p-3 border border-[#C5A059] bg-white outline-none text-sm font-lato text-black">
 
         </div>
 
@@ -186,7 +186,7 @@
 
           <div class="flex gap-2">
 
-            <input [(ngModel)]="editListName" type="text" class="flex-grow p-3 border border-[#C5A059] outline-none text-sm font-lato text-white">
+            <input [(ngModel)]="editListName" type="text" class="flex-grow p-3 border border-[#C5A059] bg-white outline-none text-sm font-lato text-black">
             <button (click)="updateListName()" class="bg-[#C5A059] text-white px-4 py-3 active:scale-95 transition-transform">
 
               <ion-icon name="checkmark-outline"></ion-icon>
@@ -256,7 +256,7 @@
 
   </ion-modal>
 
-  <ion-modal [isOpen]="showShareModal" (didDismiss)="showShareModal = false" class="floating-modal">
+  <ion-modal [isOpen]="showShareModal" (didDismiss)="showShareModal = false" class="floating-modal" style="--height: auto; --background: transparent">
 
     <ng-template>
 
@@ -279,7 +279,7 @@
 
   </ion-modal>
 
-  <ion-modal [isOpen]="showImportModal" (didDismiss)="showImportModal = false" class="floating-modal">
+  <ion-modal [isOpen]="showImportModal" (didDismiss)="showImportModal = false" class="floating-modal" style="--height: auto; --background: transparent">
 
     <ng-template>
 
@@ -290,8 +290,7 @@
         <div class="flex flex-col gap-4">
 
           <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">{{ 'MY_LISTS.IMPORT_MODAL.LABEL' | translate }}</label>
-          <input [(ngModel)]="importCode" type="text" [placeholder]="'MY_LISTS.IMPORT_MODAL.PLACEHOLDER' | translate" class="w-full border border-[#C5A059] outline-none text-sm font-lato text-white">
-
+          <input [(ngModel)]="importCode" type="text" [placeholder]="'MY_LISTS.IMPORT_MODAL.PLACEHOLDER' | translate" class="w-full p-3 border border-[#C5A059] bg-white outline-none text-sm font-lato text-black">
         </div>
 
         <div class="flex gap-4 pt-4">

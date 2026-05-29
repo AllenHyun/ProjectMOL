@@ -27,6 +27,10 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {User} from "../models/user";
 import {Subscription} from "rxjs";
+import {Book} from "../models/book";
+import {Lists} from "../models/lists";
+import {ReviewComments} from "../models/review-comments";
+import {BookVotes} from "../models/book-votes";
 
 @Component({
   selector: 'app-book-detail',
@@ -46,7 +50,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
 
   private userSub: Subscription | null = null;
 
-  public book: any = null;
+  public book: Book | null = null;
 
   public summaries: Summary[] = [];
   public showModal = false;
@@ -72,7 +76,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
   public userVote: number | null = null;
 
   public showListModal = false;
-  public userLists: any[] = [];
+  public userLists: Lists[] = [];
   public newListName = '';
 
   private currentAudio: HTMLAudioElement | null = null;
@@ -82,7 +86,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
     'Francés': 'fr-FR',
   };
 
-  public commentsMap: {[key: string]: any[]} = {};
+  public commentsMap: {[key: string]: ReviewComments[]} = {};
   public showComments: {[key: string]: boolean} = {};
   public nextComment: {[key: string]: string} = {};
 
@@ -136,7 +140,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
       const snap = await getDoc(bookDocRef);
 
       if (snap.exists()) {
-        this.book = snap.data();
+        this.book = snap.data() as Book;
         this.book.id = id;
         this.getSummaries(id);
         this.getReviews(id);
@@ -162,6 +166,9 @@ export class BookDetailPage implements OnInit, OnDestroy {
   }
 
   async saveSummaries(status: 'draft' | 'pending'){
+    if(!this.book){
+      return;
+    }
     const user = this.auth.currentUser;
     if (!user) {
       const alert = await this.alertCtrl.create({
@@ -191,10 +198,10 @@ export class BookDetailPage implements OnInit, OnDestroy {
 
     try {
       const summaryRef = collection(this.firestore, 'summaries');
-      await addDoc(summaryRef, {
+      const summaryData: Summary = {
+        id: '',
         bookId: this.book.id,
         authorId: this.user?.username || user?.email || this.translate.instant('COMMON.ANONYMOUS'),
-        userId: user?.uid,
         structure: {
           tldr: this.newSummary.content,
           keyPoints: [],
@@ -204,7 +211,9 @@ export class BookDetailPage implements OnInit, OnDestroy {
         wordCount: this.newSummary.content.split(' ').length,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
-      });
+      };
+
+      await addDoc(summaryRef, {...summaryData, userId: user.uid});
 
       this.showModal = false;
       this.newSummary.content = '';
@@ -222,6 +231,9 @@ export class BookDetailPage implements OnInit, OnDestroy {
   }
 
   async saveReview(){
+    if (!this.book){
+      return;
+    }
     const user = this.auth.currentUser;
     if (!user) {
       const alert = await this.alertCtrl.create({
@@ -251,16 +263,18 @@ export class BookDetailPage implements OnInit, OnDestroy {
       const prosArray = this.reviewProsInput ? this.reviewProsInput.split(',').map(s => s.trim()).filter(t => t !== '') : [];
       const consArray = this.reviewConsInput ? this.reviewConsInput.split(',').map(s => s.trim()).filter(t => t !== '') : [];
 
-      await addDoc(reviewRef, {
+      const reviewData: Review = {
+        id: '',
         bookId: this.book.id,
         userId: user.uid,
-        userName: this.user?.username || user.email || this.translate.instant('COMMON.ANONYMOUS'),
         rating: this.newReview.rating,
         text: this.newReview.text,
         pros: prosArray,
         cons: consArray,
         createdAt: new Date().toISOString()
-      });
+      };
+
+      await addDoc(reviewRef, {...reviewData, userName: this.user?.username || user.email || this.translate.instant('COMMON.ANONYMOUS')});
       this.showReviewModal = false;
       this.newReview = {rating: 0, text: ''};
       this.reviewProsInput = '';
@@ -329,16 +343,22 @@ export class BookDetailPage implements OnInit, OnDestroy {
       newCount = currentCount + 1;
       newAvg = ((currentAvg*currentCount)+value)/newCount;
     } else{
-      newAvg = ((currentAvg*currentCount)-this.userVote + value)/currentCount;
+      const oldVoteValue = Number(this.userVote);
+      newAvg = ((currentAvg * currentCount) - oldVoteValue + value) / currentCount;
     }
 
+    newAvg = Math.min(Math.max(newAvg, 1), 5);
+
     try {
-      await setDoc(voteRef, {
+      const voteData: BookVotes = {
         userId: user.uid,
         bookId: this.book.id,
         value: value,
         updatedAt: new Date().toISOString()
-      });
+      };
+
+      await setDoc(voteRef, voteData);
+
       const bookRef = doc(this.firestore, 'books', this.book.id);
       await updateDoc(bookRef, {
         ratingCount: newCount,
@@ -360,7 +380,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
     }
 
     const voteId = `${user.uid}_${bookId}`;
-    const voteRef = doc(this.firestore, 'booksVotes', voteId);
+    const voteRef = doc(this.firestore, 'bookVotes', voteId);
     const voteSnap = await getDoc(voteRef)
 
     if (voteSnap.exists()){
@@ -437,7 +457,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
       if(data.length === 0){
         this.createDefaultList(userId);
       } else {
-        this.userLists = data;
+        this.userLists = data as unknown as Lists[];
       }
     });
   }
@@ -466,6 +486,9 @@ export class BookDetailPage implements OnInit, OnDestroy {
   }
 
   async toggleBookListModal(list: any){
+    if (!this.book){
+      return;
+    }
     const listRef = doc(this.firestore, 'lists', list.id);
     const isInList = list.bookIds?.includes(this.book.id);
 
@@ -486,12 +509,14 @@ export class BookDetailPage implements OnInit, OnDestroy {
 
     try{
       const listRef = collection(this.firestore, 'lists');
-      await addDoc(listRef, {
+      const newLists: Lists = {
         name: this.newListName.trim(),
         userId: user.uid,
-        bookIds: [this.book.id],
-        createdAt: new Date().toISOString()
-      });
+        bookIds: [],
+        createdAt: new Date().toISOString(),
+        isPublic: false
+      };
+      await addDoc(listRef, newLists);
       this.newListName = '';
     }
     catch (error) {
@@ -537,7 +562,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
     const q = query(commentsRef, where('reviewId', '==', reviewId));
 
     collectionData(q, {idField: 'id'}).subscribe(data => {
-      this.commentsMap[reviewId] = data.sort((a: any, b: any) =>
+      this.commentsMap[reviewId] = (data as unknown as ReviewComments[]).sort((a: any, b: any) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
     });
   }

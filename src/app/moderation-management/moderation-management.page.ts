@@ -3,13 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {IonContent, IonHeader, IonIcon, IonTitle, IonToolbar} from '@ionic/angular/standalone';
 import {addIcons} from "ionicons";
-import {checkmarkOutline, closeOutline, trashOutline, eyeOutline} from "ionicons/icons";
+import {checkmarkOutline, closeOutline, trashOutline, eyeOutline, book} from "ionicons/icons";
 import {addDoc, collection, doc, Firestore, getDoc, getDocs, query, updateDoc, where} from "@angular/fire/firestore";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {HeaderComponent} from "../components/header/header.component";
 import {AdminPanelComponent} from "../components/admin-panel/admin-panel.component";
 import {FooterComponent} from "../components/footer/footer.component";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
+import {ModerationSummary} from "../models/summary";
+import {Book} from "../models/book";
+import {Notifications} from "../models/notifications";
 
 @Component({
   selector: 'app-moderation-management',
@@ -21,8 +24,9 @@ import {RouterLink} from "@angular/router";
 export class ModerationManagementPage implements OnInit {
   private firestore = inject(Firestore);
   private translate = inject(TranslateService);
+  private router = inject(Router);
 
-  public pendingSummaries: any[] = [];
+  public pendingSummaries: ModerationSummary[] = [];
   public loading = true;
 
   constructor() {
@@ -40,37 +44,53 @@ export class ModerationManagementPage implements OnInit {
     try {
       const q = query(collection(this.firestore, 'summaries'), where('status', '==', 'pending'));
       const snap = await getDocs(q);
-      const summaries = snap.docs.map(d => ({ id: d.id, ...d.data()}));
 
-      this.pendingSummaries = await Promise.all(summaries.map(async (s:any) => {
+      const summaries = snap.docs.map(d => ({ ...d.data(), id: d.id })) as ModerationSummary[];
+
+      this.pendingSummaries = await Promise.all(summaries.map(async (s: ModerationSummary) => {
+        if (!s.bookId) {
+          return { ...s, bookTitle: this.translate.instant('MODERATION.BOOK_NOT_FOUND') };
+        }
+
         const bookSnap = await getDoc(doc(this.firestore, 'books', s.bookId));
+        const bookData = bookSnap.data() as Book;
+
         return {
           ...s,
-          bookTitle: bookSnap.exists() ? bookSnap.data()['title'] : this.translate.instant('MODERATION.BOOK_NOT_FOUND')
+          id: s.id,
+          bookTitle: bookSnap.exists() ? bookData.title : this.translate.instant('MODERATION.BOOK_NOT_FOUND')
         };
       }));
     } catch (error) {
-      console.log(error);
+      console.error("Error al cargar resúmenes pendientes: ", error);
     } finally {
       this.loading = false;
     }
   }
 
   async approveSummary(summary: any) {
-    if (!summary || confirm(this.translate.instant('MODERATION.CONFIRM_APPROVE'))) {
-      await updateDoc(doc(this.firestore, 'summaries', summary.id), {
-        status: 'published',
-        updatedAt: new Date().toISOString()
-      });
+    if (confirm(this.translate.instant('MODERATION.CONFIRM_APPROVE'))) {
+      try {
+        await updateDoc(doc(this.firestore, 'summaries', summary.id), {
+          status: 'published',
+          updatedAt: new Date().toISOString()
+        });
 
-      await this.createNotification(
-        summary.userId,
-        this.translate.instant('NOTIFICATIONS.SUMMARY_APPROVED'),
-        this.translate.instant('NOTIFICATIONS.MSG_APPROVED', { book: summary.bookTitle }),
-        summary.id
-      );
+        const targetUser = summary.userId || summary.authorId || '';
 
-      this.pendingSummaries = this.pendingSummaries.filter(s => s.id !== summary.id);
+        if (targetUser){
+          await this.createNotification(
+            targetUser,
+            this.translate.instant('NOTIFICATIONS.SUMMARY_APPROVED'),
+            this.translate.instant('NOTIFICATIONS.MSG_APPROVED', { book: summary.bookTitle }),
+            summary.id
+          );
+        }
+
+        this.pendingSummaries = this.pendingSummaries.filter(s => s.id !== summary.id);
+      } catch (error) {
+        console.error("Error al aprobar el resumen: ", error);
+      }
     }
   }
 
@@ -79,30 +99,49 @@ export class ModerationManagementPage implements OnInit {
     if (reason === null) return;
 
     if (confirm(this.translate.instant('MODERATION.CONFIRM_REJECT'))) {
-      await updateDoc(doc(this.firestore, 'summaries', summary.id), {
-        status: 'rejected',
-        updatedAt: new Date().toISOString()
-      });
+      try {
+        await updateDoc(doc(this.firestore, 'summaries', summary.id), {
+          status: 'rejected',
+          updatedAt: new Date().toISOString()
+        });
 
-      await this.createNotification(
-        summary.userId,
-        this.translate.instant('NOTIFICATIONS.SUMMARY_REJECTED'),
-        this.translate.instant('NOTIFICATIONS.MSG_REJECTED', { book: summary.bookTitle, reason: reason }),
-        summary.id
-      );
+        const targetUser = summary.userId || summary.authorId || '';
 
-      this.pendingSummaries = this.pendingSummaries.filter(s => s.id !== summary.id);
+        if (targetUser) {
+          await this.createNotification(
+            targetUser,
+            this.translate.instant('NOTIFICATIONS.SUMMARY_REJECTED'),
+            this.translate.instant('NOTIFICATIONS.MSG_REJECTED', { book: summary.bookTitle, reason: reason }),
+            summary.id
+          );
+        }
+
+        this.pendingSummaries = this.pendingSummaries.filter(s => s.id !== summary.id);
+      } catch (error) {
+        console.error("Error al rechazar el resumen: ", error);
+      }
     }
   }
 
   private async createNotification(userId: string, title: string, message: string, refId: string) {
-    await addDoc(collection(this.firestore, 'notifications'), {
+    const notificationData: Notifications = {
       userId: userId,
       title: title,
       message: message,
       refId: refId,
       read: false,
       createdAt: new Date().toISOString()
-    });
+    };
+
+    await addDoc(collection(this.firestore, 'notifications'), notificationData);
+  }
+
+  navigateToDetail(summaryId: string | undefined) {
+    if (!summaryId) {
+      console.error("No se puede navegar: El ID del resumen viene vacío o undefined.");
+      alert("Error: El resumen seleccionado no contiene un identificador válido.");
+      return;
+    }
+    this.router.navigate(['/summary-detail', summaryId]);
   }
 }

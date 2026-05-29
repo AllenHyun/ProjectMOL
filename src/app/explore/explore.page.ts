@@ -18,6 +18,8 @@ import {HeaderComponent} from "../components/header/header.component";
 import {FooterComponent} from "../components/footer/footer.component";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {Category} from "../models/category";
+import {Book} from "../models/book";
+import {Summary} from "../models/summary";
 
 @Component({
   selector: 'app-explore',
@@ -31,8 +33,8 @@ export class ExplorePage implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private translate = inject(TranslateService);
 
-  public books: any[] = [];
-  public filteredBooks: any[] = [];
+  public books: (Book & { latestSummary: Summary | null })[] = [];
+  public filteredBooks: (Book & { latestSummary: Summary | null })[] = [];
   public searchTerm: string = "";
   public showFiltersMobile: boolean = false;
   public sortBy: string = 'recent';
@@ -69,12 +71,14 @@ export class ExplorePage implements OnInit {
 
   async loadBooks() {
     const booksRef = collection(this.firestore, 'books');
-    collectionData(booksRef, { idField: 'id' }).subscribe(async (allBooks: any[]) => {
+    collectionData(booksRef, { idField: 'id' }).subscribe(async (data: any[]) => {
+      const allBooks = data as Book[];
+
       const term = this.searchTerm.toLowerCase().trim();
       const matches = allBooks.filter(b => {
         if (!term) return true;
         const titleMatch = b.title?.toLowerCase().includes(term);
-        const authorMatch = b.authors?.some((author:string) => author.toLowerCase().includes(term));
+        const authorMatch = b.authors?.some((author: string) => author.toLowerCase().includes(term));
         return titleMatch || authorMatch;
       });
 
@@ -87,7 +91,7 @@ export class ExplorePage implements OnInit {
     });
   }
 
-  async getLatestSummary(bookId: string){
+  async getLatestSummary(bookId: string): Promise<Summary | null> {
     const summariesRef = collection(this.firestore, 'summaries');
     const q = query(
       summariesRef,
@@ -97,7 +101,7 @@ export class ExplorePage implements OnInit {
     );
 
     const snap = await getDocs(q);
-    return !snap.empty ? snap.docs[0].data() : null;
+    return !snap.empty ? ({ id: snap.docs[0].id, ...snap.docs[0].data() } as Summary) : null;
   }
 
   toggleFilters(group: string, value: any) {

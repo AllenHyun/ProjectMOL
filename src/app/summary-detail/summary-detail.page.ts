@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {IonContent, IonIcon} from '@ionic/angular/standalone';
@@ -23,7 +23,7 @@ import {Subscription} from "rxjs";
   standalone: true,
   imports: [IonContent, CommonModule, FormsModule, FooterComponent, HeaderComponent, IonIcon, RouterLink, TranslatePipe]
 })
-export class SummaryDetailPage implements OnInit {
+export class SummaryDetailPage implements OnInit, OnDestroy {
 
   private route = inject(ActivatedRoute);
   private firestore = inject(Firestore);
@@ -65,19 +65,23 @@ export class SummaryDetailPage implements OnInit {
   }
 
   async ngOnInit() {
-    const summaryId = this.route.snapshot.paramMap.get('id')?.trim();
+    this.route.paramMap.subscribe(async (params) => {
+      const summaryId = params.get('id')?.trim();
 
-    if (summaryId) {
-      try {
-        const summaryRef = doc(this.firestore, 'summaries', summaryId);
-        const summarySnap = await getDoc(summaryRef);
+      if (summaryId) {
+        try {
+          const summaryRef = doc(this.firestore, 'summaries', summaryId);
+          const summarySnap = await getDoc(summaryRef);
 
-        if (summarySnap.exists()) {
-          this.summary = {id: summarySnap.id, ...summarySnap.data()} as Summary;
-          await this.loadBookInfo(this.summary.bookId);
+          if (summarySnap.exists()) {
+            this.summary = { id: summarySnap.id, ...summarySnap.data() } as Summary;
+            await this.loadBookInfo(this.summary.bookId);
+          }
+        } catch (error) {
+          console.error("Error al recuperar el documento del resumen:", error);
         }
-      } catch (error) {}
-    }
+      }
+    });
 
     this.userSub = authState(this.auth).subscribe(authUser => {
       if (authUser) {
@@ -88,10 +92,10 @@ export class SummaryDetailPage implements OnInit {
       } else {
         this.user = null;
       }
-    })
+    });
   }
 
-  private ngOnDestroy() {
+  public ngOnDestroy() {
     this.userSub?.unsubscribe();
   }
 
@@ -101,10 +105,15 @@ export class SummaryDetailPage implements OnInit {
       const bookSnap = await getDoc(bookRef);
 
       if (bookSnap.exists()) {
-        this.book = {...bookSnap.data(), id: bookSnap.id};
+        const data = bookSnap.data();
+        this.book = {
+          ...data,
+          id: bookSnap.id,
+          tags: data['tags'] ? data['tags'] : []
+        };
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error al cargar la info del libro en detalle: ", error);
     }
   }
 

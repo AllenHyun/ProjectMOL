@@ -53,7 +53,7 @@ export const routes: Routes = [
   },
   {
     path: 'summary-detail/:id',
-    loadComponent: () => import('./summary-detail/summary-detail.page').then( m => m.SummaryDetailPage)
+    loadComponent: () => import('./summary-detail/summary-detail.page').then(m => m.SummaryDetailPage)
   },
   {
     path: 'review-detail/:id',

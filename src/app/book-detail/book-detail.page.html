@@ -404,7 +404,7 @@
 
         <div class="flex flex-col gap-2">
 
-          @for (list of userLists; track list.id) {
+          @for (list of userLists; track list.name) {
             <div (click)="toggleBookListModal(list)" class="flex justify-between items-center p-4 border border-gray-500 rounded-sm hover:bg-[#FDFBF7] cursor-pointer transition-colors">
 
               <div class="flex items-center gap-3">
@@ -415,13 +415,13 @@
 
               <div class="flex items-center gap-4">
 
-                <button (click)="$event.stopPropagation(); deleteList(list.id)" class="flex- items-center justify-center text-gray-500 hover:text-red-600 transition-colors">
+                <button (click)="$event.stopPropagation(); deleteList($any(list).id)" class="flex- items-center justify-center text-gray-500 hover:text-red-600 transition-colors">
 
                   <ion-icon name="trash-outline" class="text-lg"></ion-icon>
 
                 </button>
 
-                <ion-icon [name]="list.bookIds?.includes(book.id) ? 'checkmark-circle' : 'add-outline'" [class.text-green-600]="list.bookIds?.includes(book.id)" class="text-xl text-[#C5A059]"></ion-icon>
+                <ion-icon [name]="list.bookIds?.includes(book?.id || '') ? 'checkmark-circle' : 'add-outline'" [class.text-green-600]="list.bookIds?.includes(book?.id || '')" class="text-xl text-[#C5A059]"></ion-icon>
 
               </div>
 

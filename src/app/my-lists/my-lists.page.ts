@@ -1,4 +1,4 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToggle, IonToolbar} from '@ionic/angular/standalone';
@@ -23,6 +23,8 @@ import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {addIcons} from "ionicons";
 import {addOutline, pencilOutline, trashOutline, closeCircleOutline, checkmarkOutline, shareOutline, downloadOutline, timeOutline, calendarOutline} from "ionicons/icons";
 import {Reminder} from "../models/reminder";
+import {Lists} from "../models/lists";
+import {Book} from "../models/book";
 
 register();
 
@@ -34,12 +36,12 @@ register();
   imports: [IonContent, CommonModule, FormsModule, HeaderComponent, FooterComponent, RouterLink, IonModal, TranslatePipe, IonIcon, IonToggle],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class MyListsPage implements OnInit {
+export class MyListsPage implements OnInit, OnDestroy {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
   private translate = inject(TranslateService);
 
-  public listWithBooks$!: Observable<any[]>;
+  public listWithBooks$!: Observable<(Lists & { books: Book[] })[]>;
   public JSON = JSON;
   public showCreateModal = false;
   public newListName = '';
@@ -89,22 +91,25 @@ export class MyListsPage implements OnInit {
     });
   }
 
+  public ngOnDestroy() {
+  }
+
   loadLists(userId: string) {
     const listsRef = collection(this.firestore, 'lists');
     const q = query(listsRef, where('userId', '==', userId));
 
     this.listWithBooks$ = collectionData(q, { idField: 'id' }).pipe(
-      tap(list => {
-        if(list.length === 0) {
+      switchMap((data: any[]) => {
+        const lists = data as Lists[];
+
+        if (lists.length === 0) {
           this.createDefaultLists(userId);
+          return of([]);
         }
-      }),
-      switchMap((lists: any[]) => {
-        if (lists.length === 0) return of([]);
 
         const listsObservables = lists.map(list => {
           if (!list.bookIds || list.bookIds.length === 0) {
-            return of({ ...list, books: [] });
+            return of({ ...list, books: [] as Book[] } as Lists & { books: Book[] });
           }
 
           const bookRefs = list.bookIds.map((id: string) =>
@@ -112,7 +117,7 @@ export class MyListsPage implements OnInit {
           );
 
           return combineLatest(bookRefs).pipe(
-            map(books => ({ ...list, books }))
+            map(books => ({ ...list, books: books as Book[] } as Lists & { books: Book[] }))
           );
         });
 
@@ -371,17 +376,16 @@ export class MyListsPage implements OnInit {
 
       const now = new Date().getTime();
 
-      snap.forEach(async (document) => {
+      for (const document of snap.docs){
         const reminder = document.data() as Reminder;
         const eventTime = new Date(reminder.eventDate).getTime();
         const daysInMs = reminder.remindDaysBefore * 24 * 60 * 60 * 1000;
-
         const targetAlertTime = eventTime - daysInMs;
 
         if (now >= targetAlertTime) {
           await this.createNotificationAlert(userId, reminder);
         }
-      });
+      }
     } catch (error) {
       console.error("Error procesando el cálculo del tiempo: ", error);
     }
