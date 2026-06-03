@@ -1,4 +1,13 @@
-import {Component, ElementRef, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EnvironmentInjector,
+  inject,
+  OnDestroy,
+  OnInit,
+  runInInjectionContext,
+  ViewChild
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
@@ -27,6 +36,7 @@ Chart.register(...registerables);
 export class AnalyticsPage implements OnInit, OnDestroy {
   private firestore = inject(Firestore);
   private translate = inject(TranslateService);
+  private injector = inject(EnvironmentInjector);
 
   @ViewChild('growthChart') growthChartCanvas!: ElementRef;
   @ViewChild('distChart') distChartCanvas!: ElementRef;
@@ -62,6 +72,10 @@ export class AnalyticsPage implements OnInit, OnDestroy {
     this.bookSub?.unsubscribe();
     this.userSub?.unsubscribe();
     this.reportSub?.unsubscribe();
+
+    this.growthChart?.destroy();
+    this.distChart?.destroy();
+    this.qualityChart?.destroy();
   }
 
   ngOnInit() {
@@ -73,11 +87,13 @@ export class AnalyticsPage implements OnInit, OnDestroy {
 
   async listenUsersRealTime() {
     const usersRef = collection(this.firestore, 'users');
-    this.userSub = collectionData(usersRef).subscribe((data: any[]) => {
-      const users = data as User[];
-      this.calculateActiveUsers(users);
-      this.calculateGrowthChart(users);
-      this.calculateUserDistribution(users);
+    runInInjectionContext(this.injector, () => {
+      this.userSub = collectionData(usersRef).subscribe((data: any[]) => {
+        const users = data as User[];
+        this.calculateActiveUsers(users);
+        this.calculateGrowthChart(users);
+        this.calculateUserDistribution(users);
+      });
     });
   }
 
@@ -85,18 +101,22 @@ export class AnalyticsPage implements OnInit, OnDestroy {
     const bookRef = collection(this.firestore, 'books');
     const q = query(bookRef, orderBy('ratingAvg', 'desc'), limit(3));
 
-    this.bookSub = collectionData(q, {idField: 'id'}).subscribe((data: any[]) => {
-      this.stats.topBooks = data as Book[];
+    runInInjectionContext(this.injector, () => {
+      this.bookSub = collectionData(q, {idField: 'id'}).subscribe((data: any[]) => {
+        this.stats.topBooks = data as Book[];
+      });
     });
   }
 
   listenSummariesRealTime() {
     const summariesRef = collection(this.firestore, 'summaries');
-    this.summarySub = collectionData(summariesRef).subscribe((data: any[]) => {
-      const summaries = data as Summary[];
-      this.totalSummaries = summaries.length;
-      this.calculatePlatformQuality(summaries);
-      this.calculateReportRate();
+    runInInjectionContext(this.injector, () => {
+      this.summarySub = collectionData(summariesRef).subscribe((data: any[]) => {
+        const summaries = data as Summary[];
+        this.totalSummaries = summaries.length;
+        this.calculatePlatformQuality(summaries);
+        this.calculateReportRate();
+      });
     });
   }
 
@@ -202,13 +222,15 @@ export class AnalyticsPage implements OnInit, OnDestroy {
   }
   listenReportRealTime(){
     const reportRef = collection(this.firestore, 'reports');
-    this.reportSub = collectionData(reportRef).subscribe((data: any[]) => {
-      const reports = data as Report[];
-      const summaryReports = reports.filter(r => r['type'] === 'summary');
-      const uniqueReportedPaths = new Set(summaryReports.map(r => r.refPath));
+    runInInjectionContext(this.injector, () => {
+      this.reportSub = collectionData(reportRef).subscribe((data: any[]) => {
+        const reports = data as Report[];
+        const summaryReports = reports.filter(r => r['type'] === 'summary');
+        const uniqueReportedPaths = new Set(summaryReports.map(r => r.refPath));
 
-      this.reportedSummariesCount = uniqueReportedPaths.size;
-      this.calculateReportRate();
+        this.reportedSummariesCount = uniqueReportedPaths.size;
+        this.calculateReportRate();
+      });
     });
   }
 

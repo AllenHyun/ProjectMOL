@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import {Component, EnvironmentInjector, inject, runInInjectionContext} from '@angular/core';
 import { IonApp, IonContent, IonRouterOutlet } from '@ionic/angular/standalone';
 import { TranslateService } from "@ngx-translate/core";
 import {Auth, authState, signOut} from '@angular/fire/auth';
@@ -18,6 +18,8 @@ export class AppComponent {
   private firestore = inject(Firestore);
   private router = inject(Router);
 
+  private injector = inject(EnvironmentInjector);
+
   constructor() {
     this.initializeApp();
     this.listenToUserStatus();
@@ -31,7 +33,6 @@ export class AppComponent {
 
     try {
       await setPersistence(this.auth, browserSessionPersistence);
-      console.log("Modo de sesión: Temporal (se borra al cerrar)");
     } catch (error) {
       console.error("Error en persistencia: ", error);
     }
@@ -39,27 +40,31 @@ export class AppComponent {
 
   private listenToUserStatus() {
     let unSubscribeSnapshot: (() => void) | null = null;
-    authState(this.auth).subscribe((authUser) => {
-      if (unSubscribeSnapshot){
-        unSubscribeSnapshot();
-        unSubscribeSnapshot = null;
-      }
-      if (authUser) {
-        const userRef = doc(this.firestore, `users/${authUser.uid}`);
-        onSnapshot(userRef, (docSnap) => {
-          const userData = docSnap.data();
+    runInInjectionContext(this.injector, () => {
+      authState(this.auth).subscribe((authUser) => {
+        if (unSubscribeSnapshot){
+          unSubscribeSnapshot();
+          unSubscribeSnapshot = null;
+        }
+        if (authUser) {
+          const userRef = doc(this.firestore, `users/${authUser.uid}`);
+          runInInjectionContext(this.injector, () => {
+            unSubscribeSnapshot = onSnapshot(userRef, (docSnap) => {
+              const userData = docSnap.data();
 
-          if (userData?.['status'] === 'suspended') {
-            if (unSubscribeSnapshot){
-              unSubscribeSnapshot();
-              unSubscribeSnapshot = null;
-            }
-            this.handleSuspension(userData['banReason']);
-          }
-        }, (error) => {
-          console.log("Listener en tiempo real cerrado de forma segura al revocar la sesión");
+              if (userData?.['status'] === 'suspended') {
+                if (unSubscribeSnapshot){
+                  unSubscribeSnapshot();
+                  unSubscribeSnapshot = null;
+                }
+                this.handleSuspension(userData['banReason']);
+              }
+            }, (error) => {
+              console.log("Listener en tiempo real cerrado de forma segura al revocar la sesión: ", error);
+            });
           });
-      }
+        }
+      });
     });
   }
 

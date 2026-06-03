@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, inject} from '@angular/core';
+import {Component, OnInit, Input, inject, EnvironmentInjector, runInInjectionContext} from '@angular/core';
 import {ActionSheetController, IonicModule} from "@ionic/angular";
 import {
   menu, chevronDownOutline, personOutline,
@@ -36,6 +36,7 @@ export class HeaderComponent  implements OnInit {
   private auth = inject(Auth);
   public menuOpen: boolean = false;
   private firestore = inject(Firestore);
+  private injector = inject(EnvironmentInjector);
 
   public unreadCount: number = 0;
   private notiSub: Subscription | null = null;
@@ -75,28 +76,32 @@ export class HeaderComponent  implements OnInit {
   }
 
   ngOnInit() {
-    authState(this.auth).pipe(
-      switchMap(authUser => {
-        if (authUser) {
-          this.listenNotifications(authUser.uid);
-          const userDocRef = doc(this.firestore, `users/${authUser.uid}`);
-          return docData(userDocRef);
-        } else {
-          this.unreadCount = 0;
-          this.unsubscribeNotis();
-          return of(null);
+    runInInjectionContext(this.injector, () => {
+      authState(this.auth).pipe(
+        switchMap(authUser => {
+          if (authUser) {
+            this.listenNotifications(authUser.uid);
+            const userDocRef = doc(this.firestore, `users/${authUser.uid}`);
+            return docData(userDocRef);
+          } else {
+            this.unreadCount = 0;
+            this.unsubscribeNotis();
+            return of(null);
+          }
+        })
+      ).subscribe((data) => {
+        this.user = data as User;
+        if (!data) {
+          this.menuOpen = false;
         }
-      })
-    ).subscribe((data) => {
-      this.user = data as User;
-      if (!data) {
-        this.menuOpen = false;
-      }
+      });
     });
 
-    const booksRef = collection(this.firestore, 'books');
-    collectionData(booksRef, {idField: 'id'}).subscribe(data => {
-      this.allBooks = data;
+    runInInjectionContext(this.injector, () => {
+      const booksRef = collection(this.firestore, 'books');
+      collectionData(booksRef, {idField: 'id'}).subscribe(data => {
+        this.allBooks = data;
+      });
     });
   }
 
@@ -205,8 +210,10 @@ export class HeaderComponent  implements OnInit {
     const notiRef = collection(this.firestore, `notifications`);
     const q = query(notiRef, where('userId', '==', uid), where('read', '==', false));
 
-    this.notiSub = collectionData(q).subscribe(notis =>{
-      this.unreadCount = notis.length;
+    runInInjectionContext(this.injector, () => {
+      this.notiSub = collectionData(q).subscribe(notis =>{
+        this.unreadCount = notis.length;
+      });
     });
   }
 

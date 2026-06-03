@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, EnvironmentInjector, inject, OnDestroy, OnInit, runInInjectionContext} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {IonContent, IonHeader, IonIcon, IonTitle, IonToolbar} from '@ionic/angular/standalone';
@@ -10,6 +10,7 @@ import {FooterComponent} from "../components/footer/footer.component";
 import {RouterLink} from "@angular/router";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {Category} from "../models/category";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-review',
@@ -18,9 +19,12 @@ import {Category} from "../models/category";
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, IonIcon, RouterLink, TranslatePipe]
 })
-export class ReviewPage implements OnInit {
+export class ReviewPage implements OnInit, OnDestroy {
   private firestore = inject(Firestore);
   private translate = inject(TranslateService);
+
+  private injector = inject(EnvironmentInjector);
+  private _subs: Subscription[] = [];
 
   public searchTerms: string = '';
   public allBooks: any[] = [];
@@ -52,63 +56,78 @@ export class ReviewPage implements OnInit {
   }
 
   ngOnInit() {
-    collectionData(collection(this.firestore, 'categories'), {idField: 'id'})
-      .subscribe(data => {
-        this.filters.categories = data as Category[];
-      });
+    runInInjectionContext(this.injector, () =>{
+      const catSub = collectionData(collection(this.firestore, 'categories'), {idField: 'id'})
+        .subscribe(data => {
+          this.filters.categories = data as Category[];
+        });
+      this._subs.push(catSub);
+    });
 
     this.loadData();
   }
 
+  ngOnDestroy() {
+    this._subs.forEach(s => s.unsubscribe());
+  }
+
   loadData() {
-    const booksRef = collection(this.firestore, 'books');
-    collectionData(booksRef, {idField: 'id'}).subscribe(books => {
-      this.allBooks = books;
-      this.loadReviews();
+    runInInjectionContext(this.injector, () =>{
+      const booksRef = collection(this.firestore, 'books');
+      const booksSub = collectionData(booksRef, {idField: 'id'}).subscribe(books => {
+        this.allBooks = books;
+        this.loadReviews();
+      });
+      this._subs.push(booksSub);
     });
   }
 
   async loadReviews() {
-    const revRef = collection(this.firestore, 'reviews');
-    const q = query(revRef);
+      try {
+        const revRef = collection(this.firestore, 'reviews');
+        const q = query(revRef);
 
-    const querySnapshot = await getDocs(q);
-    const rawReviews = querySnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        const querySnapshot = await runInInjectionContext(this.injector, () => getDocs(q));
+        const rawReviews = querySnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 
-    this.reviews = await Promise.all(rawReviews.map(async (rev: any) => {
-      const book = this.allBooks.find(d => d.id === rev.bookId);
-      let photo = '';
-      let username = 'Usuario';
+        this.reviews = await Promise.all(rawReviews.map(async (rev: any) => {
+          const book = this.allBooks.find(d => d.id === rev.bookId);
+          let photo = '';
+          let username = 'Usuario';
 
-      if (rev.userId) {
-        try {
-          const userSnap = await getDoc(doc(this.firestore, 'users', rev.userId));
-          if (userSnap.exists()) {
-            const userData = userSnap.data() as any;
-            photo = userData.photoUrl || '';
-            username = userData.username || 'Usuario';
+          if (rev.userId) {
+            try {
+              const userSnap = await runInInjectionContext(this.injector, () => getDoc(doc(this.firestore, 'users', rev.userId)));
+              if (userSnap.exists()) {
+                const userData = userSnap.data() as any;
+                photo = userData.photoUrl || '';
+                username = userData.username || 'Usuario';
+              }
+            } catch (error) {
+              console.error(error);
+            }
           }
-        } catch (error) {
-          console.error(error);
-        }
+
+          return {
+            ...rev,
+            bookTitle: book?.title || '...',
+            bookAuthor: book?.authors?.join(', ') || '...',
+            coverUrl: book?.coverUrl || 'assets/img/default-book.png',
+            bookLanguage: book?.language,
+            bookYear: book?.year,
+            bookCategory: book?.categories || [],
+            bookLevel: book?.level,
+            authorPhotoUrl: photo,
+            userName: username,
+            stars: Array(5).fill(0).map((_, i) => i < (rev.rating || 0))
+          };
+        }));
+
+        this.applyFilters();
+      } catch (error) {
+        console.error("Error cargando el listado de reseñas: ", error);
       }
 
-      return {
-        ...rev,
-        bookTitle: book?.title || '...',
-        bookAuthor: book?.authors?.join(', ') || '...',
-        coverUrl: book?.coverUrl || 'assets/img/default-book.png',
-        bookLanguage: book?.language,
-        bookYear: book?.year,
-        bookCategory: book?.categories || [],
-        bookLevel: book?.level,
-        authorPhotoUrl: photo,
-        userName: username,
-        stars: Array(5).fill(0).map((_, i) => i < (rev.rating || 0))
-      };
-    }));
-
-    this.applyFilters();
   }
 
   onInputChange() {

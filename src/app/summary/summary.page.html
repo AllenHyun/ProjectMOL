@@ -54,17 +54,19 @@
                 <div class="absolute top-[100%] left-0 z-[60] w-full bg-white border border-[#C5A059] shadow-xl mt-1">
 
                   @if (filterKey === 'category'){
-                    @for (catObj of filters.categories; track  catObj.id){
+                    @for (catObj of filters.categories; track  catObj.id || $index){
                       <div (click)="toggleFilter('category', catObj.names['es'])" class="p-3 text-[11px] text-[#1A1614] hover:bg-[#FDFBF7] flex justify-between items-center" [class.bg-gray-100]="selectedFilters.category.includes(catObj.names['es'])">
 
                         {{getCategoryDisplayName(catObj)}}
-                        <ion-icon *ngIf="selectedFilters.category.includes(catObj.names['es'])" name="close-outline" class="text-[#C5A059]"></ion-icon>
+                        @if (selectedFilters.category.includes(catObj.names['es'])) {
+                          <ion-icon *ngIf="selectedFilters.category.includes(catObj.names['es'])" name="close-outline" class="text-[#C5A059]"></ion-icon>
+                        }
 
                       </div>
                     }
                   } @else {
 
-                    @for (opt of filters[filterKey === 'language' ? 'languages' : filterKey === 'level' ? 'levels' : filterKey === 'category' ? 'categories' : 'years']; track opt) {
+                    @for (opt of filters[filterKey === 'language' ? 'languages' : filterKey === 'level' ? 'levels' : filterKey === 'category' ? 'categories' : 'years']; track opt || $index) {
                       <div (click)="toggleFilter(filterKey, opt)" class="p-3 text-[11px] text-[#1A1614] hover:bg-[#FDFBF7] flex justify-between items-center" [class.bg-gray-100]="selectedFilters[filterKey].includes(opt)">
 
                         <span>

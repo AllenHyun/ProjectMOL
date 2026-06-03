@@ -2,9 +2,9 @@ import {
   AfterViewInit,
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
-  ElementRef,
+  ElementRef, EnvironmentInjector,
   inject,
-  OnInit,
+  OnInit, runInInjectionContext,
   ViewChild,
   viewChild
 } from '@angular/core';
@@ -33,6 +33,7 @@ register();
 })
 export class FirstPagePage implements OnInit, AfterViewInit {
   private firestore = inject(Firestore);
+  private injector = inject(EnvironmentInjector);
 
   @ViewChild('swiperNovedades') swiperNovedades!: ElementRef;
   @ViewChild('swiperRecomendados') swiperRecomendados!: ElementRef;
@@ -100,27 +101,29 @@ export class FirstPagePage implements OnInit, AfterViewInit {
   }
 
   private loadData() {
-    const bookRef = collection(this.firestore, 'books');
-    const reviewRef = collection(this.firestore, 'reviews');
+    runInInjectionContext(this.injector, () => {
+      const bookRef = collection(this.firestore, 'books');
+      const reviewRef = collection(this.firestore, 'reviews');
 
-    const weekAgo = new Date();
-    weekAgo.setDate(weekAgo.getDate() - 7);
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
 
-    const qNew = query(
-      bookRef,
-      where("createdAt", ">=", weekAgo),
-      orderBy('createdAt', 'desc'),
-      limit(10)
-    );
-    this.newBooks$ = collectionData(qNew, { idField: 'id' });
+      const qNew = query(
+        bookRef,
+        where("createdAt", ">=", weekAgo),
+        orderBy('createdAt', 'desc'),
+        limit(10)
+      );
+      this.newBooks$ = collectionData(qNew, { idField: 'id' });
 
-    const qRec = query(bookRef, where('ratingAvg', '>', 4), orderBy('ratingAvg', 'desc'), limit(10));
-    this.recommendedBooks$ = collectionData(qRec, { idField: 'id' });
+      const qRec = query(bookRef, where('ratingAvg', '>', 4), orderBy('ratingAvg', 'desc'), limit(10));
+      this.recommendedBooks$ = collectionData(qRec, { idField: 'id' });
 
-    const qExam = query(bookRef, where('tags', 'array-contains-any', ['exámenes', 'exams']), limit(10));
-    this.examBooks$ = collectionData(qExam, { idField: 'id' });
+      const qExam = query(bookRef, where('tags', 'array-contains-any', ['exámenes', 'exams']), limit(10));
+      this.examBooks$ = collectionData(qExam, { idField: 'id' });
 
-    const qRev = query(reviewRef, where('rating', '==', 5), orderBy('rating', 'desc'), limit(10));
-    this.featuredReviews$ = collectionData(qRev, { idField: 'id' });
+      const qRev = query(reviewRef, where('rating', '==', 5), orderBy('rating', 'desc'), limit(10));
+      this.featuredReviews$ = collectionData(qRev, { idField: 'id' });
+    });
   }
 }

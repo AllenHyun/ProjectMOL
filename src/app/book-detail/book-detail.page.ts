@@ -1,4 +1,4 @@
-import {Component, OnInit, inject, NgZone, OnDestroy} from '@angular/core';
+import {Component, OnInit, inject, NgZone, OnDestroy, EnvironmentInjector, runInInjectionContext} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {
@@ -46,6 +46,10 @@ export class BookDetailPage implements OnInit, OnDestroy {
   private translate = inject(TranslateService);
   private zone = inject(NgZone);
   private http = inject(HttpClient);
+  private injector = inject(EnvironmentInjector);
+
+  private _subs: Subscription[] = [];
+
   protected user: User | null = null;
 
   private userSub: Subscription | null = null;
@@ -107,14 +111,19 @@ export class BookDetailPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userSub = authState(this.auth).subscribe(authUser => {
-      if (authUser) {
-        const userDocRef = doc(this.firestore, `users/${authUser.uid}`);
-        docData(userDocRef).subscribe(data => {
-          this.user = data as User;
-        });
-      } else {
-        this.user = null;
+    runInInjectionContext(this.injector, () => {
+      this.userSub = authState(this.auth).subscribe(authUser => {
+        if (authUser) {
+          const userDocRef = doc(this.firestore, `users/${authUser.uid}`);
+          docData(userDocRef).subscribe(data => {
+            this.user = data as User;
+          });
+        } else {
+          this.user = null;
+        }
+      });
+      if (this.userSub){
+        this._subs.push(this.userSub);
       }
     });
 
@@ -127,7 +136,13 @@ export class BookDetailPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.userSub?.unsubscribe();
+    this._subs.forEach(s => s.unsubscribe());
+
+    if (this.currentAudio){
+      this.currentAudio.pause();
+      this.currentAudio = null;
+    }
+    window.speechSynthesis.cancel();
   }
 
   navigateRegister(){
@@ -137,7 +152,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
   async loadData(id: string) {
     try {
       const bookDocRef = doc(this.firestore, 'books', id);
-      const snap = await getDoc(bookDocRef);
+      const snap = await runInInjectionContext(this.injector, () => getDoc(bookDocRef));
 
       if (snap.exists()) {
         this.book = snap.data() as Book;
@@ -152,16 +167,21 @@ export class BookDetailPage implements OnInit, OnDestroy {
   getReviews(bookId: string) {
     const revRef = collection(this.firestore, 'reviews');
     const q = query(revRef, where('bookId', '==', bookId));
-    collectionData(q, {idField: 'id'}).subscribe(data => {
-      this.reviews = data as unknown as Review[];
+    runInInjectionContext(this.injector, () => {
+      const revSub = collectionData(q, {idField: 'id'}).subscribe(data => {
+        this.reviews = data as unknown as Review[];
+      });
+      this._subs.push(revSub);
     });
   }
 
   getSummaries(bookId: string){
     const resRef = collection(this.firestore, 'summaries');
     const q = query(resRef, where('bookId', '==', bookId), where('status', '==', 'published'));
-    collectionData(q, {idField: 'id'}).subscribe(data=> {
-      this.summaries = data as unknown as Summary[];
+    runInInjectionContext(this.injector, () => {
+      const sumSub = collectionData(q, {idField: 'id'}).subscribe(data=> {
+        this.summaries = data as unknown as Summary[];
+      });
     });
   }
 
@@ -381,7 +401,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
 
     const voteId = `${user.uid}_${bookId}`;
     const voteRef = doc(this.firestore, 'bookVotes', voteId);
-    const voteSnap = await getDoc(voteRef)
+    const voteSnap = await runInInjectionContext(this.injector, () => getDoc(voteRef));
 
     if (voteSnap.exists()){
       const data = voteSnap.data() as Vote;

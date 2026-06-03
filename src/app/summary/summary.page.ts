@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, EnvironmentInjector, inject, OnInit, runInInjectionContext} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {IonContent, IonHeader, IonIcon, IonTitle, IonToolbar} from '@ionic/angular/standalone';
@@ -20,6 +20,7 @@ import {HttpClient} from "@angular/common/http";
 import {RouterLink} from "@angular/router";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {Category} from "../models/category";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-summary',
@@ -32,6 +33,8 @@ export class SummaryPage implements OnInit {
   private firestore = inject(Firestore);
   private http = inject(HttpClient);
   private translate = inject(TranslateService);
+  private injector = inject(EnvironmentInjector);
+  private _subs: Subscription[] = [];
 
   public searchTerms: string = '';
   public allBooks: any[] = [];
@@ -80,64 +83,74 @@ export class SummaryPage implements OnInit {
   }
 
   ngOnInit() {
-    collectionData(collection(this.firestore, 'categories'), {idField: 'id'})
-      .subscribe(data => {
-        this.filters.categories = data as Category[];
-      });
-
+    runInInjectionContext(this.injector, () => {
+      const catSub = collectionData(collection(this.firestore, 'categories'), {idField: 'id'})
+        .subscribe(data => {
+          this.filters.categories = data as Category[];
+        });
+      this._subs.push(catSub);
+    });
     this.loadData();
   }
 
   loadData() {
-    const booksRef = collection(this.firestore, 'books');
-    collectionData(booksRef, {idField: 'id'}).subscribe(books => {
-      this.allBooks = books;
-      this.loadSummaries();
+    runInInjectionContext(this.injector, () => {
+      const booksRef = collection(this.firestore, 'books');
+      const booksSub = collectionData(booksRef, {idField: 'id'}).subscribe(books => {
+        this.allBooks = books;
+        this.loadSummaries();
+      });
+      this._subs.push(booksSub);
     });
   }
 
   async loadSummaries() {
-    const resRef = collection(this.firestore, 'summaries');
-    const q = query(resRef, where('status', '==', 'published'));
+    runInInjectionContext(this.injector, async () => {
+      try {
+        const resRef = collection(this.firestore, 'summaries');
+        const q = query(resRef, where('status', '==', 'published'));
 
-    const querySnapshot = await getDocs(q);
-    const rawSummaries = querySnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        const querySnapshot = await getDocs(q);
+        const rawSummaries = querySnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 
-    this.summaries = await Promise.all(rawSummaries.map(async (sum: any) => {
-      const book = this.allBooks.find(b => b.id === sum['bookId']);
+        this.summaries = await Promise.all(rawSummaries.map(async (sum: any) => {
+          const book = this.allBooks.find(b => b.id === sum['bookId']);
 
-      let photo = '';
-      let name = this.translate.instant('COMMON.ANONYMOUS');
+          let photo = '';
+          let name = this.translate.instant('COMMON.ANONYMOUS');
 
-      if (sum['userId']) {
-
-        try {
-          const userSnap = await getDoc(doc(this.firestore, 'users', sum['userId']));
-          if (userSnap.exists()) {
-            const userData = userSnap.data() as any;
-            photo = userData.photoUrl || '';
-            name = userData.username || name;
+          if (sum['userId']) {
+            try {
+              const userSnap = await runInInjectionContext(this.injector, () => getDoc(doc(this.firestore, 'users', sum['userId'])));
+              if (userSnap.exists()) {
+                const userData = userSnap.data() as any;
+                photo = userData.photoUrl || '';
+                name = userData.username || name;
+              }
+            } catch (error){
+              console.error(error);
+            }
           }
-        } catch (error){
-          console.error(error);
-        }
+
+          return {
+            ...sum,
+            bookTitle: book?.title || '...',
+            bookAuthor: book?.authors?.join(', ') || '...',
+            coverUrl: book?.coverUrl || 'assets/img/default-book.png',
+            bookLanguage: book?.language,
+            bookYear: book?.year,
+            bookCategory: book?.categories || [],
+            bookLevel: book?.level,
+            authorPhotoUrl: photo,
+            authorName: name,
+          };
+        }));
+
+        this.applyFilters();
+      } catch (error){
+        console.error("Ha ocurrido un error: ", error);
       }
-
-      return {
-        ...sum,
-        bookTitle: book?.title || '...',
-        bookAuthor: book?.authors?.join(', ') || '...',
-        coverUrl: book?.coverUrl || 'assets/img/default-book.png',
-        bookLanguage: book?.language,
-        bookYear: book?.year,
-        bookCategory: book?.categories || [],
-        bookLevel: book?.level,
-        authorPhotoUrl: photo,
-        authorName: name,
-      };
-    }));
-
-    this.applyFilters();
+    });
   }
 
   onInputChange() {

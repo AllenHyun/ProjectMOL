@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, EnvironmentInjector, inject, OnDestroy, OnInit, runInInjectionContext} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
@@ -17,6 +17,7 @@ import {Subscription} from "rxjs";
 })
 export class AdminPanelComponent  implements OnInit, OnDestroy {
   private firestore = inject(Firestore);
+  private injector = inject(EnvironmentInjector);
   public isCollapsed = true;
   public pendingCount = 0;
   private countSub: Subscription | null = null;
@@ -38,8 +39,10 @@ export class AdminPanelComponent  implements OnInit, OnDestroy {
 
   ngOnInit() {
     const q = query(collection(this.firestore, 'summaries'), where('status', '==', 'pending'));
-    this.countSub = collectionData(q).subscribe(data => {
-      this.pendingCount = data ? data.length : 0;
+    runInInjectionContext(this.injector, () => {
+      this.countSub = collectionData(q).subscribe(data => {
+        this.pendingCount = data ? data.length : 0;
+      });
     });
   }
 
