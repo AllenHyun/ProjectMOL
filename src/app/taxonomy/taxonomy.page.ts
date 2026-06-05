@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, EnvironmentInjector, inject, OnDestroy, OnInit, runInInjectionContext} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {IonContent, IonHeader, IonIcon, IonTitle, IonToolbar} from '@ionic/angular/standalone';
@@ -10,6 +10,7 @@ import {FooterComponent} from "../components/footer/footer.component";
 import {AdminPanelComponent} from "../components/admin-panel/admin-panel.component";
 import {Translation} from "../services/translation";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-taxonomy',
@@ -18,9 +19,12 @@ import {TranslatePipe, TranslateService} from "@ngx-translate/core";
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, FooterComponent, AdminPanelComponent, IonIcon, TranslatePipe]
 })
-export class TaxonomyPage implements OnInit {
+export class TaxonomyPage implements OnInit, OnDestroy {
   private firestore = inject(Firestore);
   protected translate = inject(TranslateService);
+  private injector = inject(EnvironmentInjector);
+
+  private _subs: Subscription[] = [];
 
   public categories: any[] = [];
   public tags: any[] = [];
@@ -38,15 +42,23 @@ export class TaxonomyPage implements OnInit {
   }
 
   ngOnInit() {
-    collectionData(collection(this.firestore, 'categories'), {idField: 'id'})
-    .subscribe(data => {
-      this.categories = data;
-      if (this.categories.length === 0) {
-        this.seedDefaultCategories();
-      }
+    runInInjectionContext(this.injector, () => {
+      const catSub = collectionData(collection(this.firestore, 'categories'), {idField: 'id'})
+        .subscribe(data => {
+          this.categories = data;
+          if (this.categories.length === 0) {
+            this.seedDefaultCategories();
+          }
+        });
+      this._subs.push(catSub);
+      const tagSub = collectionData(collection(this.firestore, 'tags'), {idField: 'id'})
+        .subscribe(data => this.tags = data);
+      this._subs.push(tagSub);
     });
-    collectionData(collection(this.firestore, 'tags'), {idField: 'id'})
-      .subscribe(data => this.tags = data);
+  }
+
+  ngOnDestroy() {
+    this._subs.forEach(s => s.unsubscribe());
   }
 
   async seedDefaultCategories() {
@@ -58,23 +70,45 @@ export class TaxonomyPage implements OnInit {
       names['en'] = await this.translationService.translateText(name, 'en');
       names['fr'] = await this.translationService.translateText(name, 'fr');
 
-      await addDoc(catRef, { names });
+      runInInjectionContext(this.injector, () => {
+        addDoc(catRef, { names });
+      });
     }
   }
 
   async addCategory() {
-    if (!this.newCategoryName.trim()) return;
+    if (!this.newCategoryName.trim()) {
+      return;
+    }
 
     const sourceText = this.newCategoryName.trim();
-    const names: Record<string, string> = { es: sourceText };
-
+    const names: Record<string, string> = { es: sourceText, en: '', fr: '' };
     const targetLangs = ['en', 'fr'];
-    const promises = targetLangs.map(async (lang) => {
-      names[lang] = await this.translationService.translateText(sourceText, lang);
-    });
-    await Promise.all(promises);
-    await addDoc(collection(this.firestore, 'categories'), { names });
-    this.newCategoryName = '';
+
+    try {
+      for (const lang of targetLangs) {
+        try {
+          const translated = await this.translationService.translateText(sourceText, lang);
+          names[lang] = translated || sourceText;
+
+          await new Promise(resolve => setTimeout(resolve, 300));
+        } catch (apiError) {
+          console.warn(`Error en el servicio de traducción para el idioma [${lang}]:`, apiError);
+          names[lang] = sourceText;
+        }
+      }
+
+      runInInjectionContext(this.injector, async () => {
+        await addDoc(collection(this.firestore, 'categories'), { names });
+        console.log("Nueva categoría añadida y traducida con éxito:", names);
+      });
+
+      this.newCategoryName = '';
+
+    } catch (error) {
+      console.error("Error crítico en el proceso de creación de categoría:", error);
+      alert("No se pudo traducir la categoría. Revisa la conexión con el servicio de traducción.");
+    }
   }
 
 
@@ -83,16 +117,20 @@ export class TaxonomyPage implements OnInit {
       return;
     }
 
-    await addDoc(collection(this.firestore, 'tags'), {
-      name: this.newTagName.trim(),
-      categoryId: this.selectedCategoryIdForTag
+    runInInjectionContext(this.injector, () => {
+      addDoc(collection(this.firestore, 'tags'), {
+        name: this.newTagName.trim(),
+        categoryId: this.selectedCategoryIdForTag
+      });
     });
     this.newTagName = '';
   }
 
   async deleteItem(col: string, id: string){
     if (confirm(this.translate.instant('TAXONOMY.CONFIRM_DELETE'))) {
-      await deleteDoc(doc(this.firestore, col, id));
+      runInInjectionContext(this.injector, () => {
+        deleteDoc(doc(this.firestore, col, id));
+      });
     }
   }
 

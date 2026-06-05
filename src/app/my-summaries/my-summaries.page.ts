@@ -87,7 +87,7 @@ export class MySummariesPage implements OnInit {
       const q = query(collection(this.firestore, 'summaries'), where('userId', '==', uid));
       const querySnapshot = await getDocs(q);
 
-      const rawSummaries = querySnapshot.docs.map(d => ({id: d.id, ...d.data()} as Summary));
+      const rawSummaries = querySnapshot.docs.map(d => ({...d.data(), id: d.id} as Summary));
 
       this.allSummaries = await Promise.all(rawSummaries.map(async (sum) => {
         const bookSnap = await getDoc(doc(this.firestore, 'books', sum.bookId));

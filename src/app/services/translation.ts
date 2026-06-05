@@ -1,23 +1,25 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
-import {firstValueFrom} from "rxjs";
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { firstValueFrom } from "rxjs";
 
 @Injectable({
   providedIn: 'root',
 })
 export class Translation {
   private http = inject(HttpClient);
-  private url = 'https://lingva.ml/api/v1';
 
-  async translateText(text: string, targetLang: string): Promise<string> {
-    const url = `${this.url}/es/${targetLang}/${encodeURIComponent(text)}`;
-
+  async translateText(text: string, targetLang: string, sourceLang: string = 'es'): Promise<string> {
     try {
-      const res: any = await firstValueFrom(this.http.get(url));
-      return res.translation;
+      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+      const response: any = await firstValueFrom(this.http.get(url));
+
+      if (response && response[0] && response[0][0] && response[0][0][0]) {
+        return response[0][0][0];
+      }
+
+      return text;
     } catch (error) {
-      console.error(`Error con Lingva (${targetLang}):`, error);
+      console.error(`Error de traducción con Google (${targetLang}):`, error);
       return text;
     }
   }
