@@ -6,6 +6,5 @@ export interface Review {
   pros?: string[];
   cons?: string[];
   text?: string;
-  helpfulVotes?: number;
   createdAt: string;
 }
