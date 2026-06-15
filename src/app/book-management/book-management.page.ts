@@ -49,7 +49,7 @@ export class BookManagementPage implements OnInit {
 
   public book: Book[] = [];
   public showForm = false;
-  public emptyBook : any = this.initBook();
+  public bookDraft : any = this.initBook();
   public searchTerms: string = '';
 
   public availableCategories: Category[] = [];
@@ -94,39 +94,39 @@ export class BookManagementPage implements OnInit {
     };
   }
 
-  async addBook() {
-    if (!this.emptyBook.title) return;
+  async saveBookData() {
+    if (!this.bookDraft.title) return;
 
     try {
-      const processedAuthors = typeof this.emptyBook.authors === 'string'
-        ? this.emptyBook.authors.split(',').map((e: any) => e.trim()).filter((e: any) => e !== "")
-        : (Array.isArray(this.emptyBook.authors) ? this.emptyBook.authors : []);
+      const processedAuthors = typeof this.bookDraft.authors === 'string'
+        ? this.bookDraft.authors.split(',').map((e: any) => e.trim()).filter((e: any) => e !== "")
+        : (Array.isArray(this.bookDraft.authors) ? this.bookDraft.authors : []);
 
-      const processedCategories = Array.isArray(this.emptyBook.categories)
-        ? [...this.emptyBook.categories]
+      const processedCategories = Array.isArray(this.bookDraft.categories)
+        ? [...this.bookDraft.categories]
         : [];
 
-      const processedTags = typeof this.emptyBook.tags === 'string'
-        ? this.emptyBook.tags.split(',').map((e: any) => e.trim()).filter((e: any) => e !== "")
-        : (Array.isArray(this.emptyBook.tags) ? this.emptyBook.tags : []);
+      const processedTags = typeof this.bookDraft.tags === 'string'
+        ? this.bookDraft.tags.split(',').map((e: any) => e.trim()).filter((e: any) => e !== "")
+        : (Array.isArray(this.bookDraft.tags) ? this.bookDraft.tags : []);
 
       const finalBook: any = {
-        title: this.emptyBook.title,
-        isbn: this.emptyBook.isbn || '',
-        language: this.emptyBook.language,
-        year: Number(this.emptyBook.year),
-        coverUrl: this.emptyBook.coverUrl || 'assets/img/default-book.png',
+        title: this.bookDraft.title,
+        isbn: this.bookDraft.isbn || '',
+        language: this.bookDraft.language,
+        year: Number(this.bookDraft.year),
+        coverUrl: this.bookDraft.coverUrl || 'assets/img/default-book.png',
         authors: processedAuthors,
         categories: processedCategories,
         tags: processedTags,
-        level: this.emptyBook.level,
-        ratingAvg: this.emptyBook.ratingAvg || 0,
-        ratingCount: this.emptyBook.ratingCount || 0,
-        sumaryCount: this.emptyBook.sumaryCount || 0
+        level: this.bookDraft.level,
+        ratingAvg: this.bookDraft.ratingAvg || 0,
+        ratingCount: this.bookDraft.ratingCount || 0,
+        sumaryCount: this.bookDraft.sumaryCount || 0
       };
 
-      if (this.emptyBook.id) {
-        const bookDocRef = doc(this.firestore, `books/${this.emptyBook.id}`);
+      if (this.bookDraft.id) {
+        const bookDocRef = doc(this.firestore, `books/${this.bookDraft.id}`);
         await updateDoc(bookDocRef, {
           ...finalBook,
           updateAt: new Date()
@@ -139,7 +139,9 @@ export class BookManagementPage implements OnInit {
         });
       }
       this.cancelForm();
-    } catch (error) {}
+    } catch (error) {
+      console.error('[Project M.O.L] Error al guardar los datos del libro en Firestore:', error);
+    }
   }
 
   async deleteBook(id: string) {
@@ -159,25 +161,29 @@ export class BookManagementPage implements OnInit {
 
         const bookDocRef = doc(this.firestore, `books/${id}`);
         await deleteDoc(bookDocRef);
-      } catch (error) {}
+      } catch (error) {
+        console.error('[Project M.O.L] Fallo al intentar borrar el registro completo:', error);
+      }
     }
   }
 
   async editBook(libro: Book) {
     try {
-      this.emptyBook = {
+      this.bookDraft = {
         ...libro,
         authors: Array.isArray(libro.authors) ? libro.authors.join(', ') : libro.authors,
         tags: Array.isArray(libro.tags) ? libro.tags.join(', ') : (libro.tags || ''),
         categories: Array.isArray(libro.categories) ? [...libro.categories] : []
       };
       this.showForm = true;
-    } catch (error) {}
+    } catch (error) {
+      console.error('[Project M.O.L] No se pudo cargar el libro en el formulario', error);
+    }
   }
 
   cancelForm() {
     this.showForm = false;
-    this.emptyBook = this.initBook();
+    this.bookDraft = this.initBook();
   }
 
   get filteredBooks() {
@@ -217,7 +223,9 @@ export class BookManagementPage implements OnInit {
           'fr': 'Francés'
         };
 
-        this.emptyBook = {
+        // console.log('Libro importado desde Google Books:', info.title);
+
+        this.bookDraft = {
           ...this.initBook(),
           title: info.title || '',
           authors: info.authors ? info.authors.join(', ') : '',
@@ -238,41 +246,42 @@ export class BookManagementPage implements OnInit {
           alert(this.translate.instant('BOOK-M.ERROR_LOADING'));
         }
         this.showForm = false;
+        console.error('[Project M.O.L] Fallo al recuperar datos de Google Books:', err);
       }
     });
   }
 
   toggleCategory(cat: Category) {
     const nameES = cat.names['es'];
-    const index = this.emptyBook.categories.indexOf(nameES);
+    const index = this.bookDraft.categories.indexOf(nameES);
     if (index > -1) {
-      this.emptyBook.categories.splice(index, 1);
+      this.bookDraft.categories.splice(index, 1);
     } else {
-      this.emptyBook.categories.push(nameES);
+      this.bookDraft.categories.push(nameES);
     }
   }
 
 
   get filteredTags(): Tag[] {
-    if (!this.availableCategories || !this.emptyBook?.categories) {
+    if (!this.availableCategories || !this.bookDraft?.categories) {
       return [];
     }
     const selectedCatIds = this.availableCategories
-      .filter((cat: Category) => this.emptyBook.categories.includes(cat.names['es']))
+      .filter((cat: Category) => this.bookDraft.categories.includes(cat.names['es']))
       .map((cat: Category) => cat.id);
 
     return this.availableTags.filter((tag: Tag) => selectedCatIds.includes(tag.categoryId));
   }
 
   toggleTag(tagName: string) {
-    if (!Array.isArray(this.emptyBook.tags)) {
-      this.emptyBook.tags = [];
+    if (!Array.isArray(this.bookDraft.tags)) {
+      this.bookDraft.tags = [];
     }
-    const index = this.emptyBook.tags.indexOf(tagName);
+    const index = this.bookDraft.tags.indexOf(tagName);
     if (index > -1) {
-      this.emptyBook.tags.splice(index, 1);
+      this.bookDraft.tags.splice(index, 1);
     } else {
-      this.emptyBook.tags.push(tagName);
+      this.bookDraft.tags.push(tagName);
     }
   }
 
@@ -297,7 +306,7 @@ export class BookManagementPage implements OnInit {
     });
     if (matchedCategory) {
       const currentLang = this.translate.currentLang || 'es';
-      const catData = matchedCategory as any; // <--- Añadimos esta línea puente
+      const catData = matchedCategory as any;
       return catData.names?.[currentLang] || catData.names?.['es'] || '';
     }
 

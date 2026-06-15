@@ -133,14 +133,14 @@
                   <div class="flex flex-col gap-1">
 
                     <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.TITLE' | translate }}</label>
-                    <input [(ngModel)]="emptyBook.title" type="text" placeholder="{{ 'BOOK-M.CREATE.TITLE_PLACEHOLDER' | translate }}" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
+                    <input [(ngModel)]="bookDraft.title" type="text" placeholder="{{ 'BOOK-M.CREATE.TITLE_PLACEHOLDER' | translate }}" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
 
                   </div>
 
                   <div class="flex flex-col gap-1">
 
                     <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.AUTHOR' | translate }}</label>
-                    <input [(ngModel)]="emptyBook.authors" type="text" placeholder="{{ 'BOOK-M.CREATE.AUTHOR_PLACEHOLDER' | translate }}" class="p-3 bg-white border border-[#C5A059] outline-none text-black font-lato">
+                    <input [(ngModel)]="bookDraft.authors" type="text" placeholder="{{ 'BOOK-M.CREATE.AUTHOR_PLACEHOLDER' | translate }}" class="p-3 bg-white border border-[#C5A059] outline-none text-black font-lato">
 
                   </div>
 
@@ -149,14 +149,14 @@
                     <div class="flex flex-col gap-1">
 
                       <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.ISBN' | translate }}</label>
-                      <input [(ngModel)]="emptyBook.isbn" type="text" placeholder="{{ 'BOOK-M.CREATE.ISBN_PLACEHOLDER' | translate }}" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
+                      <input [(ngModel)]="bookDraft.isbn" type="text" placeholder="{{ 'BOOK-M.CREATE.ISBN_PLACEHOLDER' | translate }}" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
 
                     </div>
 
                     <div class="flex flex-col gap-1">
 
                       <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.YEAR' | translate }}</label>
-                      <input [(ngModel)]="emptyBook.year" type="number" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
+                      <input [(ngModel)]="bookDraft.year" type="number" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
 
                     </div>
 
@@ -169,7 +169,7 @@
                   <div class="flex flex-col gap-1">
 
                     <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.LANGUAGE' | translate }}</label>
-                    <input [(ngModel)]="emptyBook.language" type="text" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
+                    <input [(ngModel)]="bookDraft.language" type="text" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
 
                   </div>
 
@@ -179,7 +179,7 @@
                     <div class="flex flex-wrap gap-2 p-3 border border-[#C5A059] bg-white min-h-[100px]">
 
                       @for (cat of availableCategories; track cat.id) {
-                        <button type="button" (click)="toggleCategory(cat)" [class]="emptyBook.categories.includes(cat.names['es']) ? 'bg-[#2E473B] text-white border-[#2E473B]' : 'bg-gray-50 text-gray-400 border-gray-200'" class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all duration-200 hover:scale-105">
+                        <button type="button" (click)="toggleCategory(cat)" [class]="bookDraft.categories.includes(cat.names['es']) ? 'bg-[#2E473B] text-white border-[#2E473B]' : 'bg-gray-50 text-gray-400 border-gray-200'" class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all duration-200 hover:scale-105">
 
                           {{ getCategoryDisplayName(cat) }}
 
@@ -199,7 +199,7 @@
                     <div class="flex flex-wrap gap-2 p-3 border border-[#C5A059] bg-white min-h-[50px]">
 
                       @for (tag of filteredTags; track tag.id) {
-                        <button type="button" (click)="toggleTag(tag.name)" [class]="emptyBook.tags?.includes(tag.name) ? 'bg-[#C5A059] text-white border-[#C5A059]' : 'bg-gray-50 text-gray-400 border-gray-200'" class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all duration-200 hover:scale-105 active:scale-95">{{ tag.name }}</button>
+                        <button type="button" (click)="toggleTag(tag.name)" [class]="bookDraft.tags?.includes(tag.name) ? 'bg-[#C5A059] text-white border-[#C5A059]' : 'bg-gray-50 text-gray-400 border-gray-200'" class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all duration-200 hover:scale-105 active:scale-95">{{ tag.name }}</button>
 
                       } @empty {
                         <p class="text-[9px] text-gray-400 italic">{{'BOOK-M.EMPTY_SELECT' | translate}}</p>
@@ -212,7 +212,7 @@
                   <div class="flex flex-col gap-1">
 
                     <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.LEVEL' | translate }}</label>
-                    <select [(ngModel)]="emptyBook.level" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
+                    <select [(ngModel)]="bookDraft.level" class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
 
                       <option value="ESO/Bachiller">{{ 'BOOK-M.CREATE.LEVEL_ESO' | translate }}</option>
                       <option value="Universidad">{{ 'BOOK-M.CREATE.LEVEL_UNI' | translate }}</option>
@@ -225,7 +225,7 @@
                   <div class="flex flex-col gap-1">
 
                     <label class="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold ml-1">{{ 'BOOK-M.CREATE.URL_FRONT' | translate }}</label>
-                    <input [(ngModel)]="emptyBook.coverUrl" type="text" placeholder="https://..." class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
+                    <input [(ngModel)]="bookDraft.coverUrl" type="text" placeholder="https://..." class="p-3 border bg-white border-[#C5A059] outline-none text-black font-lato">
 
                   </div>
 
@@ -236,7 +236,7 @@
               <div class="flex flex-col sm:flex-row gap-6 mt-12 justify-end">
 
                 <button (click)="cancelForm()" class="px-12 py-4 border-2 border-[#C5A059] text-[#1A1614] font-bold uppercase text-[10px] tracking-widest hover:bg-gray-50 transition-all">{{ 'COMMON.CANCEL' | translate }}</button>
-                <button (click)="addBook()" class="px-12 py-4 bg-[#2E473B] text-white font-bold uppercase text-[10px] tracking-widest shadow-lg hover:bg-[#1a2b24] transition-all">{{ 'COMMON.CONFIRM' | translate }}</button>
+                <button (click)="saveBookData()" class="px-12 py-4 bg-[#2E473B] text-white font-bold uppercase text-[10px] tracking-widest shadow-lg hover:bg-[#1a2b24] transition-all">{{ 'COMMON.CONFIRM' | translate }}</button>
 
               </div>
 

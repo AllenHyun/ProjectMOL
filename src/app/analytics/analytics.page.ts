@@ -90,9 +90,9 @@ export class AnalyticsPage implements OnInit, OnDestroy {
     runInInjectionContext(this.injector, () => {
       this.userSub = collectionData(usersRef).subscribe((data: any[]) => {
         const users = data as User[];
-        this.calculateActiveUsers(users);
-        this.calculateGrowthChart(users);
-        this.calculateUserDistribution(users);
+        this.calcActiveUsers(users);
+        this.calcGrowthChart(users);
+        this.calcDistribution(users);
       });
     });
   }
@@ -114,13 +114,13 @@ export class AnalyticsPage implements OnInit, OnDestroy {
       this.summarySub = collectionData(summariesRef).subscribe((data: any[]) => {
         const summaries = data as Summary[];
         this.totalSummaries = summaries.length;
-        this.calculatePlatformQuality(summaries);
-        this.calculateReportRate();
+        this.calcQuality(summaries);
+        this.calcReportRate();
       });
     });
   }
 
-  calculateActiveUsers(users: any[]) {
+  calcActiveUsers(users: any[]) {
     const now = new Date();
     const oneDayAgo = new Date(now.getTime() - (24 * 60 * 60 * 1000));
     const oneMonthAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
@@ -129,7 +129,7 @@ export class AnalyticsPage implements OnInit, OnDestroy {
     this.stats.mau = users.filter(u => u.lastLogin && new Date(u.lastLogin) > oneMonthAgo).length;
   }
 
-  calculateGrowthChart(users: any[]) {
+  calcGrowthChart(users: any[]) {
     const growthData: { [key: string]: number } = {};
 
     users.forEach(u => {
@@ -173,7 +173,7 @@ export class AnalyticsPage implements OnInit, OnDestroy {
     });
   }
 
-  calculateUserDistribution(users: any[]) {
+  calcDistribution(users: any[]) {
     const roles = { admin: 0, reader: 0, visitor: 0 };
     users.forEach(u => {
       const r = (u.role || 'reader').toLowerCase();
@@ -196,7 +196,7 @@ export class AnalyticsPage implements OnInit, OnDestroy {
     });
   }
 
-  calculatePlatformQuality(summaries: any[]) {
+  calcQuality(summaries: any[]) {
     const statusCount = { published: 0, rejected: 0, pending: 0 };
     summaries.forEach(s => {
       const st = s['status'] as keyof typeof statusCount;
@@ -229,12 +229,12 @@ export class AnalyticsPage implements OnInit, OnDestroy {
         const uniqueReportedPaths = new Set(summaryReports.map(r => r.refPath));
 
         this.reportedSummariesCount = uniqueReportedPaths.size;
-        this.calculateReportRate();
+        this.calcReportRate();
       });
     });
   }
 
-  calculateReportRate(){
+  calcReportRate(){
     if (this.totalSummaries > 0){
       this.stats.reportRate = Math.round((this.reportedSummariesCount / this.totalSummaries) * 100);
     } else {
