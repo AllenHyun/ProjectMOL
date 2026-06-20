@@ -192,6 +192,15 @@ export class AnalyticsPage implements OnInit, OnDestroy {
           data: [roles.admin, roles.reader, roles.visitor],
           backgroundColor: ['#2E473B', '#C5A059', '#A0AEC0']
         }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: "right"
+          }
+        }
       }
     });
   }
