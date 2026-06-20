@@ -161,7 +161,9 @@ export class BookDetailPage implements OnInit, OnDestroy {
         this.getReviews(id);
         this.checkUserVote(id);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error('[Project M.O.L] Error al cargar los datos:', error);
+    }
   }
 
   getReviews(bookId: string) {
@@ -243,7 +245,9 @@ export class BookDetailPage implements OnInit, OnDestroy {
       } else {
         alert(this.translate.instant('MODERATION.SENDING_DRAFT'));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error('[Project M.O.L] Error al guardar el resumen:', error);
+    }
   }
 
   toggleSummary(id: string){
@@ -299,7 +303,9 @@ export class BookDetailPage implements OnInit, OnDestroy {
       this.newReview = {rating: 0, text: ''};
       this.reviewProsInput = '';
       this.reviewConsInput = '';
-    } catch (error) {}
+    } catch (error) {
+      console.error('[Project M.O.L] Error al guardar la reseña: ', error);
+    }
   }
 
   loadMoreSummaries(){
@@ -389,7 +395,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
       this.book.ratingAvg = newAvg;
       this.userVote = value;
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al valorar: ', error);
     }
   }
 
@@ -501,7 +507,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
         }));
       await Promise.all(promises);
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al crear las listas por defecto:', error);
     }
   }
 
@@ -517,7 +523,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
         bookIds: isInList ? arrayRemove(this.book.id) : arrayUnion(this.book.id)
       });
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al añadir/quitar un libro de una lista: ', error);
     }
   }
 
@@ -540,7 +546,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
       this.newListName = '';
     }
     catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al crear una lista: ', error);
     }
   }
 
@@ -566,7 +572,9 @@ export class BookDetailPage implements OnInit, OnDestroy {
       try{
         const listRef = doc(this.firestore, 'lists', listId);
         await deleteDoc(listRef);
-      } catch (error) {}
+      } catch (error) {
+        console.error('[Project M.O.L] Error al mostrar la alerta de login: ', error);
+      }
     }
   }
 
@@ -610,7 +618,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
         this.toggleComments(reviewId);
       }
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al publicar un comentario: ', error);
     }
   }
 
@@ -640,7 +648,7 @@ export class BookDetailPage implements OnInit, OnDestroy {
 
       alert(this.translate.instant('MODERATION.REPORT_SUCCESS'));
     } catch (error) {
-      console.error("Error al reportar la reseña: ", error);
+      console.error("[Project M.O.L] Error al reportar la reseña: ", error);
     }
   }
 }

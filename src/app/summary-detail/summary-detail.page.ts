@@ -78,7 +78,7 @@ export class SummaryDetailPage implements OnInit, OnDestroy {
             await this.loadBookInfo(this.summary.bookId);
           }
         } catch (error) {
-          console.error("Error al recuperar el documento del resumen:", error);
+          console.error("[Project M.O.L] Error al recuperar el documento del resumen:", error);
         }
       }
     });
@@ -113,7 +113,7 @@ export class SummaryDetailPage implements OnInit, OnDestroy {
         };
       }
     } catch (error) {
-      console.error("Error al cargar la info del libro en detalle: ", error);
+      console.error("[Project M.O.L] Error al cargar la info del libro en detalle: ", error);
     }
   }
 
@@ -188,7 +188,7 @@ export class SummaryDetailPage implements OnInit, OnDestroy {
       await addDoc(collection(this.firestore, 'reports'), newReport);
       alert(this.translate.instant('MODERATION.REPORT_SUCCESS'));
     } catch (error) {
-      console.error("Error al reportar: ", error);
+      console.error("[Project M.O.L] Error al reportar: ", error);
     }
   }
 

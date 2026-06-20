@@ -62,7 +62,7 @@ export class ModerationManagementPage implements OnInit {
         };
       }));
     } catch (error) {
-      console.error("Error al cargar resúmenes pendientes: ", error);
+      console.error("[Project M.O.L]Error al cargar resúmenes pendientes: ", error);
     } finally {
       this.loading = false;
     }
@@ -89,7 +89,7 @@ export class ModerationManagementPage implements OnInit {
 
         this.pendingSummaries = this.pendingSummaries.filter(s => s.id !== summary.id);
       } catch (error) {
-        console.error("Error al aprobar el resumen: ", error);
+        console.error("[Project M.O.L] Error al aprobar el resumen: ", error);
       }
     }
   }
@@ -118,7 +118,7 @@ export class ModerationManagementPage implements OnInit {
 
         this.pendingSummaries = this.pendingSummaries.filter(s => s.id !== summary.id);
       } catch (error) {
-        console.error("Error al rechazar el resumen: ", error);
+        console.error("[Project M.O.L] Error al rechazar el resumen: ", error);
       }
     }
   }

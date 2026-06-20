@@ -87,7 +87,7 @@ export class UserManagementPage implements OnInit {
         bannedAt: newStatus === 'suspended' ? new Date().toISOString() : null
       });
     } catch (error) {
-      console.error("Error de permisos o red:", error);
+      console.error("[Project M.O.L] Error de permisos o red:", error);
       alert(this.translate.instant('ADMIN-U.MODIFY'));
     }
   }

@@ -127,7 +127,7 @@ export class MyReviewsPage implements OnInit {
       this.resetForm();
       await this.fetchData(user.uid);
     } catch (error) {
-      console.error("Error al crear reseña:", error);
+      console.error("[Project M.O.L] Error al crear reseña:", error);
     }
   }
 
@@ -153,7 +153,7 @@ export class MyReviewsPage implements OnInit {
         };
       }));
     } catch (e) {
-      console.error("Error cargando datos:", e);
+      console.error("[Project M.O.L] Error cargando datos:", e);
     }
   }
 

@@ -128,7 +128,7 @@ export class SummaryPage implements OnInit {
                 name = userData.username || name;
               }
             } catch (error){
-              console.error(error);
+              console.error('[Project M.O.L] Error al cargar los resúmenes: ', error);
             }
           }
 
@@ -148,7 +148,7 @@ export class SummaryPage implements OnInit {
 
         this.applyFilters();
       } catch (error){
-        console.error("Ha ocurrido un error: ", error);
+        console.error("[Project M.O.L] Ha ocurrido un error: ", error);
       }
     });
   }

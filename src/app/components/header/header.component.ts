@@ -125,6 +125,7 @@ export class HeaderComponent  implements OnInit {
       this.router.navigate(['/login']);
     } catch (error) {
       console.log("Ha ocurrido un problema al intentar hacer logout, vuelva a intentarlo");
+      console.error('[Project M.O.L] Error al intentar hacer logout: ', error);
     }
 
   }

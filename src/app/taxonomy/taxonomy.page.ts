@@ -93,7 +93,7 @@ export class TaxonomyPage implements OnInit, OnDestroy {
 
           await new Promise(resolve => setTimeout(resolve, 300));
         } catch (apiError) {
-          console.warn(`Error en el servicio de traducción para el idioma [${lang}]:`, apiError);
+          console.warn(`[Project M.O.L] Error en el servicio de traducción para el idioma [${lang}]:`, apiError);
           names[lang] = sourceText;
         }
       }
@@ -106,7 +106,7 @@ export class TaxonomyPage implements OnInit, OnDestroy {
       this.newCategoryName = '';
 
     } catch (error) {
-      console.error("Error crítico en el proceso de creación de categoría:", error);
+      console.error("[Project M.O.L] Error crítico en el proceso de creación de categoría:", error);
       alert("No se pudo traducir la categoría. Revisa la conexión con el servicio de traducción.");
     }
   }

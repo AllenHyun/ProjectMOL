@@ -98,7 +98,7 @@ export class SettingsPage implements OnInit {
       alert(this.translate.instant('SETTINGS.UPDATE_SUCCESS'));
 
     } catch (error: any) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al guardar la configuración: ', error);
       if (error.code === 'auth/requires-recent-login') {
         alert(this.translate.instant('SETTINGS.ERROR_RECENT_LOGIN'));
       } else {
@@ -113,7 +113,7 @@ export class SettingsPage implements OnInit {
       await sendPasswordResetEmail(this.auth, this.user.email);
       alert(this.translate.instant('SETTINGS.RESET_SENT_1') + this.user.email + ' ' + this.translate.instant('SETTINGS.RESET_SENT_2'));
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al resetear la contraseña: ', error);
       alert(this.translate.instant('SETTINGS.ERROR_RESET'));
     }
   }
@@ -162,7 +162,7 @@ export class SettingsPage implements OnInit {
       downloadAnchorNode.remove();
 
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al exportar las listas: ', error);
       alert(this.translate.instant('SETTINGS.ERROR_EXPORT'));
     }
   }
@@ -207,7 +207,7 @@ export class SettingsPage implements OnInit {
           }));
       }
     } catch (error) {
-      console.error("Error cargando bloqueados: ", error);
+      console.error("[Project M.O.L] Error cargando bloqueados: ", error);
     } finally {
       this.loadingBlocked = false;
     }
@@ -230,7 +230,7 @@ export class SettingsPage implements OnInit {
 
       alert(this.translate.instant('SETTINGS.UNBLOCK_SUCCESS'));
     } catch (error) {
-      console.error("Error al desbloquear: ", error);
+      console.error("[Project M.O.L] Error al desbloquear: ", error);
     }
   }
 }

@@ -99,7 +99,7 @@ export class MySummariesPage implements OnInit {
         };
       }));
     } catch (error) {
-      console.error("Error cargando resúmenes: ", error);
+      console.error("[Project M.O.L] Error cargando resúmenes: ", error);
     }
   }
 
@@ -155,7 +155,7 @@ export class MySummariesPage implements OnInit {
       this.editingSummary = null;
       console.log("Resumen actualizado");
     } catch (error) {
-      console.log("Error al actualizar: ", error);
+      console.error("[Project M.O.L] Error al actualizar: ", error);
     }
   }
 
@@ -226,7 +226,7 @@ export class MySummariesPage implements OnInit {
       await this.loadSummaries(user.uid);
 
     } catch (error) {
-      console.error("Error al crear resumen:", error);
+      console.error("[Project M.O.L] Error al crear resumen:", error);
     }
   }
 

@@ -61,7 +61,7 @@ export class ReviewDetailPage implements OnInit {
           this.isLoading = false;
         }
       } catch (error) {
-        console.error("Error cargando reseñas: ", error);
+        console.error("[Project M.O.L] Error cargando reseñas: ", error);
         this.isLoading = false;
       }
     }
@@ -114,7 +114,7 @@ export class ReviewDetailPage implements OnInit {
 
       console.log("Reseña publicada");
     } catch (error) {
-      console.error("Error al guardar la reseña: ", error);
+      console.error("[Project M.O.L] Error al guardar la reseña: ", error);
     }
   }
 }

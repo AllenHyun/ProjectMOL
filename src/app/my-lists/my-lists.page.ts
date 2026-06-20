@@ -156,7 +156,9 @@ export class MyListsPage implements OnInit, OnDestroy {
       });
       this.newListName = '';
       this.showCreateModal = false;
-    } catch (error) {}
+    } catch (error) {
+      console.error('[Project M.O.L] Error al crear una lista: ', error);
+    }
   }
 
   openEditModal(list: any){
@@ -174,7 +176,9 @@ export class MyListsPage implements OnInit, OnDestroy {
       const listRef = doc(this.firestore, 'lists', this.selectedList.id);
       await updateDoc(listRef, {name: this.editListName.trim()});
       this.showEditModal = false;
-    } catch (error) {}
+    } catch (error) {
+      console.error('[Project M.O.L] Error al actualizar el nombre de la lista: ', error);
+    }
   }
 
   async removeBookFromlist(bookId: string){
@@ -187,7 +191,7 @@ export class MyListsPage implements OnInit, OnDestroy {
       await updateDoc(listRef, {bookIds: arrayRemove(bookId)});
       this.selectedList.books = this.selectedList.books.filter((b: any) => b.id !== bookId);
     } catch (error){
-      console.error(error);
+      console.error('[Project M.O.L] Error al eliminar un libro de la lista: ', error);
     }
   }
 
@@ -199,7 +203,7 @@ export class MyListsPage implements OnInit, OnDestroy {
       await deleteDoc(listRef);
       this.showEditModal = false;
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al eliminar una lista: ', error);
     }
   }
 
@@ -237,7 +241,7 @@ export class MyListsPage implements OnInit, OnDestroy {
         alert(this.translate.instant('MY_LISTS.INVALID_CODE'));
       }
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al importar una lista: ', error);
     }
   }
 
@@ -260,7 +264,9 @@ export class MyListsPage implements OnInit, OnDestroy {
           createdAt: new Date().toISOString()
         }));
       await Promise.all(promises);
-    } catch (error) {}
+    } catch (error) {
+      console.error('[Project M.O.L] Error al crear la listas por defecto: ', error);
+    }
   }
 
   async togglePublicStatus(list: any){
@@ -268,7 +274,7 @@ export class MyListsPage implements OnInit, OnDestroy {
       const listRef = doc(this.firestore, 'lists', list.id);
       await updateDoc(listRef, {isPublic: list.isPublic});
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al guardar el estado de una lista: ', error);
     }
   }
 
@@ -311,7 +317,7 @@ export class MyListsPage implements OnInit, OnDestroy {
       this.checkAndProcessExpiredReminder(user.uid);
       this.resetReminderForm();
     } catch (error) {
-      console.log("Error al guardar el recordatorio: ", error);
+      console.error("[Project M.O.L] Error al guardar el recordatorio: ", error);
     }
   }
 
@@ -338,7 +344,7 @@ export class MyListsPage implements OnInit, OnDestroy {
         this.resetReminderForm();
       }
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al eliminar un recordatorio: ', error);
     }
   }
 
@@ -364,7 +370,7 @@ export class MyListsPage implements OnInit, OnDestroy {
       });
       console.log("Notificación generada");
     } catch (error){
-      console.error("Error el crear la notificación interna: ", error);
+      console.error("[Project M.O.L] Error el crear la notificación interna: ", error);
     }
  }
 
@@ -387,7 +393,7 @@ export class MyListsPage implements OnInit, OnDestroy {
         }
       }
     } catch (error) {
-      console.error("Error procesando el cálculo del tiempo: ", error);
+      console.error("[Project M.O.L] Error procesando el cálculo del tiempo: ", error);
     }
  }
 }

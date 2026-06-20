@@ -102,7 +102,7 @@ export class NotificationsPage implements OnInit, OnDestroy {
       const notiRef = doc(this.firestore, 'notifications', noti.id);
       await updateDoc(notiRef, { read: true });
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al marcar notificación como leída: ', error);
     }
   }
 
@@ -118,7 +118,7 @@ export class NotificationsPage implements OnInit, OnDestroy {
       });
       await batch.commit();
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al marcar toda notificación como leída: ', error);
     }
   }
 
@@ -129,7 +129,7 @@ export class NotificationsPage implements OnInit, OnDestroy {
       try {
         await deleteDoc(doc(this.firestore, 'notifications', id));
       } catch (error) {
-        console.error(error);
+        console.error('[Project M.O.L] Error al eliminar una notificación: ', error);
       }
     }
   }

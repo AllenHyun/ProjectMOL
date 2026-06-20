@@ -126,7 +126,7 @@ export class TakedownsPage implements OnInit {
       }
       alert(this.translate.instant('MODERATION.ACTION_COMPLETED'));
     } catch (error) {
-      console.error("Error al actualizar el reporte: ", error);
+      console.error("[Project M.O.L] Error al actualizar el reporte: ", error);
     }
   }
 
@@ -166,7 +166,7 @@ export class TakedownsPage implements OnInit {
         alert(this.translate.instant('TAKEDOWNS.DELETE'));
       }
     } catch (error) {
-      console.error("Error al actualizar el reporte: ", error);
+      console.error("[Project M.O.L] Error al actualizar el reporte: ", error);
     }
   }
 

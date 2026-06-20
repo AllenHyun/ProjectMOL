@@ -104,7 +104,7 @@ export class ReviewPage implements OnInit, OnDestroy {
                 username = userData.username || 'Usuario';
               }
             } catch (error) {
-              console.error(error);
+              console.error('[Project M.O.L] Error al cargar la información: ', error);
             }
           }
 
@@ -125,7 +125,7 @@ export class ReviewPage implements OnInit, OnDestroy {
 
         this.applyFilters();
       } catch (error) {
-        console.error("Error cargando el listado de reseñas: ", error);
+        console.error("[Project M.O.L] Error cargando el listado de reseñas: ", error);
       }
 
   }

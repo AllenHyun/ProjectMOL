@@ -142,7 +142,7 @@ export class ProfilePage implements OnInit {
         this.isEditing = false;
       }
     } catch (error) {
-      console.error("Error al cargar perfil y listas:", error);
+      console.error("[Project M.O.L] Error al cargar perfil y listas:", error);
     }
   }
 
@@ -170,7 +170,7 @@ export class ProfilePage implements OnInit {
 
       this.isEditing = false;
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al actualizar el perfil: ', error);
     }
   }
 
@@ -220,7 +220,7 @@ export class ProfilePage implements OnInit {
       });
       alert(this.translate.instant('PROFILE.LISTS.LIBRARY'));
     } catch (error) {
-      console.error("Error al guardar lista: ", error);
+      console.error("[Project M.O.L] Error al guardar lista: ", error);
     }
   }
 
@@ -237,7 +237,7 @@ export class ProfilePage implements OnInit {
       this.haveIBlocked = true;
     }
     catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al bloquear a un usuario: ', error);
     }
   }
 
@@ -253,7 +253,7 @@ export class ProfilePage implements OnInit {
       this.haveIBlocked = false;
       await this.fetchProfileData(this.user.uid, currentUser);
     } catch (error) {
-      console.error(error);
+      console.error('[Project M.O.L] Error al desbloquear a un usuario: ', error);
     }
   }
 }
