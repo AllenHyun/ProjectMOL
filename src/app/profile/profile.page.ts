@@ -128,7 +128,7 @@ export class ProfilePage implements OnInit {
 
                 const bookRefs = list.bookIds.map((id: string) => docData(doc(this.firestore, 'books', id), { idField: 'id' }));
 
-                return combineLatest(bookRefs).pipe(map(books => ({ ...list, books })));
+                return combineLatest(bookRefs).pipe(map(books => ({ ...list, books: (books as any[]).filter(b => b) })));
               });
 
               return combineLatest(listsObservables);

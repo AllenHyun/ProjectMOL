@@ -117,7 +117,7 @@ export class MyListsPage implements OnInit, OnDestroy {
           );
 
           return combineLatest(bookRefs).pipe(
-            map(books => ({ ...list, books: books as Book[] } as Lists & { books: Book[] }))
+            map((books: any[]) => ({ ...list, books: books.filter((b: any) => b) as Book[] } as Lists & { books: Book[] }))
           );
         });
 
