@@ -111,7 +111,7 @@ export class SummaryPage implements OnInit {
         const q = query(resRef, where('status', '==', 'published'));
 
         const querySnapshot = await getDocs(q);
-        const rawSummaries = querySnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        const rawSummaries = querySnapshot.docs.map(d => ({ ...d.data(), id: d.id }));
 
         this.summaries = await Promise.all(rawSummaries.map(async (sum: any) => {
           const book = this.allBooks.find(b => b.id === sum['bookId']);

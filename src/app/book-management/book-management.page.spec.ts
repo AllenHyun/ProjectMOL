@@ -49,12 +49,12 @@ fdescribe('BookManagementPage (Tests TFG)', () => {
 
   it('Debería ocultar el formulario y vaciar el libro al darle a cancelar', () => {
     component.showForm = true;
-    component.emptyBook.title = 'Libro Basura';
+    component.bookDraft.title = 'Libro Basura';
 
     component.cancelForm();
 
     expect(component.showForm).toBeFalse();
-    expect(component.emptyBook.title).toBe('');
+    expect(component.bookDraft.title).toBe('');
   });
 
   it('Debería filtrar los libros por el título buscado', () => {
@@ -83,7 +83,7 @@ fdescribe('BookManagementPage (Tests TFG)', () => {
     component.editBook(libroPrueba);
 
     expect(component.showForm).toBeTrue();
-    expect(component.emptyBook.title).toBe('El Señor de los Anillos');
-    expect(component.emptyBook.authors).toBe('Cervantes');
+    expect(component.bookDraft.title).toBe('El Señor de los Anillos');
+    expect(component.bookDraft.authors).toBe('Cervantes');
   });
 });

@@ -79,7 +79,7 @@ export class LoginPage implements OnInit, OnDestroy {
             }
           },
           error: (err) => {
-            console.log("Cerrado de forma controlada.");
+            console.log("[Project M.O.L] Cerrado de forma controlada: ", err);
           }
         });
       }
