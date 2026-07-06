@@ -97,7 +97,7 @@ export class FirstPagePage implements OnInit, AfterViewInit {
         Object.assign(this.swiperReview.nativeElement, this.reviewSwiper);
         this.swiperReview.nativeElement.initialize();
       }
-    }, 300);
+    }, 1500);
   }
 
   private loadData() {
