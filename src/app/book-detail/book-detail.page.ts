@@ -75,6 +75,8 @@ export class BookDetailPage implements OnInit, OnDestroy {
     content: ''
   };
 
+  public maxSummaryWords = 300;
+
   public showAllReviews = false;
 
   public userVote: number | null = null;
@@ -94,6 +96,11 @@ export class BookDetailPage implements OnInit, OnDestroy {
   public showComments: {[key: string]: boolean} = {};
   public nextComment: {[key: string]: string} = {};
 
+
+  get summaryWordCount(): number {
+    const text = this.newSummary.content.trim();
+    return text ? text.split(/\s+/).length : 0;
+  }
 
   get visibleReviews(): Review[] {
     const sortedReviews = [...this.reviews].sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -191,6 +198,11 @@ export class BookDetailPage implements OnInit, OnDestroy {
     if(!this.book){
       return;
     }
+
+    if (this.summaryWordCount > this.maxSummaryWords) {
+      return;
+    }
+
     const user = this.auth.currentUser;
     if (!user) {
       const alert = await this.alertCtrl.create({
